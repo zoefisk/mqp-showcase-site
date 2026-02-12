@@ -13,6 +13,8 @@ type NavItem = {
 const NAV_ITEMS: NavItem[] = [
     { label: "About", href: "/" },
     { label: "Project Showcase", href: "/project-showcase" },
+    { label: "Case Study", href: "/case-study" },
+    { label: "Graph Editor", href: "/graph-editor" },
     { label: "Meet the Team", href: "/meet-the-team" },
     { label: "View the Report", href: "/report" },
 ];
@@ -24,7 +26,7 @@ export default function FloatingNav() {
         <Box
             sx={{
                 position: "fixed",
-                top: "20%",
+                top: "30%",
                 left: 24,
                 transform: "translateY(-50%)",
                 zIndex: 1200,
