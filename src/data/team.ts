@@ -39,14 +39,13 @@ export const TEAM_MEMBERS: TeamMember[] = [
     },
     {
         id: "zoe",
-        name: "Zoe",
-        degree: "BS",
-        minor: "Minor",
-        blurb: "Additional text",
+        name: "Zoë Fisk",
+        degree: "Computer Science BS",
+        blurb: "AI: Zoë is a senior majoring in CS with a passion for data visualization and human-computer interaction. She has experience in web development and UI/UX design, and is excited to apply her skills to create intuitive and engaging visualizations for this project.",
         photoSrc: "/team/zoe.jpg",
         links: {
-            linkedin: "https://linkedin.com",
-            github: "https://github.com",
+            linkedin: "https://www.linkedin.com/in/zjfisk/",
+            github: "https://github.com/zoefisk",
         },
     },
 ];
