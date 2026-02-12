@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import CheckIcon from "@mui/icons-material/Check";
+import EditableCode from "@/components/showcase/EditableCode";
 
 type Props = {
     title?: string;
@@ -29,13 +30,6 @@ export default function Graph({
                                          code,
                                      }: Props) {
     const [tab, setTab] = React.useState(0);
-    const [copied, setCopied] = React.useState(false);
-
-    const handleCopy = async () => {
-        await navigator.clipboard.writeText(code);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 1500);
-    };
 
     return (
         <Card
@@ -51,19 +45,6 @@ export default function Graph({
                 title={title}
                 subheader={description}
                 titleTypographyProps={{ fontWeight: 700 }}
-                action={
-                    tab === 1 && (
-                        <Tooltip title={copied ? "Copied!" : "Copy code"}>
-                            <IconButton onClick={handleCopy} size="small">
-                                {copied ? (
-                                    <CheckIcon fontSize="small" color="success" />
-                                ) : (
-                                    <ContentCopyIcon fontSize="small" />
-                                )}
-                            </IconButton>
-                        </Tooltip>
-                    )
-                }
             />
 
             <Tabs
@@ -104,31 +85,7 @@ export default function Graph({
                 )}
 
                 {tab === 1 && (
-                    <Box
-                        sx={{
-                            height: 320,
-                            overflow: "auto",
-                            borderRadius: 2,
-                            border: "1px solid",
-                            borderColor: "divider",
-                            bgcolor: "#0f172a",
-                            color: "#e5e7eb",
-                            fontFamily:
-                                "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace",
-                            fontSize: 13,
-                            p: 2,
-                        }}
-                    >
-                        <Typography
-                            component="pre"
-                            sx={{
-                                m: 0,
-                                whiteSpace: "pre",
-                            }}
-                        >
-                            {code}
-                        </Typography>
-                    </Box>
+                    <EditableCode code={code} language={"python"} showLineNumbers={true}/>
                 )}
             </CardContent>
         </Card>

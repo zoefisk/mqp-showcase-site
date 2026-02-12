@@ -8,14 +8,13 @@ import Graph from "@/components/showcase/Graph";
 export default function ProjectShowcasePage() {
 
 
-    const exampleCode = `
-        const data = [1, 2, 3, 4];
-        
-        renderChart({
-          type: "line",
-          data,
-        });
-        `;
+    const exampleCode =
+`const data = [1, 2, 3, 4];
+
+renderChart({
+    type: "line",
+    data,
+});`;
 
     return (
         <Box sx={{ minHeight: "100vh", bgcolor: "background.default", py: { xs: 6, sm: 10 } }}>
