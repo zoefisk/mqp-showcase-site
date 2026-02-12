@@ -1,12 +1,3 @@
-HELLOOOOOOOOOOOOOOOOOOOOOOOO
-
-
-
-
-
-
-
-
 Put everything in here in the same folder and open it in VSCode (or whatever IDE or the command prompt if that suits your fancy)
 
 The 0.5 file is just the original file but without the ability to upload multiple JSON objects at once in an array, you can ignore it

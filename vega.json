@@ -1,0 +1,174 @@
+{
+    "width": 300,
+    "height": 30,
+    "padding": 10,
+    "title": {
+        "text": "Temperature (Celsius)",
+        "align": "center",
+        "font": "Arial",
+        "fontSize": 13,
+        "color": "black"
+    },
+    "data": [
+        {
+            "name": "table",
+            "values": [
+                {
+                    "name": "Cold",
+                    "end": 10,
+                    "color": "blue",
+                    "order": 0
+                },
+                {
+                    "name": "Hot",
+                    "end": 20,
+                    "color": "red",
+                    "order": 1
+                }
+            ]
+        },
+        {
+            "name": "stacked",
+            "source": "table",
+            "transform": [
+                {
+                    "type": "stack",
+                    "field": "end",
+                    "sort": {
+                        "field": "order"
+                    },
+                    "as": [
+                        "x0",
+                        "x1"
+                    ]
+                },
+                {
+                    "type": "formula",
+                    "as": "x0",
+                    "expr": "datum.order === 0 ? datum.x0 + 0 : datum.x0"
+                }
+            ]
+        },
+        {
+            "name": "separators",
+            "source": "stacked",
+            "transform": [
+                {
+                    "type": "filter",
+                    "expr": "datum.x1 < data('stacked')[data('stacked').length - 1].x1"
+                }
+            ]
+        }
+    ],
+    "scales": [
+        {
+            "name": "xscale",
+            "domain": {
+                "data": "stacked",
+                "field": "x1"
+            },
+            "range": "width",
+            "domainMin": 0,
+            "zero": false
+        }
+    ],
+    "axes": [
+        {
+            "orient": "bottom",
+            "scale": "xscale",
+            "offset": 0,
+            "tickCount": 10
+        }
+    ],
+    "marks": [
+        {
+            "type": "rect",
+            "from": {
+                "data": "stacked"
+            },
+            "encode": {
+                "enter": {
+                    "height": {
+                        "value": 30
+                    },
+                    "x": {
+                        "scale": "xscale",
+                        "field": "x0"
+                    },
+                    "x2": {
+                        "scale": "xscale",
+                        "field": "x1"
+                    },
+                    "y": {
+                        "signal": "0"
+                    },
+                    "fill": {
+                        "field": "color"
+                    }
+                }
+            }
+        },
+        {
+            "type": "text",
+            "from": {
+                "data": "stacked"
+            },
+            "encode": {
+                "enter": {
+                    "height": {
+                        "value": 30
+                    },
+                    "y": {
+                        "signal": "height/2"
+                    },
+                    "align": {
+                        "value": "center"
+                    },
+                    "baseline": {
+                        "value": "middle"
+                    },
+                    "fill": {
+                        "value": "black"
+                    },
+                    "fontSize": {
+                        "value": 12
+                    },
+                    "text": {
+                        "field": "name"
+                    }
+                },
+                "update": {
+                    "x": {
+                        "signal": "scale('xscale', (datum.x0 + datum.x1) / 2)"
+                    }
+                }
+            }
+        },
+        {
+            "type": "rule",
+            "from": {
+                "data": "separators"
+            },
+            "encode": {
+                "enter": {
+                    "x": {
+                        "scale": "xscale",
+                        "field": "x1"
+                    },
+                    "y": {
+                        "signal": "0"
+                    },
+                    "y2": {
+                        "signal": "height + 0"
+                    },
+                    "stroke": {
+                        "value": "black"
+                    },
+                    "strokeWidth": {
+                        "value": 0
+                    }
+                }
+            }
+        }
+    ]
+}
