@@ -1,0 +1,38 @@
+{
+  "title": {
+	"text": "Level of Asthma Control",
+	"align": "right",
+	"font": "Arial",
+	"fontSize": 13,
+	"color": "black"
+  },
+  "data": {
+	"categories": [
+		{"name": "Controlled", "end": 1.5, "color": "green"},
+		{"name": "Not Controlled", "end": 6.0, "color": "red"}
+	],
+  	"start": -10
+  },
+  "coloring": {
+	"gradient": "linear"
+  },
+  "separation": {
+	"color": "black",
+	"width": 5,
+	"excludeEnds": true
+  },
+  "labels": {
+	"align": "center",
+	"position": "on"
+  },
+  "tickmarks": {
+	"tickCount": 12,
+	"showNumbers": "all",
+	"position": "bottom"
+  },
+  "value_indicator": {
+	"value": 3.2,
+	"title": "Victor's Score",
+	"overlap": false
+  }
+}

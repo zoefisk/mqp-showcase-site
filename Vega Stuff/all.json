@@ -1,0 +1,93 @@
+[
+{
+  "title": {
+	"text": "Level of Asthma Control",
+	"align": "right",
+	"font": "Arial",
+	"fontSize": 13,
+	"color": "black"
+  },
+  "data": {
+	"categories": [
+		{"name": "Controlled", "end": 1.5, "color": "green"},
+		{"name": "Not Controlled", "end": 6.0, "color": "red"}
+	],
+  	"start": 0
+  },
+  "coloring": {
+	"gradient": "linear"
+  },
+  "separation": {
+	"color": "black",
+	"width": 5,
+	"excludeEnds": true
+  },
+  "labels": {
+	"align": "center",
+	"position": "on"
+  },
+  "tickmarks": {
+	"tickCount": 12,
+	"showNumbers": "all",
+	"position": "bottom"
+  },
+  "value_indicator": {
+	"value": 3.2,
+	"title": "Victor's Score",
+	"overlap": false
+  }
+},
+{
+  "title": {
+	"text": "Platelet Count (Plt) Test Result",
+	"align": "center",
+	"font": "sans-serif",
+	"fontSize": 16,
+	"color": "black"
+  },
+  "data": {
+	"categories": [
+		{"name": "Very Low", "end": 20, "color": "red"},
+		{"name": "Low", "end": 100, "color": "orange"},
+		{"name": "Borderline Low", "end": 150, "color": "yellow"},
+		{"name": "STANDARD RANGE", "end": 400, "color": "green"},
+		{"name": "Borderline High", "end": 450, "color": "yellow"},
+		{"name": "High", "end": 500, "color": "orange"}
+	],
+  	"start": 0
+  },
+  "coloring": {
+	"gradient": "none"
+  },
+  "separation": {
+	"color": "lightgreen",
+	"width": 8,
+	"excludeEnds": false
+  },
+  "labels": {
+	"align": "center",
+	"position": "under"
+  },
+  "tickmarks": {
+	"tickCount": 8,
+	"showNumbers": "all",
+	"position": "top"
+  },
+  "value_indicator": {
+	"value": 135,
+	"title": "Your Result: 135x10^9/L",
+	"overlap": true
+  }
+},
+{
+  "title": {
+	"text": "Temperature (Celsius)"
+  },
+  "data": {
+	"categories": [
+		{"name": "Cold", "end": 10, "color": "blue"},
+		{"name": "Hot", "end": 30, "color": "red"}
+	]
+  }
+}
+]

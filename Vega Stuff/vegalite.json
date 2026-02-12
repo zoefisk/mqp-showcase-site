@@ -1,0 +1,94 @@
+{
+    "title": {
+        "text": "Platelet Count (Plt) Test Result",
+        "align": "center",
+        "font": "sans-serif",
+        "fontSize": 16,
+        "color": "black"
+    },
+    "data": {
+        "values": [
+            {
+                "name": "Very Low",
+                "end": 20,
+                "color": "red",
+                "order": 0
+            },
+            {
+                "name": "Low",
+                "end": 80,
+                "color": "orange",
+                "order": 1
+            },
+            {
+                "name": "Borderline Low",
+                "end": 50,
+                "color": "yellow",
+                "order": 2
+            },
+            {
+                "name": "STANDARD RANGE",
+                "end": 250,
+                "color": "green",
+                "order": 3
+            },
+            {
+                "name": "Borderline High",
+                "end": 50,
+                "color": "yellow",
+                "order": 4
+            },
+            {
+                "name": "High",
+                "end": 50,
+                "color": "orange",
+                "order": 5
+            }
+        ]
+    },
+    "mark": "bar",
+    "encoding": {
+        "x": {
+            "aggregate": "max",
+            "field": "end",
+            "type": "quantitative",
+            "scale": {
+                "nice": false
+            },
+            "axis": {
+                "title": null,
+                "tickCount": 8
+            }
+        },
+        "size": {
+            "value": 21
+        },
+        "color": {
+            "field": "name",
+            "title": "Categories",
+            "type": "ordinal",
+            "scale": {
+                "domain": [
+                    "Very Low",
+                    "Low",
+                    "Borderline Low",
+                    "STANDARD RANGE",
+                    "Borderline High",
+                    "High"
+                ],
+                "range": [
+                    "red",
+                    "orange",
+                    "yellow",
+                    "green",
+                    "yellow",
+                    "orange"
+                ]
+            }
+        },
+        "order": {
+            "aggregate": "max",
+            "field": "order"
+        }
+    }
+}

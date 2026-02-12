@@ -1,0 +1,37 @@
+{
+  "title": {
+	"text": "",
+	"align": "right",
+	"font": "Arial",
+	"fontSize": 13,
+	"color": "black"
+  },
+  "data": {
+	"categories": [
+		{}
+	],
+  	"start": 0
+  },
+  "coloring": {
+	"gradient": "linear"
+  },
+  "separation": {
+	"color": "black",
+	"width": 3,
+	"excludeEnds": true
+  },
+  "labels": {
+	"align": "center",
+	"position": "on"
+  },
+  "tickmarks": {
+	"tickCount": 12,
+	"showNumbers": "all",
+	"position": "bottom"
+  },
+  "value_indicator": {
+	"value": 0,
+	"title": "",
+	"overlap": false
+  }
+}

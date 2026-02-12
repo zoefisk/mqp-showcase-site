@@ -1,0 +1,26 @@
+{
+  "title": {
+	"text": "Blood Pressure",
+	"align": "center",
+	"font": "monospace",
+	"fontSize": 18
+  },
+  "data": {
+	"categories": [
+		{"name": "Healthy", "end": 120, "color": "#D8E4BE"},
+		{"name": "Borderline", "end": 140, "color": "#FBD4B1"},
+		{"name": "High", "end": 180, "color": "#D79692"}
+	],
+  	"start": 80
+  },
+  "coloring": {
+	"gradient": "linear"
+  },
+  "tickmarks": {
+	"tickCount": 5,
+	"position": "bottom"
+  },
+  "value_indicator": {
+	"value": 142
+  }
+}

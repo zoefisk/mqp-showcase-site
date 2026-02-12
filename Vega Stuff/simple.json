@@ -1,0 +1,11 @@
+{
+  "title": {
+	"text": "Temperature (Celsius)"
+  },
+  "data": {
+	"categories": [
+		{"name": "Cold", "end": 10, "color": "blue"},
+		{"name": "Hot", "end": 30, "color": "red"}
+	]
+  }
+}

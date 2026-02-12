@@ -1,0 +1,252 @@
+{
+    "width": 300,
+    "height": 30,
+    "padding": 10,
+    "title": {
+        "text": "",
+        "align": "center",
+        "font": "sans-serif",
+        "fontSize": 13,
+        "color": "black"
+    },
+    "data": [
+        {
+            "name": "table",
+            "values": [
+                {
+                    "name": "",
+                    "end": 60,
+                    "color": "red",
+                    "order": 0
+                },
+                {
+                    "name": "",
+                    "end": 30,
+                    "color": "green",
+                    "order": 1
+                },
+                {
+                    "name": "",
+                    "end": 30,
+                    "color": "red",
+                    "order": 2
+                }
+            ]
+        },
+        {
+            "name": "stacked",
+            "source": "table",
+            "transform": [
+                {
+                    "type": "stack",
+                    "field": "end",
+                    "sort": {
+                        "field": "order"
+                    },
+                    "as": [
+                        "x0",
+                        "x1"
+                    ]
+                },
+                {
+                    "type": "formula",
+                    "as": "x0",
+                    "expr": "datum.order === 0 ? datum.x0 + 30 : datum.x0"
+                }
+            ]
+        },
+        {
+            "name": "separators",
+            "source": "stacked",
+            "transform": [
+                {
+                    "type": "filter",
+                    "expr": "datum.x1 < data('stacked')[data('stacked').length - 1].x1"
+                }
+            ]
+        }
+    ],
+    "scales": [
+        {
+            "name": "xscale",
+            "domain": {
+                "data": "stacked",
+                "field": "x1"
+            },
+            "range": "width",
+            "domainMin": 30,
+            "zero": false
+        }
+    ],
+    "axes": [
+        {
+            "orient": "bottom",
+            "scale": "xscale",
+            "offset": 0,
+            "tickCount": 2
+        }
+    ],
+    "marks": [
+        {
+            "type": "rect",
+            "from": {
+                "data": "stacked"
+            },
+            "encode": {
+                "enter": {
+                    "height": {
+                        "value": 30
+                    },
+                    "x": {
+                        "scale": "xscale",
+                        "field": "x0"
+                    },
+                    "x2": {
+                        "scale": "xscale",
+                        "field": "x1"
+                    },
+                    "y": {
+                        "signal": "0"
+                    },
+                    "fill": {
+                        "field": "color"
+                    }
+                }
+            }
+        },
+        {
+            "type": "text",
+            "from": {
+                "data": "stacked"
+            },
+            "encode": {
+                "enter": {
+                    "height": {
+                        "value": 30
+                    },
+                    "y": {
+                        "signal": "height + 30"
+                    },
+                    "align": {
+                        "value": "center"
+                    },
+                    "baseline": {
+                        "value": "middle"
+                    },
+                    "fill": {
+                        "value": "black"
+                    },
+                    "fontSize": {
+                        "value": 12
+                    },
+                    "text": {
+                        "field": "name"
+                    }
+                },
+                "update": {
+                    "x": {
+                        "signal": "scale('xscale', (datum.x0 + datum.x1) / 2)"
+                    }
+                }
+            }
+        },
+        {
+            "type": "rule",
+            "from": {
+                "data": "separators"
+            },
+            "encode": {
+                "enter": {
+                    "x": {
+                        "scale": "xscale",
+                        "field": "x1"
+                    },
+                    "y": {
+                        "signal": "0"
+                    },
+                    "y2": {
+                        "signal": "height + 0"
+                    },
+                    "stroke": {
+                        "value": "black"
+                    },
+                    "strokeWidth": {
+                        "value": 0
+                    }
+                }
+            }
+        },
+        {
+            "type": "rule",
+            "encode": {
+                "enter": {
+                    "x": {
+                        "scale": "xscale",
+                        "value": 105
+                    },
+                    "y": {
+                        "signal": "height + 25 + 0 + 20"
+                    },
+                    "y2": {
+                        "signal": "height + 70 + 0 + 20"
+                    },
+                    "stroke": {
+                        "value": "black"
+                    },
+                    "strokeWidth": {
+                        "value": 3
+                    }
+                }
+            }
+        },
+        {
+            "type": "symbol",
+            "encode": {
+                "enter": {
+                    "x": {
+                        "scale": "xscale",
+                        "value": 105
+                    },
+                    "y": {
+                        "signal": "height + 25 + 0 + 20"
+                    },
+                    "shape": {
+                        "value": "triangle-up"
+                    },
+                    "fill": {
+                        "value": "black"
+                    },
+                    "size": {
+                        "value": 150
+                    }
+                }
+            }
+        },
+        {
+            "type": "text",
+            "encode": {
+                "enter": {
+                    "x": {
+                        "scale": "xscale",
+                        "value": 105
+                    },
+                    "y": {
+                        "signal": "height + 115 + 0 + 5"
+                    },
+                    "text": {
+                        "value": 105
+                    },
+                    "align": {
+                        "value": "center"
+                    },
+                    "fill": {
+                        "value": "black"
+                    },
+                    "fontSize": {
+                        "value": 30
+                    }
+                }
+            }
+        }
+    ]
+}

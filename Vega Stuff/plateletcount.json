@@ -1,0 +1,42 @@
+{
+  "title": {
+	"text": "Platelet Count (Plt) Test Result",
+	"align": "center",
+	"font": "sans-serif",
+	"fontSize": 16,
+	"color": "black"
+  },
+  "data": {
+	"categories": [
+		{"name": "Very Low", "end": 20, "color": "red"},
+		{"name": "Low", "end": 100, "color": "orange"},
+		{"name": "Borderline Low", "end": 150, "color": "yellow"},
+		{"name": "STANDARD RANGE", "end": 400, "color": "green"},
+		{"name": "Borderline High", "end": 450, "color": "yellow"},
+		{"name": "High", "end": 500, "color": "orange"}
+	],
+  	"start": 0
+  },
+  "coloring": {
+	"gradient": "none"
+  },
+  "separation": {
+	"color": "lightgreen",
+	"width": 8,
+	"excludeEnds": false
+  },
+  "labels": {
+	"align": "center",
+	"position": "under"
+  },
+  "tickmarks": {
+	"tickCount": 8,
+	"showNumbers": "all",
+	"position": "top"
+  },
+  "value_indicator": {
+	"value": 135,
+	"title": "Your Result: 135x10^9/L",
+	"overlap": true
+  }
+}

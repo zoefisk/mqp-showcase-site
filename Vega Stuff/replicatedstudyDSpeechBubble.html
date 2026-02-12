@@ -1,0 +1,206 @@
+<!doctype html>
+<html>
+<head>
+    <title>Vega</title>
+    <script src="https://cdn.jsdelivr.net/npm/vega@6.2.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@6.4.2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@7.1.0"></script>
+    <style>
+        .normal-range-box {
+            width: 300px;
+            margin-top: 10px;
+            padding: 5px 0;
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            background-color: white;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div id="vis0"></div>
+<div id="vis1"></div>
+
+<!-- Text box under the second chart -->
+<div class="normal-range-box">
+    Normal range: Systolic blood pressure (90-140 mmHg); Diastolic blood pressure (60-90 mmHg)
+</div>
+
+<script type="text/javascript">
+
+// Systolic chart
+const vegaspec0 = {
+  "width": 300,
+  "height": 30,
+  "padding": 10,
+  "title": {
+    "text": "Systolic blood pressure (mmHg)",
+    "align": "left",
+    "font": "Arial",
+    "fontSize": 13,
+    "color": "black"
+  },
+  "data": [
+    {
+      "name": "table",
+      "values": [
+        {"name": "Low","end": 90,"color": "red","order": 0},
+        {"name": "Normal","end": 50,"color": "green","order": 1},
+        {"name": "High","end": 50,"color": "red","order": 2}
+      ]
+    },
+    {
+      "name": "stacked",
+      "source": "table",
+      "transform": [
+        {"type": "stack","field": "end","sort": {"field": "order"},"as": ["x0","x1"]},
+        {"type": "formula","as": "x0","expr": "datum.order === 0 ? datum.x0 + 40 : datum.x0"}
+      ]
+    }
+  ],
+  "scales": [
+    {"name":"xscale","domain":{"data":"stacked","field":"x1"},"range":"width","domainMin":40,"zero":false}
+  ],
+  "axes":[{"orient":"bottom","scale":"xscale","offset":0,"tickCount":2}],
+  "marks": [
+    {"type": "rect","from": {"data": "stacked"},"encode": {"enter": {
+      "height": {"value":30},
+      "x": {"scale":"xscale","field":"x0"},
+      "x2": {"scale":"xscale","field":"x1"},
+      "y": {"value":0},
+      "fill": {"field":"color"}
+    }}},
+    {"type": "text","from": {"data":"stacked"},"encode": {"enter":{
+      "y": {"value":45},
+      "align": {"value":"center"},
+      "baseline": {"value":"middle"},
+      "fill": {"value":"black"},
+      "fontSize": {"value":12},
+      "text": {"field":"name"}
+    },
+    "update": {
+      "x": {"signal":"scale('xscale', (datum.x0 + datum.x1)/2)"}
+    }}},
+    {"type":"symbol","encode":{"enter":{
+      "x":{"signal":"scale('xscale',121)"},
+      "y":{"value":-20},
+      "shape":{"value":"triangle-down"},
+      "fill":{"value":"#f5f5f5"},
+      "stroke":{"value":"black"},
+      "strokeWidth":{"value":1},
+      "size":{"value":500}
+    }}},
+    {"type":"rect","encode":{"enter":{
+      "x":{"signal":"scale('xscale',121)-75"},
+      "y":{"value":-55},
+      "width":{"value":150},
+      "height":{"value":35},
+      "cornerRadius":{"value":6},
+      "fill":{"value":"#f5f5f5"},
+      "stroke":{"value":"black"},
+      "strokeWidth":{"value":1}
+    }}},
+    {"type":"text","encode":{"enter":{
+      "x":{"signal":"scale('xscale',121)"},
+      "y":{"value":-50},
+      "align":{"value":"center"},
+      "baseline":{"value":"top"},
+      "fill":{"value":"black"},
+      "fontSize":{"value":12},
+      "lineHeight":{"value":14},
+      "text":{"value":["Average value in your","age and sex: 121 mmHg"]}
+    }}}
+  ]
+};
+vegaEmbed('#vis0', vegaspec0);
+
+
+// Diastolic chart
+const vegaspec1 = {
+  "width": 300,
+  "height": 30,
+  "padding": 10,
+  "title": {
+    "text": "Diastolic blood pressure (mmHg)",
+    "align": "left",
+    "font": "sans-serif",
+    "fontSize": 13,
+    "color": "black"
+  },
+  "data": [
+    {
+      "name": "table",
+      "values": [
+        {"name": "Low","end": 60,"color": "red","order": 0},
+        {"name": "Normal","end": 30,"color": "green","order": 1},
+        {"name": "High","end": 30,"color": "red","order": 2}
+      ]
+    },
+    {
+      "name": "stacked",
+      "source": "table",
+      "transform": [
+        {"type": "stack","field": "end","sort": {"field": "order"},"as": ["x0","x1"]},
+        {"type": "formula","as": "x0","expr": "datum.order === 0 ? datum.x0 + 30 : datum.x0"}
+      ]
+    }
+  ],
+  "scales": [
+    {"name":"xscale","domain":{"data":"stacked","field":"x1"},"range":"width","domainMin":30,"zero":false}
+  ],
+  "axes":[{"orient":"bottom","scale":"xscale","offset":0,"tickCount":2}],
+  "marks": [
+    {"type": "rect","from": {"data": "stacked"},"encode": {"enter": {
+      "height": {"value":30},
+      "x": {"scale":"xscale","field":"x0"},
+      "x2": {"scale":"xscale","field":"x1"},
+      "y": {"value":0},
+      "fill": {"field":"color"}
+    }}},
+    {"type": "text","from": {"data":"stacked"},"encode": {"enter":{
+      "y": {"value":45},
+      "align": {"value":"center"},
+      "baseline": {"value":"middle"},
+      "fill": {"value":"black"},
+      "fontSize": {"value":12},
+      "text": {"field":"name"}
+    },
+    "update": {
+      "x": {"signal":"scale('xscale', (datum.x0 + datum.x1)/2)"}
+    }}},
+    {"type":"symbol","encode":{"enter":{
+      "x":{"signal":"scale('xscale',71)"},
+      "y":{"value":-20},
+      "shape":{"value":"triangle-down"},
+      "fill":{"value":"#f5f5f5"},
+      "stroke":{"value":"black"},
+      "strokeWidth":{"value":1},
+      "size":{"value":500}
+    }}},
+    {"type":"rect","encode":{"enter":{
+      "x":{"signal":"scale('xscale',71)-75"},
+      "y":{"value":-55},
+      "width":{"value":150},
+      "height":{"value":35},
+      "cornerRadius":{"value":6},
+      "fill":{"value":"#f5f5f5"},
+      "stroke":{"value":"black"},
+      "strokeWidth":{"value":1}
+    }}},
+    {"type":"text","encode":{"enter":{
+      "x":{"signal":"scale('xscale',71)"},
+      "y":{"value":-50},
+      "align":{"value":"center"},
+      "baseline":{"value":"top"},
+      "fill":{"value":"black"},
+      "fontSize":{"value":12},
+      "lineHeight":{"value":14},
+      "text":{"value":["Average value in your","age and sex: 71 mmHg"]}
+    }}}
+  ]
+};
+vegaEmbed('#vis1', vegaspec1);
+
+</script>
+</body>
+</html>
