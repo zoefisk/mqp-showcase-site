@@ -3,23 +3,32 @@ import {TeamMember} from "@/types/team_member";
 export const TEAM_MEMBERS: TeamMember[] = [
     {
         id: "morgan",
-        name: "Morgan",
-        degree: "BS",
-        minor: "Minor",
-        blurb: "Additional text",
-        photoSrc: "@/images/morgan.jpg",
+        name: "Morgan Vasiliou",
+        degree: "Bioinformatics & Computational Biology",
+        minor: "Data Science",
+        blurb: "",
+        photoSrc: "/team-images/morgan.png",
+        gradient: {
+            from: "rgba(0, 150, 136, 0.25)",   // teal
+            to: "rgba(76, 175, 80, 0.25)",     // green
+        },
         links: {
-            linkedin: "https://linkedin.com",
-            github: "https://github.com",
+            linkedin: "https://www.linkedin.com/in/morgan-vasiliou-b75091245",
+            github: "https://github.com/morganvazy",
+            email: "morgan.vasiliou@gmail.com"
         },
     },
     {
-        id: "skylar",
-        name: "Skylar",
-        degree: "BS",
-        minor: "Minor",
+        id: "skyler",
+        name: "Skyler",
+        degree: "Computer Science",
+        minor: "Data Science",
         blurb: "Additional text",
-        photoSrc: "/team/skylar.jpg",
+        photoSrc: "/team-images/skyler.jpg",
+        gradient: {
+            from: "rgba(63, 81, 181, 0.25)",  // indigo
+            to: "rgba(0, 188, 212, 0.25)",    // cyan
+        },
         links: {
             linkedin: "https://linkedin.com",
             github: "https://github.com",
@@ -28,10 +37,14 @@ export const TEAM_MEMBERS: TeamMember[] = [
     {
         id: "zach",
         name: "Zach",
-        degree: "BS",
+        degree: "Computer Science",
         minor: "Minor",
         blurb: "Additional text",
-        photoSrc: "/team/zach.jpg",
+        photoSrc: "/team-images/zach.jpg",
+        gradient: {
+            from: "rgba(255, 152, 0, 0.25)",  // orange
+            to: "rgba(244, 67, 54, 0.25)",    // red
+        },
         links: {
             linkedin: "https://linkedin.com",
             github: "https://github.com",
@@ -40,12 +53,17 @@ export const TEAM_MEMBERS: TeamMember[] = [
     {
         id: "zoe",
         name: "Zoë Fisk",
-        degree: "Computer Science BS",
-        blurb: "AI: Zoë is a senior majoring in CS with a passion for data visualization and human-computer interaction. She has experience in web development and UI/UX design, and is excited to apply her skills to create intuitive and engaging visualizations for this project.",
-        photoSrc: "/team/zoe.jpg",
+        degree: "Computer Science",
+        blurb: "Zoë is a senior majoring in CS with a passion for data visualization and human-computer interaction...",
+        photoSrc: "/team-images/zoe.jpg",
+        gradient: {
+            from: "rgba(33, 150, 243, 0.25)", // blue
+            to: "rgba(156, 39, 176, 0.25)",   // purple
+        },
         links: {
             linkedin: "https://www.linkedin.com/in/zjfisk/",
             github: "https://github.com/zoefisk",
+            email: "zoejewelfisk@gmail.com"
         },
     },
 ];

@@ -5,8 +5,13 @@ export type TeamMember = {
     minor?: string;
     blurb: string;
     photoSrc?: string;
+    gradient?: {
+        from: string;
+        to: string;
+    };
     links: {
         linkedin?: string;
         github?: string;
+        email?: string;
     };
 };
