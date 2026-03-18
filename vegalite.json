@@ -1,0 +1,62 @@
+{
+    "title": {
+        "text": "Temperature (Celsius)",
+        "align": "center",
+        "font": "Arial",
+        "fontSize": 13,
+        "color": "black"
+    },
+    "data": {
+        "values": [
+            {
+                "name": "Cold",
+                "end": 10,
+                "color": "blue",
+                "order": 0
+            },
+            {
+                "name": "Hot",
+                "end": 20,
+                "color": "red",
+                "order": 1
+            }
+        ]
+    },
+    "mark": "bar",
+    "encoding": {
+        "x": {
+            "aggregate": "max",
+            "field": "end",
+            "type": "quantitative",
+            "scale": {
+                "nice": false
+            },
+            "axis": {
+                "title": null,
+                "tickCount": 10
+            }
+        },
+        "size": {
+            "value": 21
+        },
+        "color": {
+            "field": "name",
+            "title": "Categories",
+            "type": "ordinal",
+            "scale": {
+                "domain": [
+                    "Cold",
+                    "Hot"
+                ],
+                "range": [
+                    "blue",
+                    "red"
+                ]
+            }
+        },
+        "order": {
+            "aggregate": "max",
+            "field": "order"
+        }
+    }
+}

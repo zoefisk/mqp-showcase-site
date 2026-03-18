@@ -1,6 +1,6 @@
 import json
 
-filename = "plateletcount.json"
+filename = "VegaStuff/replicatedstudyA.json"
 
 file = open(filename)
 file_data = json.load(file)
