@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import React from "react";
 import FloatingNav from "@/components/FloatingNav";
+import ThemeRegistry from "@/theme/ThemeRegistry";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,8 +30,10 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+      <ThemeRegistry>
         <FloatingNav />
         {children}
+          </ThemeRegistry>
       </body>
     </html>
   );
