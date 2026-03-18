@@ -17,13 +17,21 @@ export default function TeamAvatar({ name, src }: Props) {
         .join("")
         .toUpperCase();
 
+    const hasImage = Boolean(src && src.trim() !== "");
+
     return (
         <Avatar
-            src={src}
+            src={hasImage ? src : undefined}
             alt={`${name} headshot`}
-            sx={{ width: 88, height: 88, fontSize: 28, fontWeight: 700 }}
+            sx={{
+                width: 88,
+                height: 88,
+                fontSize: 28,
+                fontWeight: 700,
+                bgcolor: !hasImage ? "grey.400" : undefined,
+            }}
         >
-            {initials}
+            {!hasImage && initials}
         </Avatar>
     );
 }

@@ -20,7 +20,7 @@ export default function MeetTheTeamPage() {
                     <Divider sx={{ width: "100%" }} />
                 </Stack>
 
-                <Photo imageSrc={"/stockphoto.jpg"} altText={"Photo of the MQP team members"}/>
+                {/*<Photo imageSrc={"/stockphoto.jpg"} altText={"Photo of the MQP team members"}/>*/}
 
                 <TeamGrid members={TEAM_MEMBERS} />
             </Container>
