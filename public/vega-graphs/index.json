@@ -1,0 +1,22 @@
+[
+  {
+    "id": "replicatedstudyA",
+    "label": "Replicated Study A",
+    "file": "/vega-graphs/replicatedstudyA.json"
+  },
+  {
+    "id": "replicatedstudyB",
+    "label": "Replicated Study B",
+    "file": "/vega-graphs/replicatedstudyB.json"
+  },
+  {
+    "id": "replicatedstudyC",
+    "label": "Replicated Study C",
+    "file": "/vega-graphs/replicatedstudyC.json"
+  },
+  {
+    "id": "replicatedstudyD",
+    "label": "Replicated Study D",
+    "file": "/vega-graphs/replicatedstudyD.json"
+  }
+]

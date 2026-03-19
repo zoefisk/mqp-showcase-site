@@ -13,14 +13,16 @@ export default function VegaView({ spec }: Props) {
     React.useEffect(() => {
         if (!ref.current) return;
 
-        const embedPromise = vegaEmbed(ref.current, spec, { actions: false });
+        let view: Result | null = null;
+
+        vegaEmbed(ref.current, spec, { actions: false })
+            .then((result) => {
+                view = result;
+            })
+            .catch(() => {});
 
         return () => {
-            embedPromise
-                .then((result: Result) => {
-                    result.view.finalize();
-                })
-                .catch(() => {});
+            view?.view.finalize();
         };
     }, [spec]);
 
