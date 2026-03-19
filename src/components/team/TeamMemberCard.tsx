@@ -256,7 +256,7 @@ export default function TeamMemberCard({ member }: Props) {
                     <TeamMemberAvatar member={member} />
                     <TeamMemberIdentity member={member} />
                     <Divider flexItem />
-                    <TeamMemberBio blurb={member.blurb} />
+                    {/*<TeamMemberBio blurb={member.blurb} />*/}
                     <TeamMemberLinks member={member} />
                 </Stack>
             </CardContent>

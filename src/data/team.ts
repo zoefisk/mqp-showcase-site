@@ -20,10 +20,10 @@ export const TEAM_MEMBERS: TeamMember[] = [
     },
     {
         id: "skyler",
-        name: "Skyler",
+        name: "Skyler Lin",
         degree: "Computer Science",
         minor: "Data Science",
-        blurb: "Additional text",
+        blurb: "",
         photoSrc: "/team-images/skyler.jpg",
         gradient: {
             from: "rgba(63, 81, 181, 0.25)",  // indigo
@@ -36,25 +36,25 @@ export const TEAM_MEMBERS: TeamMember[] = [
     },
     {
         id: "zach",
-        name: "Zach",
+        name: "Zachary Medailleu",
         degree: "Computer Science",
-        minor: "Minor",
-        blurb: "Additional text",
-        photoSrc: "/team-images/zach.jpg",
+        blurb: "",
+        photoSrc: "/team-images/zach.png",
         gradient: {
             from: "rgba(255, 152, 0, 0.25)",  // orange
             to: "rgba(244, 67, 54, 0.25)",    // red
         },
         links: {
-            linkedin: "https://linkedin.com",
-            github: "https://github.com",
+            linkedin: "https://www.linkedin.com/in/zachary-medailleu-340036249/",
+            github: "https://github.com/zmedailleu",
+            email: "zacharymedailleu@gmail.com"
         },
     },
     {
         id: "zoe",
         name: "Zoë Fisk",
         degree: "Computer Science",
-        blurb: "Zoë is a senior majoring in CS with a passion for data visualization and human-computer interaction...",
+        blurb: "",
         photoSrc: "/team-images/zoe.jpg",
         gradient: {
             from: "rgba(33, 150, 243, 0.25)", // blue
