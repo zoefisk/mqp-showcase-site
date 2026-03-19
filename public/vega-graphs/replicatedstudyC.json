@@ -1,0 +1,70 @@
+[
+{
+  "title": {
+	"text": "Systolic blood pressure (mmHg)",
+	"align": "left",
+	"font": "Arial",
+	"fontSize": 13,
+	"color": "black"
+  },
+  "data": {
+	"categories": [
+		{"name": "Low", "end": 90, "color": "red"},
+		{"name": "Normal", "end": 140, "color": "green"},
+        {"name": "High", "end": 190, "color": "red"}
+	],
+  	"start": 40
+  },
+  "coloring": {
+	"gradient": "none"
+  },
+  "labels": {
+	"align": "center",
+	"position": "under"
+  },
+  "tickmarks": {
+	"tickCount": 2,
+	"showNumbers": "all",
+	"position": "bottom"
+  },
+  "value_indicator": {
+	"value": 115,
+	"title": "",
+	"overlap": false
+  }
+},
+{
+  "title": {
+	"text": "Diastolic blood pressure (mmHg)",
+	"align": "left",
+	"font": "sans-serif",
+	"fontSize": 13,
+	"color": "black"
+  },
+  "data": {
+	"categories": [
+		{"name": "Low", "end": 60, "color": "red"},
+		{"name": "Normal", "end": 90, "color": "green"},
+        {"name": "High", "end": 120, "color": "red"}
+	],
+  	"start": 30
+  },
+  "coloring": {
+	"gradient": "none"
+  },
+  "labels": {
+	"align": "center",
+	"position": "under"
+  },
+  "tickmarks": {
+	"tickCount": 2,
+	"showNumbers": "all",
+	"position": "bottom"
+  },
+  "value_indicator": {
+	"value": 77,
+	"title": "",
+	"overlap": false
+  }
+}
+]
