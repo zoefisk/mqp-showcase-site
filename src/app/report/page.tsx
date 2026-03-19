@@ -9,7 +9,7 @@ const PDF_PATH = "/report.pdf";
 
 export default function ReportPage() {
     return (
-        <Box sx={{ minHeight: "100vh", bgcolor: "background.default", py: { xs: 6, sm: 10 } }}>
+        <Box sx={{ minHeight: "100vh", py: { xs: 6, sm: 10 } }}>
             <Container maxWidth="md">
                 <Stack spacing={3} alignItems="center" mb={6}>
                     <Typography variant="h3" fontWeight={700}>
