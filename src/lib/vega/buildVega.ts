@@ -170,7 +170,7 @@ function computeOffsets(
    ============================================================ */
 
 export function buildVegaFromInput(input: InputSpec): VegaSpec {
-    if (!input.title?.text) throw new Error("A title is required.");
+    if (!input.title) throw new Error("A title object is required.");
     if (!input.data) throw new Error("Data for the number line is required.");
 
     const title = resolveTitle(input.title);

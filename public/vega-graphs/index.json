@@ -1,5 +1,10 @@
 [
   {
+    "id": "default-rrnl",
+    "label": "Default RRNL",
+    "file": "/vega-graphs/default-rrnl.json"
+  },
+  {
     "id": "replicatedstudyA",
     "label": "Replicated Study A",
     "file": "/vega-graphs/replicatedstudyA.json"
