@@ -1093,6 +1093,18 @@ function EditorSidebarSkeleton() {
     );
 }
 
+const MIN_LOADING_MS = 500;
+
+// i made the minimum loading time 1 second because i think it looks better than 0.1 second tbh lest jarring lol
+async function ensureMinimumLoadingTime(startTime: number, minMs = MIN_LOADING_MS) {
+    const elapsed = Date.now() - startTime;
+    const remaining = Math.max(0, minMs - elapsed);
+
+    if (remaining > 0) {
+        await new Promise((resolve) => setTimeout(resolve, remaining));
+    }
+}
+
 export default function VegaGraphEditor({
                                             jsonEditable = true,
                                         }: VegaGraphEditorProps) {
@@ -1120,11 +1132,15 @@ export default function VegaGraphEditor({
         let mounted = true;
 
         async function init() {
+            const startedAt = Date.now();
+
             try {
                 setLoadingManifest(true);
                 setError(null);
 
                 const items = await loadVegaGraphManifest();
+                await ensureMinimumLoadingTime(startedAt);
+
                 if (!mounted) return;
 
                 setManifest(items);
@@ -1137,6 +1153,8 @@ export default function VegaGraphEditor({
                     setSelectedFile(items[0].file);
                 }
             } catch (err) {
+                await ensureMinimumLoadingTime(startedAt);
+
                 if (!mounted) return;
                 setError(err instanceof Error ? err.message : "Failed to load manifest.");
             } finally {
@@ -1157,22 +1175,28 @@ export default function VegaGraphEditor({
         async function loadSelectedGraph() {
             if (!selectedFile) return;
 
+            const startedAt = Date.now();
+
             try {
                 setLoadingGraph(true);
                 setError(null);
                 setJsonError(null);
 
                 const parsedInputs = await loadVegaInputSpecsFromFile(selectedFile);
-                if (!mounted) return;
-
                 const firstInput = parsedInputs[0] ?? createDefaultInputSpec();
                 const normalized = normalizeInputSpec(firstInput);
+
+                await ensureMinimumLoadingTime(startedAt);
+
+                if (!mounted) return;
 
                 setInputSpec(normalized);
                 setJsonText(stringifySpec(normalized));
                 setJsonError(null);
                 setIsEditingJson(false);
             } catch (err) {
+                await ensureMinimumLoadingTime(startedAt);
+
                 if (!mounted) return;
                 setError(err instanceof Error ? err.message : "Failed to load graph.");
 
