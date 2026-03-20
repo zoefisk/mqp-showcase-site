@@ -8,7 +8,6 @@ import {
     ButtonBase,
     Stack,
     Typography,
-    Tooltip,
     alpha,
 } from "@mui/material";
 
@@ -55,126 +54,6 @@ function NavRail({ children }: React.PropsWithChildren) {
     );
 }
 
-function NavBrand() {
-    return (
-        <Box
-            sx={{
-                mb: 3,
-                px: 1,
-                display: "flex",
-                justifyContent: "flex-start",
-            }}
-        >
-            <Box
-                component="a"
-                href="https://www.wpi.edu/"
-                target="_blank"
-                rel="noopener noreferrer"
-                sx={(theme) => ({
-                    width: COLLAPSED_SIZE,
-                    height: COLLAPSED_SIZE,
-                    overflow: "hidden",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "flex-start",
-                    textDecoration: "none",
-                    borderRadius: "999px",
-                    backgroundColor: alpha(theme.palette.background.paper, 0.92),
-                    border: "1px solid",
-                    borderColor: alpha(theme.palette.primary.main, 0.28),
-                    backdropFilter: "blur(10px)",
-                    boxShadow: "0 6px 18px rgba(15,23,42,0.08)",
-                    px: 0,
-                    transition:
-                        "width 0.28s ease, background-color 0.22s ease, box-shadow 0.22s ease, transform 0.22s ease, border-color 0.22s ease",
-                    "&:hover": {
-                        width: EXPANDED_WIDTH,
-                        transform: "translateX(4px)",
-                        backgroundColor: alpha(theme.palette.background.paper, 1),
-                        borderColor: theme.palette.primary.main,
-                        boxShadow: "0 10px 24px rgba(15,23,42,0.14)",
-                    },
-                    "& .brand-copy": {
-                        opacity: 0,
-                        transform: "translateX(-6px)",
-                        transition: "opacity 0.18s ease, transform 0.22s ease",
-                        whiteSpace: "nowrap",
-                    },
-                    "&:hover .brand-copy": {
-                        opacity: 1,
-                        transform: "translateX(0)",
-                    },
-                })}
-            >
-                <BrandLogoSlot />
-                <BrandCopy />
-            </Box>
-        </Box>
-    );
-}
-
-function BrandLogoSlot() {
-    return (
-        <Box
-            sx={{
-                width: COLLAPSED_SIZE,
-                minWidth: COLLAPSED_SIZE,
-                height: COLLAPSED_SIZE,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                position: "relative",
-                zIndex: 1,
-            }}
-        >
-            <img
-                src="/WPI.png"
-                alt="WPI Logo"
-                style={{
-                    display: "block",
-                    width: "38px",
-                    height: "auto",
-                }}
-            />
-        </Box>
-    );
-}
-
-function BrandCopy() {
-    return (
-        <Box
-            sx={{
-                pr: 3,
-                minWidth: 0,
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-            }}
-        >
-            <Typography
-                className="brand-copy"
-                sx={{
-                    fontWeight: 700,
-                    lineHeight: 1.1,
-                    color: "text.primary",
-                }}
-            >
-                Data Visualization MQP
-            </Typography>
-            <Typography
-                className="brand-copy"
-                variant="body2"
-                sx={{
-                    color: "text.secondary",
-                    mt: 0.25,
-                }}
-            >
-                Explore the project and tools
-            </Typography>
-        </Box>
-    );
-}
-
 function NavList() {
     const pathname = usePathname();
 
@@ -201,71 +80,69 @@ function NavListItem({
     const Icon = item.icon;
 
     return (
-        <Tooltip title={item.label} placement="right" arrow>
-            <ButtonBase
-                component={Link}
-                href={item.href}
-                sx={(theme) => ({
-                    position: "relative",
-                    overflow: "hidden",
-                    justifyContent: "flex-start",
-                    width: COLLAPSED_SIZE,
-                    height: COLLAPSED_SIZE,
-                    borderRadius: "999px",
-                    px: 0,
-                    color: isActive
-                        ? theme.palette.primary.contrastText
-                        : theme.palette.primary.main,
+        <ButtonBase
+            component={Link}
+            href={item.href}
+            sx={(theme) => ({
+                position: "relative",
+                overflow: "hidden",
+                justifyContent: "flex-start",
+                width: COLLAPSED_SIZE,
+                height: COLLAPSED_SIZE,
+                borderRadius: "999px",
+                px: 0,
+                color: isActive
+                    ? theme.palette.primary.contrastText
+                    : theme.palette.primary.main,
+                backgroundColor: isActive
+                    ? theme.palette.primary.main
+                    : alpha(theme.palette.background.paper, 0.92),
+                border: "1px solid",
+                borderColor: isActive
+                    ? theme.palette.primary.main
+                    : alpha(theme.palette.primary.main, 0.28),
+                backdropFilter: "blur(10px)",
+                boxShadow: isActive
+                    ? "0 10px 28px rgba(25,118,210,0.28)"
+                    : "0 6px 18px rgba(15,23,42,0.08)",
+                transition:
+                    "width 0.28s ease, background-color 0.22s ease, box-shadow 0.22s ease, transform 0.22s ease, border-color 0.22s ease",
+                "&:hover": {
+                    width: EXPANDED_WIDTH,
+                    transform: "translateX(4px)",
                     backgroundColor: isActive
-                        ? theme.palette.primary.main
-                        : alpha(theme.palette.background.paper, 0.92),
-                    border: "1px solid",
-                    borderColor: isActive
-                        ? theme.palette.primary.main
-                        : alpha(theme.palette.primary.main, 0.28),
-                    backdropFilter: "blur(10px)",
-                    boxShadow: isActive
-                        ? "0 10px 28px rgba(25,118,210,0.28)"
-                        : "0 6px 18px rgba(15,23,42,0.08)",
-                    transition:
-                        "width 0.28s ease, background-color 0.22s ease, box-shadow 0.22s ease, transform 0.22s ease, border-color 0.22s ease",
-                    "&:hover": {
-                        width: EXPANDED_WIDTH,
-                        transform: "translateX(4px)",
-                        backgroundColor: isActive
-                            ? theme.palette.primary.dark
-                            : alpha(theme.palette.background.paper, 1),
-                        borderColor: theme.palette.primary.main,
-                        boxShadow: "0 10px 24px rgba(15,23,42,0.14)",
-                    },
-                    "&::before": {
-                        content: '""',
-                        position: "absolute",
-                        inset: 0,
-                        background: isActive
-                            ? "linear-gradient(90deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.00) 100%)"
-                            : "linear-gradient(90deg, rgba(37,99,235,0.08) 0%, rgba(37,99,235,0.00) 100%)",
-                        pointerEvents: "none",
-                    },
-                    "& .nav-label": {
-                        opacity: 0,
-                        transform: "translateX(-6px)",
-                        transition: "opacity 0.18s ease, transform 0.22s ease",
-                        whiteSpace: "nowrap",
-                    },
-                    "&:hover .nav-label": {
-                        opacity: 1,
-                        transform: "translateX(0)",
-                    },
-                })}
-            >
-                <NavIconSlot isActive={isActive}>
-                    <Icon fontSize="small" />
-                </NavIconSlot>
+                        ? theme.palette.primary.dark
+                        : alpha(theme.palette.background.paper, 1),
+                    borderColor: theme.palette.primary.main,
+                    boxShadow: "0 10px 24px rgba(15,23,42,0.14)",
+                },
+                "&::before": {
+                    content: '""',
+                    position: "absolute",
+                    inset: 0,
+                    background: isActive
+                        ? "linear-gradient(90deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.00) 100%)"
+                        : "linear-gradient(90deg, rgba(37,99,235,0.08) 0%, rgba(37,99,235,0.00) 100%)",
+                    pointerEvents: "none",
+                },
+                "& .nav-label": {
+                    opacity: 0,
+                    transform: "translateX(-6px)",
+                    transition: "opacity 0.18s ease, transform 0.22s ease",
+                    whiteSpace: "nowrap",
+                },
+                "&:hover .nav-label": {
+                    opacity: 1,
+                    transform: "translateX(0)",
+                },
+            })}
+        >
+            <NavIconSlot isActive={isActive}>
+                <Icon fontSize="small" />
+            </NavIconSlot>
 
-                <NavLabel>{item.label}</NavLabel>
-            </ButtonBase>
-        </Tooltip>
+            <NavLabel>{item.label}</NavLabel>
+        </ButtonBase>
     );
 }
 
@@ -325,7 +202,6 @@ function NavLabel({ children }: React.PropsWithChildren) {
 export default function FloatingNav() {
     return (
         <NavRail>
-            <NavBrand />
             <NavList />
         </NavRail>
     );
