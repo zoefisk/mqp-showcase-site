@@ -36,6 +36,7 @@ import TuneOutlinedIcon from "@mui/icons-material/TuneOutlined";
 import AdsClickOutlinedIcon from "@mui/icons-material/AdsClickOutlined";
 import ViewAgendaOutlinedIcon from "@mui/icons-material/ViewAgendaOutlined";
 import ContentCopyOutlinedIcon from "@mui/icons-material/ContentCopyOutlined";
+import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
 
 import VegaView from "@/components/vega/VegaView";
 import {
@@ -737,12 +738,14 @@ function EditableJsonPanel({
                                error,
                                onChange,
                                onCopy,
+                               onDownload,
                            }: {
     jsonText: string;
     editable: boolean;
     error: string | null;
     onChange: (next: string) => void;
     onCopy: () => void;
+    onDownload: () => void;
 }) {
     const textareaRef = React.useRef<HTMLTextAreaElement | null>(null);
     const codeRef = React.useRef<HTMLPreElement | null>(null);
@@ -769,11 +772,19 @@ function EditableJsonPanel({
                     {editable ? "Editable live JSON" : "Read-only live JSON"}
                 </Typography>
 
-                <Tooltip title="Copy JSON">
-                    <IconButton onClick={onCopy}>
-                        <ContentCopyOutlinedIcon fontSize="small" />
-                    </IconButton>
-                </Tooltip>
+                <Stack direction="row" spacing={0.5}>
+                    <Tooltip title="Download JSON file">
+                        <IconButton onClick={onDownload}>
+                            <DownloadOutlinedIcon fontSize="small" />
+                        </IconButton>
+                    </Tooltip>
+
+                    <Tooltip title="Copy JSON">
+                        <IconButton onClick={onCopy}>
+                            <ContentCopyOutlinedIcon fontSize="small" />
+                        </IconButton>
+                    </Tooltip>
+                </Stack>
             </Stack>
 
             {editable && error && <Alert severity="error">{error}</Alert>}
@@ -923,6 +934,7 @@ function PreviewStage({
                           onModeChange,
                           onJsonTextChange,
                           onCopyJson,
+                          onDownloadJson,
                       }: {
     mode: PreviewMode;
     spec: VegaSpec | null;
@@ -933,6 +945,7 @@ function PreviewStage({
     onModeChange: (mode: PreviewMode) => void;
     onJsonTextChange: (next: string) => void;
     onCopyJson: () => void;
+    onDownloadJson: () => void;
 }) {
     return (
         <Paper
@@ -974,6 +987,7 @@ function PreviewStage({
                         error={jsonEditable ? jsonError : null}
                         onChange={onJsonTextChange}
                         onCopy={onCopyJson}
+                        onDownload={onDownloadJson}
                     />
                 )}
             </Stack>
@@ -1316,6 +1330,24 @@ export default function VegaGraphEditor({
         }
     }
 
+    function handleDownloadJson() {
+        try {
+            const blob = new Blob([jsonText], { type: "application/json;charset=utf-8" });
+            const url = URL.createObjectURL(blob);
+
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = "rrnl-graph.json";
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            URL.revokeObjectURL(url);
+        } catch {
+            // no-op
+        }
+    }
+
     function handleJsonTextChange(nextText: string) {
         setJsonText(nextText);
 
@@ -1379,6 +1411,7 @@ export default function VegaGraphEditor({
                             onModeChange={setPreviewMode}
                             onJsonTextChange={handleJsonTextChange}
                             onCopyJson={handleCopyJson}
+                            onDownloadJson={handleDownloadJson}
                         />
 
                         <EditorSidebar
