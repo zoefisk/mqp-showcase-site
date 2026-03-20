@@ -12,11 +12,17 @@ export default function PageShell({ children, maxWidth = "md" }: Props) {
             sx={{
                 minHeight: "100vh",
                 py: { xs: 6, sm: 8, md: 10 },
-                pl: {
+                ml: {
                     xs: 0,
-                    md: "320px",
-                    lg: "340px",
+                    md: "96px",
+                    lg: "104px",
                 },
+                pr: {
+                    xs: 0,
+                    md: 3,
+                    lg: 4,
+                },
+                transition: "margin-left 0.25s ease",
             }}
         >
             <Container maxWidth={maxWidth}>{children}</Container>
