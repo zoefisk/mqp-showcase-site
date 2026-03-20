@@ -406,6 +406,78 @@ function ValueIndicatorSection({
     const hasIndicator = !!value.value_indicator;
     const indicator = value.value_indicator;
 
+    const minValue = value.data.start;
+    const maxValue =
+        value.data.categories[value.data.categories.length - 1]?.end ?? value.data.start;
+
+    const [draftValue, setDraftValue] = React.useState(
+        indicator ? String(indicator.value) : String(minValue)
+    );
+
+    React.useEffect(() => {
+        if (indicator) {
+            setDraftValue(String(indicator.value));
+        } else {
+            setDraftValue(String(minValue));
+        }
+    }, [indicator?.value, minValue]);
+
+    function clampIndicatorValue(raw: number) {
+        if (Number.isNaN(raw)) return minValue;
+        return Math.min(Math.max(raw, minValue), maxValue);
+    }
+
+    function commitDraftValue() {
+        if (!indicator) return;
+
+        const parsed = Number(draftValue);
+        const clamped = clampIndicatorValue(parsed);
+
+        onChange({
+            ...value,
+            value_indicator: {
+                ...indicator,
+                value: clamped,
+            },
+        });
+
+        setDraftValue(String(clamped));
+    }
+
+    function handleDraftChange(nextDraft: string) {
+        setDraftValue(nextDraft);
+
+        if (!indicator) return;
+
+        const parsed = Number(nextDraft);
+
+        // Allow incomplete typing like "-", "", ".", etc. without breaking the graph
+        if (nextDraft.trim() === "" || nextDraft === "-" || nextDraft === "." || nextDraft === "-.") {
+            return;
+        }
+
+        if (!Number.isNaN(parsed)) {
+            const clamped = clampIndicatorValue(parsed);
+
+            onChange({
+                ...value,
+                value_indicator: {
+                    ...indicator,
+                    value: clamped,
+                },
+            });
+        }
+    }
+
+    const parsedDraft = Number(draftValue);
+    const showOutOfRangeWarning =
+        draftValue.trim() !== "" &&
+        draftValue !== "-" &&
+        draftValue !== "." &&
+        draftValue !== "-." &&
+        !Number.isNaN(parsedDraft) &&
+        (parsedDraft < minValue || parsedDraft > maxValue);
+
     return (
         <Stack spacing={2}>
             <ToggleButtonGroup
@@ -415,13 +487,17 @@ function ValueIndicatorSection({
                     if (!next) return;
 
                     if (next === "on") {
+                        const nextIndicator = indicator ?? {
+                            value: minValue,
+                            title: "",
+                        };
+
                         onChange({
                             ...value,
-                            value_indicator: indicator ?? {
-                                value: value.data.start,
-                                title: "",
-                            },
+                            value_indicator: nextIndicator,
                         });
+
+                        setDraftValue(String(nextIndicator.value));
                     } else {
                         onChange({
                             ...value,
@@ -439,17 +515,27 @@ function ValueIndicatorSection({
                     <TextField
                         label="Indicator value"
                         type="number"
-                        value={indicator.value}
-                        onChange={(e) =>
-                            onChange({
-                                ...value,
-                                value_indicator: {
-                                    ...indicator,
-                                    value: Number(e.target.value),
-                                },
-                            })
-                        }
+                        value={draftValue}
+                        onChange={(e) => handleDraftChange(e.target.value)}
+                        onBlur={commitDraftValue}
+                        onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                                e.preventDefault();
+                                commitDraftValue();
+                            }
+                        }}
                         fullWidth
+                        inputProps={{
+                            min: minValue,
+                            max: maxValue,
+                            step: 1,
+                        }}
+                        error={showOutOfRangeWarning}
+                        helperText={
+                            showOutOfRangeWarning
+                                ? `Preview is clamped between ${minValue} and ${maxValue}`
+                                : `Allowed range: ${minValue} to ${maxValue}`
+                        }
                     />
 
                     <TextField
