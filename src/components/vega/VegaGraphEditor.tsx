@@ -16,6 +16,7 @@ import {
     MenuItem,
     Paper,
     Select,
+    Skeleton,
     Stack,
     TextField,
     ToggleButton,
@@ -732,13 +733,9 @@ function EditorSidebar({
             <EditorAccordion
                 title="Graph Source"
                 icon={<SourceOutlinedIcon fontSize="small" />}
-                // defaultExpanded
             >
                 {loadingManifest ? (
-                    <Stack direction="row" spacing={1} alignItems="center">
-                        <CircularProgress size={20} />
-                        <Typography>Loading graph list...</Typography>
-                    </Stack>
+                    <Skeleton variant="rounded" width="100%" height={56} />
                 ) : (
                     <GraphFileSelector
                         manifest={manifest}
@@ -751,7 +748,6 @@ function EditorSidebar({
             <EditorAccordion
                 title="Title"
                 icon={<TitleOutlinedIcon fontSize="small" />}
-                // defaultExpanded
             >
                 <TitleSection value={value} onChange={onChange} />
             </EditorAccordion>
@@ -759,7 +755,6 @@ function EditorSidebar({
             <EditorAccordion
                 title="Axis, Labels, and Separation"
                 icon={<TuneOutlinedIcon fontSize="small" />}
-                // defaultExpanded
             >
                 <AxisAndLabelsSection value={value} onChange={onChange} />
             </EditorAccordion>
@@ -767,7 +762,6 @@ function EditorSidebar({
             <EditorAccordion
                 title="Value Indicator"
                 icon={<AdsClickOutlinedIcon fontSize="small" />}
-                // defaultExpanded
             >
                 <ValueIndicatorSection value={value} onChange={onChange} />
             </EditorAccordion>
@@ -819,6 +813,102 @@ function tryParseEditableJson(rawText: string): {
             error: "Invalid JSON.",
         };
     }
+}
+
+function PreviewStageSkeleton() {
+    return (
+        <Paper
+            variant="outlined"
+            sx={{
+                borderRadius: 4,
+                p: { xs: 2, sm: 3, md: 4 },
+                minHeight: 420,
+                background:
+                    "linear-gradient(180deg, rgba(255,255,255,0.96) 0%, rgba(248,250,252,1) 100%)",
+            }}
+        >
+            <Stack spacing={2.5}>
+                <Stack
+                    direction="row"
+                    justifyContent="space-between"
+                    alignItems="center"
+                >
+                    <Box sx={{ flex: 1 }}>
+                        <Skeleton variant="text" width={140} height={42} />
+                        <Skeleton variant="text" width="55%" height={24} />
+                    </Box>
+
+                    <Skeleton variant="rounded" width={92} height={36} />
+                </Stack>
+
+                <Divider />
+
+                <Box
+                    sx={{
+                        minHeight: 260,
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        pt: 2,
+                    }}
+                >
+                    <Stack spacing={2} alignItems="center" sx={{ width: "100%" }}>
+                        <Skeleton variant="rounded" width="85%" height={28} />
+                        <Skeleton variant="rounded" width="78%" height={120} />
+                        <Skeleton variant="rounded" width="70%" height={22} />
+                    </Stack>
+                </Box>
+            </Stack>
+        </Paper>
+    );
+}
+
+function AccordionSkeleton({
+                               titleWidth = 140,
+                               rows = 3,
+                           }: {
+    titleWidth?: number | string;
+    rows?: number;
+}) {
+    return (
+        <Paper
+            variant="outlined"
+            sx={{
+                borderRadius: 4,
+                p: 2.25,
+                background:
+                    "linear-gradient(180deg, rgba(255,255,255,0.96) 0%, rgba(248,250,252,1) 100%)",
+            }}
+        >
+            <Stack spacing={2}>
+                <Stack direction="row" alignItems="center" spacing={1.25}>
+                    <Skeleton variant="circular" width={18} height={18} />
+                    <Skeleton variant="text" width={titleWidth} height={28} />
+                </Stack>
+
+                {Array.from({ length: rows }).map((_, i) => (
+                    <Skeleton
+                        key={i}
+                        variant="rounded"
+                        width="100%"
+                        height={56}
+                    />
+                ))}
+            </Stack>
+        </Paper>
+    );
+}
+
+function EditorSidebarSkeleton() {
+    return (
+        <Stack spacing={2}>
+            <AccordionSkeleton titleWidth={120} rows={2} />
+            <AccordionSkeleton titleWidth={70} rows={3} />
+            <AccordionSkeleton titleWidth={180} rows={4} />
+            <AccordionSkeleton titleWidth={120} rows={3} />
+            <AccordionSkeleton titleWidth={100} rows={4} />
+        </Stack>
+    );
 }
 
 export default function VegaGraphEditor({
@@ -888,6 +978,7 @@ export default function VegaGraphEditor({
             try {
                 setLoadingGraph(true);
                 setError(null);
+                setJsonError(null);
 
                 const parsedInputs = await loadVegaInputSpecsFromFile(selectedFile);
                 if (!mounted) return;
@@ -978,37 +1069,37 @@ export default function VegaGraphEditor({
 
             {error && <Alert severity="error">{error}</Alert>}
 
-            {loadingGraph ? (
-                <Paper variant="outlined" sx={{ p: 3, borderRadius: 4 }}>
-                    <Stack direction="row" spacing={1} alignItems="center">
-                        <CircularProgress size={20} />
-                        <Typography>Loading selected RRNL...</Typography>
-                    </Stack>
-                </Paper>
-            ) : (
-                <Stack spacing={3}>
-                    <PreviewStage
-                        mode={previewMode}
-                        spec={builtSpec}
-                        input={inputSpec}
-                        jsonText={jsonText}
-                        jsonEditable={jsonEditable}
-                        jsonError={jsonError}
-                        onModeChange={setPreviewMode}
-                        onJsonTextChange={handleJsonTextChange}
-                        onCopyJson={handleCopyJson}
-                    />
+            <Stack spacing={3}>
+                {loadingGraph ? (
+                    <>
+                        <PreviewStageSkeleton />
+                        <EditorSidebarSkeleton />
+                    </>
+                ) : (
+                    <>
+                        <PreviewStage
+                            mode={previewMode}
+                            spec={builtSpec}
+                            input={inputSpec}
+                            jsonText={jsonText}
+                            jsonEditable={jsonEditable}
+                            jsonError={jsonError}
+                            onModeChange={setPreviewMode}
+                            onJsonTextChange={handleJsonTextChange}
+                            onCopyJson={handleCopyJson}
+                        />
 
-                    <EditorSidebar
-                        manifest={manifest}
-                        selectedFile={selectedFile}
-                        onSelectedFileChange={setSelectedFile}
-                        value={inputSpec}
-                        onChange={handlePropertyChange}
-                        loadingManifest={loadingManifest}
-                    />
-                </Stack>
-            )}
+                        <EditorSidebar
+                            manifest={manifest}
+                            selectedFile={selectedFile}
+                            onSelectedFileChange={setSelectedFile}
+                            value={inputSpec}
+                            onChange={handlePropertyChange}
+                            loadingManifest={loadingManifest}
+                        />
+                    </>
+                )}
+            </Stack>
         </Stack>
     );
 }
