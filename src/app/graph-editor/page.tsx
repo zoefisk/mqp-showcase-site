@@ -2,33 +2,16 @@ import * as React from "react";
 import { Divider, Stack, Typography } from "@mui/material";
 import PageShell from "@/components/layout/PageShell";
 import VegaGraphEditor from "@/components/vega/VegaGraphEditor";
+import PageHeader from "@/components/PageHeader";
 
 export default function GraphEditorPage() {
     return (
         <PageShell maxWidth="lg">
-            <Stack spacing={3} alignItems="center" mb={6}>
-                {/* subtle eyebrow label */}
-                <Typography
-                    variant="overline"
-                    sx={{
-                        letterSpacing: 2,
-                        fontWeight: 700,
-                        color: "primary.main",
-                    }}
-                >
-                    MAKE YOUR OWN RRNL
-                </Typography>
-
-                <Typography variant="h3" fontWeight={700}>
-                    Graph Editor
-                </Typography>
-
-                <Typography color="text.secondary" textAlign="center">
-                    Build and customize reference range number lines from RRNL input properties.
-                </Typography>
-
-                <Divider sx={{ width: "100%" }} />
-            </Stack>
+                <PageHeader
+                    eyebrowLabel={"MAKE YOUR OWN RRNL"}
+                    mainHeader={"Graph Editor"}
+                    subheader={"Build and customize reference range number lines from RRNL input properties."}
+                />
 
             <VegaGraphEditor />
         </PageShell>

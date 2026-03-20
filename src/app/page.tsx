@@ -3,20 +3,17 @@ import {Box, Container, Divider, Stack, Typography} from "@mui/material";
 import TeamGrid from "@/components/team/TeamGrid";
 import {TEAM_MEMBERS} from "@/data/team";
 import * as React from "react";
+import PageHeader from "@/components/PageHeader";
 
 export default function Home() {
   return (
       <Box sx={{ minHeight: "100vh", py: { xs: 6, sm: 10 } }}>
         <Container maxWidth="md">
-          <Stack spacing={3} alignItems="center" mb={6}>
-            <Typography variant="h3" fontWeight={700}>
-              About This Project
-            </Typography>
-            <Typography color="text.secondary" textAlign="center">
-              For patients with chronic diseases, reference range number lines (RRNLs) can be useful tools in monitoring their health. Existing studies on RRNLs explore how design influences the patient’s understanding of health status, risk, and resulting behaviors. Despite their usefulness in healthcare contexts, there are few visualization tools for creating RRNLs. In this paper, we introduce a new domain-specific language (DSL) that streamlines the creation of reference range number lines. This DSL is based on examples of RRNLs in literature, and supports the reproduction of these graphs with the input of a few data points, balancing usability and customization. Future iterations may support more expansive customization, including visual embellishments.
-            </Typography>
-            <Divider sx={{ width: "100%" }} />
-          </Stack>
+          <PageHeader
+              eyebrowLabel={"A Declarative Specification for Clinical RRNL Visualizations"}
+              mainHeader={"About This Project"}
+              subheader={"For patients with chronic diseases, reference range number lines (RRNLs) can be useful tools in monitoring their health. Existing studies on RRNLs explore how design influences the patient’s understanding of health status, risk, and resulting behaviors. Despite their usefulness in healthcare contexts, there are few visualization tools for creating RRNLs. In this paper, we introduce a new domain-specific language (DSL) that streamlines the creation of reference range number lines. This DSL is based on examples of RRNLs in literature, and supports the reproduction of these graphs with the input of a few data points, balancing usability and customization. Future iterations may support more expansive customization, including visual embellishments."}
+          />
 
           <Typography color="text.secondary" textAlign="center" marginBottom={2}>
             <b>More details about this project</b>

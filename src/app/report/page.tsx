@@ -4,6 +4,7 @@ import * as React from "react";
 import { Box, Button, Container, Divider, Stack, Typography } from "@mui/material";
 import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
+import PageHeader from "@/components/PageHeader";
 
 const PDF_PATH = "/report.pdf";
 
@@ -11,13 +12,10 @@ export default function ReportPage() {
     return (
         <Box sx={{ minHeight: "100vh", py: { xs: 6, sm: 10 } }}>
             <Container maxWidth="md">
-                <Stack spacing={3} alignItems="center" mb={6}>
-                    <Typography variant="h3" fontWeight={700}>
-                        Report
-                    </Typography>
-                    <Typography color="text.secondary" textAlign="center">
-                        View the project report below, or open it in a new tab.
-                    </Typography>
+                <PageHeader
+                    mainHeader="Report"
+                    subheader="View the project report below, or open it in a new tab."
+                >
                     <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
                         <Button
                             variant="contained"
@@ -25,22 +23,30 @@ export default function ReportPage() {
                             href={PDF_PATH}
                             target="_blank"
                             rel="noreferrer"
-                            sx={{ borderRadius: "999px", textTransform: "none", fontWeight: 600 }}
+                            sx={{
+                                borderRadius: "999px",
+                                textTransform: "none",
+                                fontWeight: 600,
+                            }}
                         >
                             Open PDF
                         </Button>
+
                         <Button
                             variant="outlined"
                             startIcon={<PictureAsPdfIcon />}
                             href={PDF_PATH}
                             download
-                            sx={{ borderRadius: "999px", textTransform: "none", fontWeight: 600 }}
+                            sx={{
+                                borderRadius: "999px",
+                                textTransform: "none",
+                                fontWeight: 600,
+                            }}
                         >
                             Download
                         </Button>
                     </Stack>
-                    <Divider sx={{ width: "100%" }} />
-                </Stack>
+                </PageHeader>
 
                 {/* PDF Viewer */}
                 <Box
