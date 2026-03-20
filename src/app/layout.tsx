@@ -5,6 +5,7 @@ import React from "react";
 import FloatingNav from "@/components/layout/FloatingNav";
 import ThemeRegistry from "@/theme/ThemeRegistry";
 import { Box } from "@mui/material";
+import SiteBadge from "@/components/layout/SiteBadge";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -108,6 +109,7 @@ export default function RootLayout({
 
                 {/* CONTENT */}
                 <Box sx={{ position: "relative", zIndex: 1 }}>
+                    <SiteBadge/>
                     <FloatingNav />
                     {children}
                 </Box>
