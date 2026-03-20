@@ -595,6 +595,56 @@ function CategoriesSection({
     );
 }
 
+function escapeHtml(value: string): string {
+    return value
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+}
+
+function highlightJson(json: string): string {
+    const tokenRegex =
+        /("(?:\\.|[^"\\])*")(\s*:)?|\btrue\b|\bfalse\b|\bnull\b|-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?|[{}\[\],:]/g;
+
+    let result = "";
+    let lastIndex = 0;
+
+    for (const match of json.matchAll(tokenRegex)) {
+        const index = match.index ?? 0;
+        const full = match[0];
+        const stringToken = match[1];
+        const keyColon = match[2];
+
+        result += escapeHtml(json.slice(lastIndex, index));
+
+        if (stringToken) {
+            if (keyColon) {
+                result += `<span class="json-key">${escapeHtml(stringToken)}</span><span class="json-punctuation">${escapeHtml(keyColon)}</span>`;
+            } else {
+                result += `<span class="json-string">${escapeHtml(full)}</span>`;
+            }
+        } else if (/^(true|false)$/.test(full)) {
+            result += `<span class="json-boolean">${full}</span>`;
+        } else if (full === "null") {
+            result += `<span class="json-null">${full}</span>`;
+        } else if (/^-?\d/.test(full)) {
+            result += `<span class="json-number">${full}</span>`;
+        } else {
+            result += `<span class="json-punctuation">${escapeHtml(full)}</span>`;
+        }
+
+        lastIndex = index + full.length;
+    }
+
+    result += escapeHtml(json.slice(lastIndex));
+    return result;
+}
+
+function getLineNumbers(text: string): number[] {
+    const count = text.split("\n").length;
+    return Array.from({ length: count }, (_, i) => i + 1);
+}
+
 function EditableJsonPanel({
                                jsonText,
                                editable,
@@ -608,6 +658,24 @@ function EditableJsonPanel({
     onChange: (next: string) => void;
     onCopy: () => void;
 }) {
+    const textareaRef = React.useRef<HTMLTextAreaElement | null>(null);
+    const codeRef = React.useRef<HTMLPreElement | null>(null);
+    const linesRef = React.useRef<HTMLDivElement | null>(null);
+
+    const highlightedJson = React.useMemo(() => highlightJson(jsonText), [jsonText]);
+    const lineNumbers = React.useMemo(() => getLineNumbers(jsonText), [jsonText]);
+
+    function syncScroll(target: HTMLTextAreaElement | HTMLPreElement) {
+        if (codeRef.current) {
+            codeRef.current.scrollTop = target.scrollTop;
+            codeRef.current.scrollLeft = target.scrollLeft;
+        }
+
+        if (linesRef.current) {
+            linesRef.current.scrollTop = target.scrollTop;
+        }
+    }
+
     return (
         <Stack spacing={2}>
             <Stack direction="row" justifyContent="space-between" alignItems="center">
@@ -624,23 +692,137 @@ function EditableJsonPanel({
 
             {editable && error && <Alert severity="error">{error}</Alert>}
 
-            <TextField
-                multiline
-                minRows={18}
-                maxRows={24}
-                fullWidth
-                value={jsonText}
-                onChange={(e) => onChange(e.target.value)}
-                InputProps={{
-                    readOnly: !editable,
-                    sx: {
+            <Box
+                sx={{
+                    border: "1px solid",
+                    borderColor: error && editable ? "error.main" : "divider",
+                    borderRadius: 3,
+                    overflow: "hidden",
+                    bgcolor: "#0f172a",
+                    display: "grid",
+                    gridTemplateColumns: "56px 1fr",
+
+                    minHeight: 420,
+                    maxHeight: 600,
+                }}
+            >
+                <Box
+                    ref={linesRef}
+                    sx={{
+                        overflow: "hidden",
+                        bgcolor: "#0b1220",
+                        borderRight: "1px solid rgba(255,255,255,0.08)",
+                        color: "rgba(255,255,255,0.45)",
                         fontFamily:
                             'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
                         fontSize: 13,
-                        alignItems: "flex-start",
-                    },
-                }}
-            />
+                        lineHeight: "22px",
+                        py: 2,
+                        px: 1.5,
+                        textAlign: "right",
+                        userSelect: "none",
+                    }}
+                >
+                    {lineNumbers.map((line) => (
+                        <Box key={line}>{line}</Box>
+                    ))}
+                </Box>
+
+                <Box sx={{ position: "relative", minHeight: 420 }}>
+                    <Box
+                        sx={{
+                            position: "absolute",
+                            inset: 0,
+                            overflow: "hidden",
+                        }}
+                    >
+                        <Box
+                            component="pre"
+                            ref={codeRef}
+                            aria-hidden
+                            sx={{
+                                m: 0,
+                                p: 2,
+                                height: "100%",
+                                overflow: "auto",
+                                whiteSpace: "pre",
+                                wordWrap: "normal",
+                                fontFamily:
+                                    'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
+                                fontSize: 13,
+                                lineHeight: "22px",
+                                color: "#e2e8f0",
+                                pointerEvents: "none",
+                                "& .json-key": {
+                                    color: "#93c5fd",
+                                },
+                                "& .json-string": {
+                                    color: "#86efac",
+                                },
+                                "& .json-number": {
+                                    color: "#f9a8d4",
+                                },
+                                "& .json-boolean": {
+                                    color: "#fcd34d",
+                                },
+                                "& .json-null": {
+                                    color: "#c4b5fd",
+                                },
+                                "& .json-punctuation": {
+                                    color: "#94a3b8",
+                                },
+                            }}
+                            dangerouslySetInnerHTML={{ __html: highlightedJson || " " }}
+                        />
+                    </Box>
+
+                    {editable ? (
+                        <Box
+                            component="textarea"
+                            ref={textareaRef}
+                            spellCheck={false}
+                            value={jsonText}
+                            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+                                onChange(e.target.value)
+                            }
+                            onScroll={(e: React.UIEvent<HTMLTextAreaElement>) =>
+                                syncScroll(e.currentTarget)
+                            }
+                            sx={{
+                                position: "absolute",
+                                inset: 0,
+                                width: "100%",
+                                height: "100%",
+                                border: "none",
+                                outline: "none",
+                                resize: "none",
+                                m: 0,
+                                p: 2,
+                                background: "transparent",
+                                color: "transparent",
+                                caretColor: "#ffffff",
+                                WebkitTextFillColor: "transparent",
+                                overflow: "auto",
+                                whiteSpace: "pre",
+                                wordWrap: "normal",
+                                fontFamily:
+                                    'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
+                                fontSize: 13,
+                                lineHeight: "22px",
+                                tabSize: 2,
+                            }}
+                        />
+                    ) : (
+                        <Box
+                            sx={{
+                                position: "absolute",
+                                inset: 0,
+                                pointerEvents: "none",
+                            }}
+                        />
+                    )}
+                </Box>
+            </Box>
         </Stack>
     );
 }
