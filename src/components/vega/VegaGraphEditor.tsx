@@ -59,7 +59,11 @@ import {
 } from "@/lib/vega/editorHelpers";
 
 type VegaGraphEditorProps = {
+    title: string;
+    subtitle: string;
     jsonEditable?: boolean;
+    showPropertyEditors?: boolean;
+    graphSource?: string;
 };
 
 function EditorAccordion({
@@ -138,9 +142,13 @@ function GraphFileSelector({
 }
 
 function PreviewHeader({
+                           title,
+                           subtitle,
                            mode,
                            onModeChange,
                        }: {
+    title: string;
+    subtitle: string;
     mode: PreviewMode;
     onModeChange: (mode: PreviewMode) => void;
 }) {
@@ -153,10 +161,10 @@ function PreviewHeader({
         >
             <Box>
                 <Typography variant="h5" fontWeight={700}>
-                    Preview
+                    {title}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                    Live RRNL output based on the current editor properties
+                    {subtitle}
                 </Typography>
             </Box>
 
@@ -1026,6 +1034,8 @@ function EditableJsonPanel({
 }
 
 function PreviewStage({
+                          title,
+                          subtitle,
                           mode,
                           spec,
                           input,
@@ -1038,6 +1048,8 @@ function PreviewStage({
                           onCopyJson,
                           onDownloadJson,
                       }: {
+    title: string;
+    subtitle: string;
     mode: PreviewMode;
     spec: VegaSpec | null;
     input: InputSpec | null;
@@ -1062,7 +1074,7 @@ function PreviewStage({
             }}
         >
             <Stack spacing={2.5}>
-                <PreviewHeader mode={mode} onModeChange={onModeChange} />
+                <PreviewHeader title={title} subtitle={subtitle} mode={mode} onModeChange={onModeChange} />
                 <Divider />
 
                 {mode === "graph" ? (
@@ -1310,10 +1322,19 @@ async function ensureMinimumLoadingTime(startTime: number, minMs = MIN_LOADING_M
 }
 
 export default function VegaGraphEditor({
+                                            title,
+                                            subtitle,
                                             jsonEditable = true,
+                                            showPropertyEditors = true,
+                                            graphSource,
                                         }: VegaGraphEditorProps) {
+
     const [manifest, setManifest] = React.useState<VegaGraphManifestItem[]>([]);
-    const [selectedFile, setSelectedFile] = React.useState("/vega-graphs/default-rrnl.json");
+
+    const [selectedFile, setSelectedFile] = React.useState(
+        graphSource ?? "/vega-graphs/default-rrnl.json"
+    );
+
     const [inputSpec, setInputSpec] = React.useState<InputSpec>(createDefaultInputSpec());
     const [previewMode, setPreviewMode] = React.useState<PreviewMode>("graph");
     const [loadingManifest, setLoadingManifest] = React.useState(true);
@@ -1334,6 +1355,12 @@ export default function VegaGraphEditor({
     }, [inputSpec]);
 
     React.useEffect(() => {
+        if (!showPropertyEditors && graphSource) {
+            setSelectedFile(graphSource);
+        }
+    }, [showPropertyEditors, graphSource]);
+
+    React.useEffect(() => {
         let mounted = true;
 
         async function init() {
@@ -1350,13 +1377,18 @@ export default function VegaGraphEditor({
 
                 setManifest(items);
 
-                const hasDefault = items.some(
-                    (item) => item.file === "/vega-graphs/default-rrnl.json"
-                );
+                if (!showPropertyEditors && graphSource) {
+                    setSelectedFile(graphSource);
+                } else {
+                    const hasDefault = items.some(
+                        (item) => item.file === "/vega-graphs/default-rrnl.json"
+                    );
 
-                if (!hasDefault && items.length > 0) {
-                    setSelectedFile(items[0].file);
+                    if (!hasDefault && items.length > 0) {
+                        setSelectedFile(items[0].file);
+                    }
                 }
+
             } catch (err) {
                 await ensureMinimumLoadingTime(startedAt);
 
@@ -1372,7 +1404,7 @@ export default function VegaGraphEditor({
         return () => {
             mounted = false;
         };
-    }, []);
+    }, [showPropertyEditors, graphSource]);
 
     React.useEffect(() => {
         let mounted = true;
@@ -1491,14 +1523,6 @@ export default function VegaGraphEditor({
 
     return (
         <Stack spacing={3}>
-            <Box>
-                <Typography variant="h4" fontWeight={700} gutterBottom>
-                    RRNL Graph Editor
-                </Typography>
-                <Typography color="text.secondary">
-                    Load an RRNL template, edit its properties, and preview the live Vega output.
-                </Typography>
-            </Box>
 
             {error && <Alert severity="error">{error}</Alert>}
 
@@ -1506,11 +1530,13 @@ export default function VegaGraphEditor({
                 {loadingGraph ? (
                     <>
                         <PreviewStageSkeleton />
-                        <EditorSidebarSkeleton />
+                        {showPropertyEditors && <EditorSidebarSkeleton />}
                     </>
                 ) : (
                     <>
                         <PreviewStage
+                            title={title}
+                            subtitle={subtitle}
                             mode={previewMode}
                             spec={builtSpec}
                             input={inputSpec}
@@ -1524,14 +1550,16 @@ export default function VegaGraphEditor({
                             onDownloadJson={handleDownloadJson}
                         />
 
-                        <EditorSidebar
-                            manifest={manifest}
-                            selectedFile={selectedFile}
-                            onSelectedFileChange={setSelectedFile}
-                            value={inputSpec}
-                            onChange={handlePropertyChange}
-                            loadingManifest={loadingManifest}
-                        />
+                        {showPropertyEditors && (
+                            <EditorSidebar
+                                manifest={manifest}
+                                selectedFile={selectedFile}
+                                onSelectedFileChange={setSelectedFile}
+                                value={inputSpec}
+                                onChange={handlePropertyChange}
+                                loadingManifest={loadingManifest}
+                            />
+                        )}
                     </>
                 )}
             </Stack>
