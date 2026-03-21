@@ -1,6 +1,6 @@
 import raw from "@/data/simple.json";
 import { buildManyVega } from "@/lib/vega/buildVega";
-import VegaView from "@/components/vega/VegaView";
+import VegaView from "@/components/features/visualizations/vega/VegaView";
 
 export default function TestingPage() {
     const specs = buildManyVega(raw);

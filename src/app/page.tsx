@@ -10,13 +10,13 @@ import Groups2OutlinedIcon from "@mui/icons-material/Groups2Outlined";
 import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
 import InsightsOutlinedIcon from "@mui/icons-material/InsightsOutlined";
 
-import PageHeader from "@/components/PageHeader";
+import PageHeader from "@/components/layout/PageHeader";
 
-import SectionTitle from "@/components/content/SectionTitle";
-import InfoCard from "@/components/content/InfoCard";
-import StepCard from "@/components/content/StepCard";
-import StepArrow from "@/components/content/StepArrow";
-import LinkCard from "@/components/content/LinkCard";
+import SectionTitle from "@/components/ui/SectionTitle";
+import InfoCard from "@/components/ui/InfoCard";
+import StepCard from "@/components/ui/StepCard";
+import StepArrow from "@/components/ui/StepArrow";
+import LinkCard from "@/components/ui/LinkCard";
 
 export default function Home() {
   return (

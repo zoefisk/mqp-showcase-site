@@ -2,9 +2,9 @@
 
 import * as React from "react";
 import { Box, Container, Divider, Stack, Typography } from "@mui/material";
-import TeamGrid from "@/components/team/TeamGrid";
+import TeamGrid from "@/components/features/team/TeamGrid";
 import { TEAM_MEMBERS } from "@/data/team";
-import PageHeader from "@/components/PageHeader";
+import PageHeader from "@/components/layout/PageHeader";
 
 export default function MeetTheTeamPage() {
     return (

@@ -37,7 +37,7 @@ import ViewAgendaOutlinedIcon from "@mui/icons-material/ViewAgendaOutlined";
 import ContentCopyOutlinedIcon from "@mui/icons-material/ContentCopyOutlined";
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
 
-import VegaView from "@/components/vega/VegaView";
+import VegaView from "@/components/features/visualizations/vega/VegaView";
 import {
     buildVegaFromInput,
     parseInputSpecs,

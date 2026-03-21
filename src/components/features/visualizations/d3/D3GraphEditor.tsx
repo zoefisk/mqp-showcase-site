@@ -32,7 +32,7 @@ import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
 import HtmlOutlinedIcon from "@mui/icons-material/HtmlOutlined";
 import ImageOutlinedIcon from "@mui/icons-material/ImageOutlined";
 
-import D3View from "@/components/d3/D3View";
+import D3View from "@/components/features/visualizations/d3/D3View";
 import {
     ensureMinimumLoadingTime,
     getLineNumbers,

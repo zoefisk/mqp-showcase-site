@@ -4,7 +4,7 @@ import * as React from "react";
 import { Box, Button, Container, Divider, Stack, Typography } from "@mui/material";
 import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
-import PageHeader from "@/components/PageHeader";
+import PageHeader from "@/components/layout/PageHeader";
 
 const PDF_PATH = "/report.pdf";
 

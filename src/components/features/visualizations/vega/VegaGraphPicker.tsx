@@ -14,7 +14,7 @@ import {
     Paper,
 } from "@mui/material";
 
-import VegaView from "@/components/vega/VegaView";
+import VegaView from "@/components/features/visualizations/vega/VegaView";
 import {
     buildVegaFromInput,
     type InputSpec,
