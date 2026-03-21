@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Box, Container, Paper, Stack, Typography } from "@mui/material";
+import {Accordion, AccordionDetails, AccordionSummary, Box, Container, Paper, Stack, Typography} from "@mui/material";
 
 import ScienceOutlinedIcon from "@mui/icons-material/ScienceOutlined";
 import CodeOutlinedIcon from "@mui/icons-material/CodeOutlined";
@@ -10,16 +10,17 @@ import Groups2OutlinedIcon from "@mui/icons-material/Groups2Outlined";
 import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
 import InsightsOutlinedIcon from "@mui/icons-material/InsightsOutlined";
 import HubOutlinedIcon from "@mui/icons-material/HubOutlined";
-import PageHeader from "@/components/PageHeader";
+import PageHeader from "@/components/layout/PageHeader";
 
-import SectionTitle from "@/components/content/SectionTitle";
-import LinkCard from "@/components/content/LinkCard";
-import StudyStatCard from "@/components/content/StudyStatCard";
-import ResearchNote from "@/components/content/ResearchNote";
-import PhaseTimelineItem from "@/components/content/PhaseTimelineItem";
-import ToolBadge from "@/components/content/ToolBadge";
-import VegaGraphEditor from "@/components/vega/VegaGraphEditor";
-import D3GraphEditor from "@/components/d3/D3GraphEditor";
+import SectionTitle from "@/components/ui/SectionTitle";
+import LinkCard from "@/components/ui/LinkCard";
+import StudyStatCard from "@/components/ui/StudyStatCard";
+import ResearchNote from "@/components/ui/ResearchNote";
+import PhaseTimelineItem from "@/components/ui/PhaseTimelineItem";
+import ToolBadge from "@/components/ui/ToolBadge";
+import VegaGraphEditor from "@/components/features/visualizations/vega/VegaGraphEditor";
+import D3GraphEditor from "@/components/features/visualizations/d3/D3GraphEditor";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 export default function CaseStudyPage() {
     return (
@@ -191,16 +192,76 @@ export default function CaseStudyPage() {
                         </Stack>
 
                         <Typography color="text.secondary">
-                            This section uses the current Vega-based editor in a read-only configuration as a specification-oriented companion to the replication work. A dedicated D3 viewer can be added later as the recreated stimuli are finalized.
+                            This section uses the current Vega-based editor in a read-only configuration
+                            as a specification-oriented companion to the replication work. A dedicated D3
+                            viewer can be added later as the recreated stimuli are finalized.
                         </Typography>
 
-                        <D3GraphEditor
-                            title="D3 RRNL Preview"
-                            subtitle="Edit the HTML directly."
-                            graphSource="creatinine-gradient"
-                            htmlEditable={true}
-                            allowGraphSelection={false}
-                        />
+                        <Stack spacing={1.5}>
+                            <Accordion
+                                disableGutters
+                                sx={{
+                                    borderRadius: 3,
+                                    overflow: "hidden",
+                                    border: "1px solid",
+                                    borderColor: "divider",
+                                    boxShadow: "none",
+                                    "&:before": { display: "none" },
+                                }}
+                            >
+                                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                                    <Stack spacing={0.25}>
+                                        <Typography fontWeight={600}>Creatinine Gradient</Typography>
+                                        <Typography variant="body2" color="text.secondary">
+                                            Reference range number line with gradient styling
+                                        </Typography>
+                                    </Stack>
+                                </AccordionSummary>
+
+                                <AccordionDetails sx={{ pt: 0 }}>
+                                    <D3GraphEditor
+                                        title="D3 RRNL Preview"
+                                        subtitle="Edit the HTML directly."
+                                        graphSource="creatinine-gradient"
+                                        htmlEditable={false}
+                                        svgEditable={false}
+                                        allowGraphSelection={false}
+                                    />
+                                </AccordionDetails>
+                            </Accordion>
+
+                            <Accordion
+                                disableGutters
+                                sx={{
+                                    borderRadius: 3,
+                                    overflow: "hidden",
+                                    border: "1px solid",
+                                    borderColor: "divider",
+                                    boxShadow: "none",
+                                    "&:before": { display: "none" },
+                                }}
+                            >
+                                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                                    <Stack spacing={0.25}>
+                                        <Typography fontWeight={600}>Platelet Table</Typography>
+                                        <Typography variant="body2" color="text.secondary">
+                                            Tabular stimulus preview
+                                        </Typography>
+                                    </Stack>
+                                </AccordionSummary>
+
+                                <AccordionDetails sx={{ pt: 0 }}>
+                                    <D3GraphEditor
+                                        title="D3 RRNL Preview"
+                                        subtitle="Edit the HTML directly."
+                                        graphSource="platelet-table"
+                                        htmlEditable={true}
+                                        svgEditable={false}
+                                        allowGraphSelection={false}
+                                    />
+                                </AccordionDetails>
+                            </Accordion>
+                        </Stack>
                     </Stack>
                 </Paper>
 

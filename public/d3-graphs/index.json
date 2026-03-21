@@ -18,7 +18,7 @@
     "id": "platelet-table",
     "label": "Platelet Table",
     "sourceMode": "html",
-    "htmlFile": "/d3-graphs/table/platelet-block.html",
+    "htmlFile": "/d3-graphs/table/platelet-table.html",
     "requiresSvg": false
   }
 ]
