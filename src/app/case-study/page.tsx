@@ -197,7 +197,7 @@ export default function CaseStudyPage() {
                         <D3GraphEditor
                             title="D3 RRNL Preview"
                             subtitle="Edit the HTML directly."
-                            graphSource="/d3-graphs/rrnl-with-gradient.html"
+                            graphSource="creatinine-gradient"
                             htmlEditable={true}
                             allowGraphSelection={false}
                         />

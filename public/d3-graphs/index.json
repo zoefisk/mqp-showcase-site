@@ -1,12 +1,24 @@
 [
   {
-    "id": "default",
-    "label": "Default D3 RRNL",
-    "file": "/d3-graphs/default.html"
+    "id": "creatinine-gradient",
+    "label": "Creatinine (Gradient)",
+    "sourceMode": "html+svg",
+    "htmlFile": "/d3-graphs/gradient/creatinine_gradient.html",
+    "svgFile": "/d3-graphs/gradient/creatinine-gradient.svg",
+    "requiresSvg": true
   },
   {
-    "id": "gradient",
-    "label": "RRNL with Gradient",
-    "file": "/d3-graphs/gradient/rrnl-gradient.html"
+    "id": "platelet-block",
+    "label": "Platelet Block",
+    "sourceMode": "html",
+    "htmlFile": "/d3-graphs/block/platelet_further_block.html",
+    "requiresSvg": false
+  },
+  {
+    "id": "platelet-table",
+    "label": "Platelet Table",
+    "sourceMode": "html",
+    "htmlFile": "/d3-graphs/table/platelet-block.html",
+    "requiresSvg": false
   }
 ]

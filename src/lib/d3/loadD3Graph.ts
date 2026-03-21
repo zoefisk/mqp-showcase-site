@@ -1,7 +1,12 @@
+export type SourceMode = "html" | "html+svg" | "svg-only";
+
 export type D3GraphManifestItem = {
     id: string;
     label: string;
-    file: string;
+    sourceMode: SourceMode;
+    htmlFile?: string;
+    svgFile?: string;
+    requiresSvg?: boolean;
 };
 
 export async function loadD3GraphManifest(): Promise<D3GraphManifestItem[]> {

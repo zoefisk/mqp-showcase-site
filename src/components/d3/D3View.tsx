@@ -30,24 +30,24 @@ function injectBaseTag(html: string, filePath?: string) {
 }
 
 export default function D3View({ html, filePath, title = "D3 Graph Preview" }: Props) {
-    const iframeRef = React.useRef<HTMLIFrameElement | null>(null);
-
     const srcDoc = React.useMemo(() => {
         return injectBaseTag(html, filePath);
     }, [html, filePath]);
 
     return (
         <iframe
-            ref={iframeRef}
             title={title}
             srcDoc={srcDoc}
             sandbox="allow-scripts allow-same-origin"
             style={{
                 width: "100%",
-                minHeight: 420,
+                minHeight: 520,
+                height: "70vh",
+                maxHeight: 900,
                 border: "none",
                 borderRadius: 16,
                 background: "white",
+                display: "block",
             }}
         />
     );

@@ -1,4 +1,4 @@
-export type PreviewMode = "graph" | "html";
+export type PreviewMode = "graph" | "html" | "svg";
 
 const MIN_LOADING_MS = 500;
 
