@@ -689,7 +689,7 @@ function escapeHtml(value: string): string {
         .replace(/>/g, "&gt;");
 }
 
-function highlightJson(json: string): string {
+function highlightJson(json: string, errorLocation?: JsonErrorLocation): string {
     const tokenRegex =
         /("(?:\\.|[^"\\])*")(\s*:)?|\btrue\b|\bfalse\b|\bnull\b|-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?|[{}\[\],:]/g;
 
@@ -724,7 +724,19 @@ function highlightJson(json: string): string {
     }
 
     result += escapeHtml(json.slice(lastIndex));
-    return result;
+
+    const lines = result.split("\n");
+
+    return lines
+        .map((lineHtml, i) => {
+            const lineNumber = i + 1;
+            const hasError = errorLocation?.line === lineNumber;
+
+            return hasError
+                ? `<span class="json-error-line">${lineHtml || " "}</span>`
+                : lineHtml || " ";
+        })
+        .join("\n");
 }
 
 function getLineNumbers(text: string): number[] {
@@ -732,10 +744,69 @@ function getLineNumbers(text: string): number[] {
     return Array.from({ length: count }, (_, i) => i + 1);
 }
 
+type JsonErrorLocation = {
+    line: number;
+    column: number;
+} | null;
+
+function getIndexFromLineColumn(text: string, line: number, column: number): number {
+    const lines = text.split("\n");
+    let index = 0;
+
+    for (let i = 0; i < line - 1; i++) {
+        index += (lines[i]?.length ?? 0) + 1;
+    }
+
+    return index + Math.max(0, column - 1);
+}
+
+function getLineStartIndexes(text: string): number[] {
+    const starts = [0];
+
+    for (let i = 0; i < text.length; i++) {
+        if (text[i] === "\n") {
+            starts.push(i + 1);
+        }
+    }
+
+    return starts;
+}
+
+function getJsonErrorLocation(error: string, text: string): JsonErrorLocation {
+    // Chrome/Firefox-style examples:
+    // "Expected ',' or '}' after property value in JSON at position 123"
+    // "Unexpected token } in JSON at position 45"
+
+    const positionMatch = error.match(/position\s+(\d+)/i);
+    if (positionMatch) {
+        const position = Number(positionMatch[1]);
+        if (!Number.isNaN(position)) {
+            const before = text.slice(0, position);
+            const line = before.split("\n").length;
+            const lastNewline = before.lastIndexOf("\n");
+            const column = position - lastNewline;
+            return { line, column };
+        }
+    }
+
+    // Generic fallback if the error already mentions line/column
+    const lineColumnMatch = error.match(/line\s+(\d+).*column\s+(\d+)/i);
+    if (lineColumnMatch) {
+        const line = Number(lineColumnMatch[1]);
+        const column = Number(lineColumnMatch[2]);
+        if (!Number.isNaN(line) && !Number.isNaN(column)) {
+            return { line, column };
+        }
+    }
+
+    return null;
+}
+
 function EditableJsonPanel({
                                jsonText,
                                editable,
                                error,
+                               errorLocation,
                                onChange,
                                onCopy,
                                onDownload,
@@ -743,6 +814,7 @@ function EditableJsonPanel({
     jsonText: string;
     editable: boolean;
     error: string | null;
+    errorLocation: JsonErrorLocation;
     onChange: (next: string) => void;
     onCopy: () => void;
     onDownload: () => void;
@@ -751,8 +823,31 @@ function EditableJsonPanel({
     const codeRef = React.useRef<HTMLPreElement | null>(null);
     const linesRef = React.useRef<HTMLDivElement | null>(null);
 
-    const highlightedJson = React.useMemo(() => highlightJson(jsonText), [jsonText]);
-    const lineNumbers = React.useMemo(() => getLineNumbers(jsonText), [jsonText]);
+    const highlightedJson = React.useMemo(
+        () => highlightJson(jsonText, errorLocation),
+        [jsonText, errorLocation]
+    );
+
+    const lineNumbers = React.useMemo(
+        () => getLineNumbers(jsonText),
+        [jsonText]
+    );
+
+    {lineNumbers.map((line) => {
+        const isErrorLine = errorLocation?.line === line;
+
+        return (
+            <Box
+                key={line}
+                sx={{
+                    color: isErrorLine ? "#f87171" : "rgba(255,255,255,0.45)",
+                    fontWeight: isErrorLine ? 700 : 400,
+                }}
+            >
+                {line}
+            </Box>
+        );
+    })}
 
     function syncScroll(target: HTMLTextAreaElement | HTMLPreElement) {
         if (codeRef.current) {
@@ -868,6 +963,13 @@ function EditableJsonPanel({
                                 "& .json-punctuation": {
                                     color: "#94a3b8",
                                 },
+                                "& .json-error-line": {
+                                    textDecorationLine: "underline",
+                                    textDecorationStyle: "wavy",
+                                    textDecorationColor: "#ef4444",
+                                    textUnderlineOffset: "3px",
+                                    backgroundColor: "rgba(239, 68, 68, 0.08)",
+                                },
                             }}
                             dangerouslySetInnerHTML={{ __html: highlightedJson || " " }}
                         />
@@ -931,6 +1033,7 @@ function PreviewStage({
                           jsonText,
                           jsonEditable,
                           jsonError,
+                          jsonErrorLocation,
                           onModeChange,
                           onJsonTextChange,
                           onCopyJson,
@@ -942,6 +1045,7 @@ function PreviewStage({
     jsonText: string;
     jsonEditable: boolean;
     jsonError: string | null;
+    jsonErrorLocation: JsonErrorLocation;
     onModeChange: (mode: PreviewMode) => void;
     onJsonTextChange: (next: string) => void;
     onCopyJson: () => void;
@@ -985,6 +1089,7 @@ function PreviewStage({
                         jsonText={jsonText}
                         editable={jsonEditable}
                         error={jsonEditable ? jsonError : null}
+                        errorLocation={jsonEditable ? jsonErrorLocation : null}
                         onChange={onJsonTextChange}
                         onCopy={onCopyJson}
                         onDownload={onDownloadJson}
@@ -1218,6 +1323,7 @@ export default function VegaGraphEditor({
 
     const [jsonText, setJsonText] = React.useState<string>(stringifySpec(createDefaultInputSpec()));
     const [jsonError, setJsonError] = React.useState<string | null>(null);
+    const [jsonErrorLocation, setJsonErrorLocation] = React.useState<JsonErrorLocation>(null);
     const [isEditingJson, setIsEditingJson] = React.useState(false);
 
     const builtSpec = React.useMemo(() => {
@@ -1294,6 +1400,7 @@ export default function VegaGraphEditor({
                 setJsonText(stringifySpec(normalized));
                 setJsonError(null);
                 setIsEditingJson(false);
+                setJsonErrorLocation(null);
             } catch (err) {
                 await ensureMinimumLoadingTime(startedAt);
 
@@ -1305,6 +1412,7 @@ export default function VegaGraphEditor({
                 setJsonText(stringifySpec(fallback));
                 setJsonError(null);
                 setIsEditingJson(false);
+                setJsonErrorLocation(null);
             } finally {
                 if (mounted) setLoadingGraph(false);
             }
@@ -1359,11 +1467,13 @@ export default function VegaGraphEditor({
 
         if (result.error) {
             setJsonError(result.error);
+            setJsonErrorLocation(getJsonErrorLocation(result.error, nextText));
             return;
         }
 
         if (result.nextInput) {
             setJsonError(null);
+            setJsonErrorLocation(null);
             setInputSpec(result.nextInput);
         }
     }
@@ -1408,6 +1518,7 @@ export default function VegaGraphEditor({
                             jsonText={jsonText}
                             jsonEditable={jsonEditable}
                             jsonError={jsonError}
+                            jsonErrorLocation={jsonErrorLocation}
                             onModeChange={setPreviewMode}
                             onJsonTextChange={handleJsonTextChange}
                             onCopyJson={handleCopyJson}
