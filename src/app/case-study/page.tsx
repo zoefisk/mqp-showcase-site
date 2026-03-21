@@ -19,6 +19,7 @@ import ResearchNote from "@/components/content/ResearchNote";
 import PhaseTimelineItem from "@/components/content/PhaseTimelineItem";
 import ToolBadge from "@/components/content/ToolBadge";
 import VegaGraphEditor from "@/components/vega/VegaGraphEditor";
+import D3GraphEditor from "@/components/d3/D3GraphEditor";
 
 export default function CaseStudyPage() {
     return (
@@ -193,10 +194,12 @@ export default function CaseStudyPage() {
                             This section uses the current Vega-based editor in a read-only configuration as a specification-oriented companion to the replication work. A dedicated D3 viewer can be added later as the recreated stimuli are finalized.
                         </Typography>
 
-                        <VegaGraphEditor
-                            jsonEditable={false}
-                            showPropertyEditors={false}
-                            graphSource="/vega-graphs/default-rrnl.json"
+                        <D3GraphEditor
+                            title="D3 RRNL Preview"
+                            subtitle="Edit the HTML directly."
+                            graphSource="/d3-graphs/rrnl-with-gradient.html"
+                            htmlEditable={true}
+                            allowGraphSelection={false}
                         />
                     </Stack>
                 </Paper>

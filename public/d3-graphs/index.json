@@ -1,0 +1,12 @@
+[
+  {
+    "id": "default",
+    "label": "Default D3 RRNL",
+    "file": "/d3-graphs/default.html"
+  },
+  {
+    "id": "gradient",
+    "label": "RRNL with Gradient",
+    "file": "/d3-graphs/gradient/rrnl-gradient.html"
+  }
+]
