@@ -50,17 +50,11 @@ function injectBaseTag(html: string, filePath?: string) {
     `;
 
     if (/<head[^>]*>/i.test(html)) {
-        return html.replace(
-            /<head([^>]*)>/i,
-            `<head$1>${baseTag}${injectedStyles}`
-        );
+        return html.replace(/<head([^>]*)>/i, `<head$1>${baseTag}${injectedStyles}`);
     }
 
     if (/<html[^>]*>/i.test(html)) {
-        return html.replace(
-            /<html([^>]*)>/i,
-            `<html$1><head>${baseTag}${injectedStyles}</head>`
-        );
+        return html.replace(/<html([^>]*)>/i, `<html$1><head>${baseTag}${injectedStyles}</head>`);
     }
 
     return `

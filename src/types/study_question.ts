@@ -1,8 +1,4 @@
-export type QuestionType =
-    | "multiple_choice"
-    | "true_false"
-    | "user_input"
-    | "likert_scale";
+export type QuestionType = "multiple_choice" | "true_false" | "user_input" | "likert_scale";
 
 type BaseQuestion = {
     id: number;

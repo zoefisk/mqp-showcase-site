@@ -1,7 +1,16 @@
 "use client";
 
 import * as React from "react";
-import {Accordion, AccordionDetails, AccordionSummary, Box, Container, Paper, Stack, Typography} from "@mui/material";
+import {
+    Accordion,
+    AccordionDetails,
+    AccordionSummary,
+    Box,
+    Container,
+    Paper,
+    Stack,
+    Typography,
+} from "@mui/material";
 
 import ScienceOutlinedIcon from "@mui/icons-material/ScienceOutlined";
 import CodeOutlinedIcon from "@mui/icons-material/CodeOutlined";
@@ -22,7 +31,7 @@ import VegaGraphEditor from "@/components/features/visualizations/vega/VegaGraph
 import D3GraphEditor from "@/components/features/visualizations/d3/D3GraphEditor";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import StudyQuestionsSet from "@/components/ui/StudyQuestionsExample";
-import {FINAL_QUESTIONS, VIZ_QUESTIONS} from "@/data/caseStudyQuestions";
+import { FINAL_QUESTIONS, VIZ_QUESTIONS } from "@/data/caseStudyQuestions";
 
 export default function CaseStudyPage() {
     return (
@@ -44,7 +53,11 @@ export default function CaseStudyPage() {
                 <Box
                     sx={{
                         display: "grid",
-                        gridTemplateColumns: { xs: "1fr", sm: "repeat(2, 1fr)", lg: "repeat(4, 1fr)" },
+                        gridTemplateColumns: {
+                            xs: "1fr",
+                            sm: "repeat(2, 1fr)",
+                            lg: "repeat(4, 1fr)",
+                        },
                         gap: 2,
                         mb: 8,
                     }}
@@ -76,21 +89,32 @@ export default function CaseStudyPage() {
                 </Box>
 
                 <SectionTitle>Background on the Original Study</SectionTitle>
-                <ResearchNote
-                    title="Why this paper matters"
-                    mb={8}
-                >
+                <ResearchNote title="Why this paper matters" mb={8}>
                     <Stack spacing={2.5}>
                         <Typography>
-                            The original study by Zikmund-Fisher and colleagues examined whether graphical presentation helps patients better distinguish between urgent and non-urgent deviations in laboratory test results. Rather than focusing only on whether a result was above or below normal, the study explored how different visual encodings affect perceived urgency and participants’ desire to immediately contact a health care provider.
+                            The original study by Zikmund-Fisher and colleagues examined whether
+                            graphical presentation helps patients better distinguish between urgent
+                            and non-urgent deviations in laboratory test results. Rather than
+                            focusing only on whether a result was above or below normal, the study
+                            explored how different visual encodings affect perceived urgency and
+                            participants’ desire to immediately contact a health care provider.
                         </Typography>
 
                         <Typography>
-                            One of the central findings was that visual displays reduced perceived urgency for near-normal results when compared with tabular formats, while perceptions of clearly extreme values remained more stable. The paper also reports that gradient line displays produced the greatest sensitivity to changes in result severity when controlling for literacy and numeracy-related factors.
+                            One of the central findings was that visual displays reduced perceived
+                            urgency for near-normal results when compared with tabular formats,
+                            while perceptions of clearly extreme values remained more stable. The
+                            paper also reports that gradient line displays produced the greatest
+                            sensitivity to changes in result severity when controlling for literacy
+                            and numeracy-related factors.
                         </Typography>
 
                         <Typography>
-                            For our project, this study is especially useful because it includes multiple RRNL-like visual forms that can be reconstructed as formal specifications. Replicating those graphs gives us a way to test whether our work can capture real designs from the literature, not just simplified examples created for demonstration purposes.
+                            For our project, this study is especially useful because it includes
+                            multiple RRNL-like visual forms that can be reconstructed as formal
+                            specifications. Replicating those graphs gives us a way to test whether
+                            our work can capture real designs from the literature, not just
+                            simplified examples created for demonstration purposes.
                         </Typography>
                     </Stack>
                 </ResearchNote>
@@ -108,11 +132,21 @@ export default function CaseStudyPage() {
                 >
                     <Stack spacing={2.5}>
                         <Typography>
-                            Our broader project is about building a structured way to specify reference range number lines and related clinical result graphics. This case study helps ground that work in a published research context. Instead of only showing that we can build RRNLs in the abstract, we can demonstrate that our approach is capable of reproducing known experimental stimuli and supporting a real evaluation pipeline.
+                            Our broader project is about building a structured way to specify
+                            reference range number lines and related clinical result graphics. This
+                            case study helps ground that work in a published research context.
+                            Instead of only showing that we can build RRNLs in the abstract, we can
+                            demonstrate that our approach is capable of reproducing known
+                            experimental stimuli and supporting a real evaluation pipeline.
                         </Typography>
 
                         <Typography>
-                            At this stage, we are recreating the study graphs with D3 and using the site to document both the underlying design choices and the replication workflow. In parallel, the existing Vega-based editor remains useful as a read-only visualization component for previewing related specification ideas and showing how structured graph definitions can be surfaced on the web.
+                            At this stage, we are recreating the study graphs with D3 and using the
+                            site to document both the underlying design choices and the replication
+                            workflow. In parallel, the existing Vega-based editor remains useful as
+                            a read-only visualization component for previewing related specification
+                            ideas and showing how structured graph definitions can be surfaced on
+                            the web.
                         </Typography>
                     </Stack>
                 </Paper>
@@ -133,9 +167,7 @@ export default function CaseStudyPage() {
                             <Box sx={{ color: "primary.main", display: "flex" }}>
                                 <HubOutlinedIcon />
                             </Box>
-                            <Typography fontWeight={700}>
-                                Study questions
-                            </Typography>
+                            <Typography fontWeight={700}>Study questions</Typography>
                         </Stack>
 
                         <Typography color="text.secondary">
@@ -156,15 +188,18 @@ export default function CaseStudyPage() {
                             >
                                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                                     <Stack spacing={0.25}>
-                                        <Typography fontWeight={600}>For each visualization</Typography>
+                                        <Typography fontWeight={600}>
+                                            For each visualization
+                                        </Typography>
                                         <Typography variant="body2" color="text.secondary">
-                                            For every visualization that users saw, they were asked the following questions.
+                                            For every visualization that users saw, they were asked
+                                            the following questions.
                                         </Typography>
                                     </Stack>
                                 </AccordionSummary>
 
                                 <AccordionDetails sx={{ pt: 0 }}>
-                                    <StudyQuestionsSet questions={VIZ_QUESTIONS}/>
+                                    <StudyQuestionsSet questions={VIZ_QUESTIONS} />
                                 </AccordionDetails>
                             </Accordion>
 
@@ -181,15 +216,18 @@ export default function CaseStudyPage() {
                             >
                                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                                     <Stack spacing={0.25}>
-                                        <Typography fontWeight={600}>End of main visualizations</Typography>
+                                        <Typography fontWeight={600}>
+                                            End of main visualizations
+                                        </Typography>
                                         <Typography variant="body2" color="text.secondary">
-                                            After completing the main visualizations, users were asked the following questions.
+                                            After completing the main visualizations, users were
+                                            asked the following questions.
                                         </Typography>
                                     </Stack>
                                 </AccordionSummary>
 
                                 <AccordionDetails sx={{ pt: 0 }}>
-                                    <StudyQuestionsSet questions={FINAL_QUESTIONS}/>
+                                    <StudyQuestionsSet questions={FINAL_QUESTIONS} />
                                 </AccordionDetails>
                             </Accordion>
                         </Stack>
@@ -212,15 +250,14 @@ export default function CaseStudyPage() {
                             <Box sx={{ color: "primary.main", display: "flex" }}>
                                 <HubOutlinedIcon />
                             </Box>
-                            <Typography fontWeight={700}>
-                                Read-only preview
-                            </Typography>
+                            <Typography fontWeight={700}>Read-only preview</Typography>
                         </Stack>
 
                         <Typography color="text.secondary">
-                            This section uses the current Vega-based editor in a read-only configuration
-                            as a specification-oriented companion to the replication work. A dedicated D3
-                            viewer can be added later as the recreated stimuli are finalized.
+                            This section uses the current Vega-based editor in a read-only
+                            configuration as a specification-oriented companion to the replication
+                            work. A dedicated D3 viewer can be added later as the recreated stimuli
+                            are finalized.
                         </Typography>
 
                         <Stack spacing={1.5}>
@@ -237,7 +274,9 @@ export default function CaseStudyPage() {
                             >
                                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                                     <Stack spacing={0.25}>
-                                        <Typography fontWeight={600}>Creatinine Gradient</Typography>
+                                        <Typography fontWeight={600}>
+                                            Creatinine Gradient
+                                        </Typography>
                                         <Typography variant="body2" color="text.secondary">
                                             Reference range number line with gradient styling
                                         </Typography>

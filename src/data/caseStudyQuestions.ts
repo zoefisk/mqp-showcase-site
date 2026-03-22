@@ -1,28 +1,18 @@
-import {StudyQuestion} from "@/types/study_question";
+import { StudyQuestion } from "@/types/study_question";
 
 export const SET_ONE: StudyQuestion[] = [
     {
         id: 1,
         questionPrompt: "What is your favorite food?",
         questionType: "multiple_choice",
-        options: [
-            "pizza",
-            "burger",
-            "salad",
-            "tacos",
-        ],
+        options: ["pizza", "burger", "salad", "tacos"],
         required: true,
     },
     {
         id: 2,
         questionPrompt: "What do you enjoy doing?",
         questionType: "multiple_choice",
-        options: [
-            "reading",
-            "video gaming",
-            "sleeping",
-            "hanging out with friends",
-        ],
+        options: ["reading", "video gaming", "sleeping", "hanging out with friends"],
         required: true,
     },
 ];
@@ -70,8 +60,7 @@ export const VIZ_QUESTIONS: StudyQuestion[] = [
 export const FINAL_QUESTIONS: StudyQuestion[] = [
     {
         id: 1,
-        questionPrompt:
-            "In your opinion, how well did these images describe the test results?",
+        questionPrompt: "In your opinion, how well did these images describe the test results?",
         questionType: "likert_scale",
         scale: {
             min: 1,

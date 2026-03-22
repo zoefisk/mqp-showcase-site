@@ -68,7 +68,9 @@ export default function TeamAvatar({ name, src }: Props) {
                 bgcolor: !hasImage ? theme.palette.grey[400] : undefined,
 
                 // Improve contrast for initials
-                color: !hasImage ? theme.palette.getContrastText(theme.palette.grey[400]) : undefined,
+                color: !hasImage
+                    ? theme.palette.getContrastText(theme.palette.grey[400])
+                    : undefined,
             })}
         >
             {/* Fallback initials when image is not available */}

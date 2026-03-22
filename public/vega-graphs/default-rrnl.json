@@ -1,32 +1,32 @@
 {
-  "title": {
-    "text": "Example RRNL",
-    "align": "center",
-    "font": "Arial",
-    "fontSize": 16,
-    "color": "#111827"
-  },
-  "data": {
-    "start": 40,
-    "categories": [
-      { "name": "Low", "end": 90, "color": "#ef4444" },
-      { "name": "Normal", "end": 140, "color": "#22c55e" },
-      { "name": "High", "end": 190, "color": "#ef4444" }
-    ]
-  },
-  "separation": {
-    "color": "#111111",
-    "width": 2
-  },
-  "labels": {
-    "position": "on"
-  },
-  "tickmarks": {
-    "tickCount": 4,
-    "position": "bottom"
-  },
-  "value_indicator": {
-    "value": 112,
-    "title": "Patient Value"
-  }
+    "title": {
+        "text": "Example RRNL",
+        "align": "center",
+        "font": "Arial",
+        "fontSize": 16,
+        "color": "#111827"
+    },
+    "data": {
+        "start": 40,
+        "categories": [
+            { "name": "Low", "end": 90, "color": "#ef4444" },
+            { "name": "Normal", "end": 140, "color": "#22c55e" },
+            { "name": "High", "end": 190, "color": "#ef4444" }
+        ]
+    },
+    "separation": {
+        "color": "#111111",
+        "width": 2
+    },
+    "labels": {
+        "position": "on"
+    },
+    "tickmarks": {
+        "tickCount": 4,
+        "position": "bottom"
+    },
+    "value_indicator": {
+        "value": 112,
+        "title": "Patient Value"
+    }
 }

@@ -1,4 +1,4 @@
-import {Divider, Stack, Typography} from "@mui/material";
+import { Divider, Stack, Typography } from "@mui/material";
 import * as React from "react";
 
 interface PageHeaderProps {
@@ -9,12 +9,11 @@ interface PageHeaderProps {
 }
 
 const PageHeader: React.FC<PageHeaderProps> = ({
-                                                   eyebrowLabel,
-                                                   mainHeader,
-                                                   subheader,
-                                                   children,
-                                               }) => {
-
+    eyebrowLabel,
+    mainHeader,
+    subheader,
+    children,
+}) => {
     return (
         <Stack spacing={3} alignItems="center" mb={6}>
             {/* subtle eyebrow label */}
@@ -37,7 +36,7 @@ const PageHeader: React.FC<PageHeaderProps> = ({
             {children}
             <Divider sx={{ width: "100%" }} />
         </Stack>
-    )
-}
+    );
+};
 
 export default PageHeader;

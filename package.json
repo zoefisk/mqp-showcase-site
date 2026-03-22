@@ -1,42 +1,42 @@
 {
-  "name": "mqp-showcase",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "prepare": "husky",
-    "changelog": "conventional-changelog -p conventionalcommits -i CHANGELOG.md -s",
-    "changelog:first": "conventional-changelog -p conventionalcommits -i CHANGELOG.md -s -r 0",
-    "format": "prettier --write ."
-  },
-  "dependencies": {
-    "@emotion/cache": "^11.14.0",
-    "@emotion/react": "^11.14.0",
-    "@emotion/server": "^11.11.0",
-    "@emotion/styled": "^11.14.1",
-    "@mui/icons-material": "^7.3.7",
-    "@mui/material": "^7.3.7",
-    "next": "16.1.6",
-    "react": "19.2.3",
-    "react-code-blocks": "^0.1.6",
-    "react-dom": "19.2.3",
-    "vega-embed": "^7.1.0",
-    "zod": "^4.3.6"
-  },
-  "devDependencies": {
-    "@commitlint/cli": "^20.5.0",
-    "@commitlint/config-conventional": "^20.5.0",
-    "@tailwindcss/postcss": "^4",
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "babel-plugin-react-compiler": "1.0.0",
-    "conventional-changelog-cli": "^5.0.0",
-    "husky": "^9.1.7",
-    "prettier": "^3.8.1",
-    "tailwindcss": "^4",
-    "typescript": "^5"
-  }
+    "name": "mqp-showcase",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "dev": "next dev",
+        "build": "next build",
+        "start": "next start",
+        "prepare": "husky",
+        "changelog": "conventional-changelog -p conventionalcommits -i CHANGELOG.md -s",
+        "changelog:first": "conventional-changelog -p conventionalcommits -i CHANGELOG.md -s -r 0",
+        "format": "prettier --write ."
+    },
+    "dependencies": {
+        "@emotion/cache": "^11.14.0",
+        "@emotion/react": "^11.14.0",
+        "@emotion/server": "^11.11.0",
+        "@emotion/styled": "^11.14.1",
+        "@mui/icons-material": "^7.3.7",
+        "@mui/material": "^7.3.7",
+        "next": "16.1.6",
+        "react": "19.2.3",
+        "react-code-blocks": "^0.1.6",
+        "react-dom": "19.2.3",
+        "vega-embed": "^7.1.0",
+        "zod": "^4.3.6"
+    },
+    "devDependencies": {
+        "@commitlint/cli": "^20.5.0",
+        "@commitlint/config-conventional": "^20.5.0",
+        "@tailwindcss/postcss": "^4",
+        "@types/node": "^20",
+        "@types/react": "^19",
+        "@types/react-dom": "^19",
+        "babel-plugin-react-compiler": "1.0.0",
+        "conventional-changelog-cli": "^5.0.0",
+        "husky": "^9.1.7",
+        "prettier": "^3.8.1",
+        "tailwindcss": "^4",
+        "typescript": "^5"
+    }
 }

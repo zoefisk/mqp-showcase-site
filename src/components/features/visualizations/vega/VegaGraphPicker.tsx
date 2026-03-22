@@ -15,11 +15,7 @@ import {
 } from "@mui/material";
 
 import VegaView from "@/components/features/visualizations/vega/VegaView";
-import {
-    buildVegaFromInput,
-    type InputSpec,
-    type VegaSpec,
-} from "@/lib/vega/buildVega";
+import { buildVegaFromInput, type InputSpec, type VegaSpec } from "@/lib/vega/buildVega";
 import {
     loadVegaGraphManifest,
     loadVegaInputSpecsFromFile,
@@ -104,9 +100,7 @@ export default function VegaGraphPicker() {
                 <Typography variant="h4" fontWeight={700} gutterBottom>
                     Graph Editor
                 </Typography>
-                <Typography color="text.secondary">
-                    Pick a Vega JSON file to preview.
-                </Typography>
+                <Typography color="text.secondary">Pick a Vega JSON file to preview.</Typography>
             </Box>
 
             {loadingManifest ? (
@@ -155,9 +149,7 @@ export default function VegaGraphPicker() {
                         ))}
                     </Stack>
                 ) : (
-                    <Typography color="text.secondary">
-                        No graph loaded.
-                    </Typography>
+                    <Typography color="text.secondary">No graph loaded.</Typography>
                 )}
             </Paper>
 

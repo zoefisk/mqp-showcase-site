@@ -10,12 +10,7 @@ type StudyStatCardProps = {
     description?: string;
 };
 
-export default function StudyStatCard({
-                                          icon,
-                                          label,
-                                          value,
-                                          description,
-                                      }: StudyStatCardProps) {
+export default function StudyStatCard({ icon, label, value, description }: StudyStatCardProps) {
     return (
         <Paper
             variant="outlined"
@@ -29,11 +24,7 @@ export default function StudyStatCard({
             }}
         >
             <Stack spacing={1.25}>
-                {icon && (
-                    <Box sx={{ color: "primary.main", display: "flex" }}>
-                        {icon}
-                    </Box>
-                )}
+                {icon && <Box sx={{ color: "primary.main", display: "flex" }}>{icon}</Box>}
 
                 <Typography
                     variant="overline"

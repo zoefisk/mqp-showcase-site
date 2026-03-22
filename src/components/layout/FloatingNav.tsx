@@ -3,14 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import {
-    Box,
-    ButtonBase,
-    Stack,
-    Typography,
-    alpha,
-    CircularProgress,
-} from "@mui/material";
+import { Box, ButtonBase, Stack, Typography, alpha, CircularProgress } from "@mui/material";
 
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import FactCheckOutlinedIcon from "@mui/icons-material/FactCheckOutlined";
@@ -78,11 +71,11 @@ function NavList() {
 }
 
 function NavListItem({
-                         item,
-                         isActive,
-                         isLoading,
-                         onNavigate,
-                     }: {
+    item,
+    isActive,
+    isLoading,
+    onNavigate,
+}: {
     item: NavItem;
     isActive: boolean;
     isLoading: boolean;
@@ -103,9 +96,7 @@ function NavListItem({
                 height: COLLAPSED_SIZE,
                 borderRadius: "999px",
                 px: 0,
-                color: isActive
-                    ? theme.palette.primary.contrastText
-                    : theme.palette.primary.main,
+                color: isActive ? theme.palette.primary.contrastText : theme.palette.primary.main,
                 backgroundColor: isActive
                     ? theme.palette.primary.main
                     : alpha(theme.palette.background.paper, 0.92),
@@ -151,11 +142,7 @@ function NavListItem({
         >
             <NavIconSlot isActive={isActive}>
                 {isLoading ? (
-                    <CircularProgress
-                        size={18}
-                        thickness={5}
-                        color="inherit"
-                    />
+                    <CircularProgress size={18} thickness={5} color="inherit" />
                 ) : (
                     <Icon fontSize="small" />
                 )}
@@ -166,10 +153,7 @@ function NavListItem({
     );
 }
 
-function NavIconSlot({
-                         children,
-                         isActive,
-                     }: React.PropsWithChildren<{ isActive: boolean }>) {
+function NavIconSlot({ children, isActive }: React.PropsWithChildren<{ isActive: boolean }>) {
     return (
         <Box
             sx={{

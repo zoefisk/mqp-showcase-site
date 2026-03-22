@@ -17,8 +17,7 @@ export default function StepCard({ title, body }: StepCardProps) {
                 borderRadius: 3,
                 minWidth: 180,
                 textAlign: "center",
-                background:
-                    "linear-gradient(180deg, rgba(255,255,255,0.96), rgba(248,250,252,1))",
+                background: "linear-gradient(180deg, rgba(255,255,255,0.96), rgba(248,250,252,1))",
             }}
         >
             <Typography fontWeight={700}>{title}</Typography>

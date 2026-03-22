@@ -9,11 +9,7 @@ type ResearchNoteProps = {
     mb?: number;
 };
 
-export default function ResearchNote({
-                                         title,
-                                         children,
-                                         mb,
-                                     }: ResearchNoteProps) {
+export default function ResearchNote({ title, children, mb }: ResearchNoteProps) {
     return (
         <Paper
             variant="outlined"

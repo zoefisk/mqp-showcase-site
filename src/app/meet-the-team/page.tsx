@@ -4,7 +4,7 @@ import * as React from "react";
 import { Box, Container, Divider, Stack, Typography } from "@mui/material";
 import { TEAM_MEMBERS } from "@/data/team";
 import PageHeader from "@/components/layout/PageHeader";
-import {TeamMemberCardGrid} from "@/components/features/team/TeamMemberCard";
+import { TeamMemberCardGrid } from "@/components/features/team/TeamMemberCard";
 
 export default function MeetTheTeamPage() {
     return (
@@ -16,7 +16,6 @@ export default function MeetTheTeamPage() {
             }}
         >
             <Container maxWidth="md">
-
                 <PageHeader
                     eyebrowLabel={"OUR TEAM"}
                     mainHeader={"Meet The Team"}

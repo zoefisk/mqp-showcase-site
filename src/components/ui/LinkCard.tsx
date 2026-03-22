@@ -36,19 +36,13 @@ import { Paper, Stack, Typography } from "@mui/material";
 
 type LinkCardProps = {
     href: string;
-    openInNewTab?: boolean
+    openInNewTab?: boolean;
     icon?: React.ReactNode;
     title: string;
     body: string;
 };
 
-export default function LinkCard({
-                                     href,
-                                     openInNewTab = false,
-                                     icon,
-                                     title,
-                                     body,
-                                 }: LinkCardProps) {
+export default function LinkCard({ href, openInNewTab = false, icon, title, body }: LinkCardProps) {
     return (
         <Paper
             component={Link}
@@ -83,9 +77,7 @@ export default function LinkCard({
                 {icon && <span>{icon}</span>}
 
                 {/* Title should be easy to scan in navigation-heavy layouts */}
-                <Typography fontWeight={700}>
-                    {title}
-                </Typography>
+                <Typography fontWeight={700}>{title}</Typography>
 
                 {/* Supporting text provides destination context before navigation */}
                 <Typography variant="body2" color="text.secondary">

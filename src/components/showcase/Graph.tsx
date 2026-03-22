@@ -24,11 +24,11 @@ type Props = {
 };
 
 export default function Graph({
-                                         title = "Graph Example",
-                                         description = "No description provided.",
-                                         imageSrc = "/placeholder-graph.png",
-                                         code,
-                                     }: Props) {
+    title = "Graph Example",
+    description = "No description provided.",
+    imageSrc = "/placeholder-graph.png",
+    code,
+}: Props) {
     const [tab, setTab] = React.useState(0);
 
     return (
@@ -47,11 +47,7 @@ export default function Graph({
                 titleTypographyProps={{ fontWeight: 700 }}
             />
 
-            <Tabs
-                value={tab}
-                onChange={(_, v) => setTab(v)}
-                sx={{ px: 2 }}
-            >
+            <Tabs value={tab} onChange={(_, v) => setTab(v)} sx={{ px: 2 }}>
                 <Tab label="Graph" />
                 <Tab label="Code" />
             </Tabs>
@@ -85,7 +81,7 @@ export default function Graph({
                 )}
 
                 {tab === 1 && (
-                    <EditableCode code={code} language={"python"} showLineNumbers={true}/>
+                    <EditableCode code={code} language={"python"} showLineNumbers={true} />
                 )}
             </CardContent>
         </Card>

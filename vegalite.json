@@ -44,14 +44,8 @@
             "title": "Categories",
             "type": "ordinal",
             "scale": {
-                "domain": [
-                    "Cold",
-                    "Hot"
-                ],
-                "range": [
-                    "blue",
-                    "red"
-                ]
+                "domain": ["Cold", "Hot"],
+                "range": ["blue", "red"]
             }
         },
         "order": {

@@ -9,12 +9,16 @@ export default function GraphEditorPage() {
             <PageHeader
                 eyebrowLabel={"MAKE YOUR OWN RRNL"}
                 mainHeader={"Graph Editor"}
-                subheader={"Build and customize reference range number lines from RRNL input properties."}
+                subheader={
+                    "Build and customize reference range number lines from RRNL input properties."
+                }
             />
 
             <VegaGraphEditor
                 title={"Preview"}
-                subtitle={"Load an RRNL template, edit its properties, and preview the live Vega output."}
+                subtitle={
+                    "Load an RRNL template, edit its properties, and preview the live Vega output."
+                }
             />
 
             {/*<VegaGraphEditor*/}
@@ -26,10 +30,3 @@ export default function GraphEditorPage() {
         </PageShell>
     );
 }
-
-
-
-
-
-
-

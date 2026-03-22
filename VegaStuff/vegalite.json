@@ -76,14 +76,7 @@
                     "Borderline High",
                     "High"
                 ],
-                "range": [
-                    "red",
-                    "orange",
-                    "yellow",
-                    "green",
-                    "yellow",
-                    "orange"
-                ]
+                "range": ["red", "orange", "yellow", "green", "yellow", "orange"]
             }
         },
         "order": {

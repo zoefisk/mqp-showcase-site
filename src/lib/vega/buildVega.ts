@@ -134,10 +134,7 @@ function resolveTitle(input: TitleInput) {
     };
 }
 
-function computeOffsets(
-    tickPos: "top" | "bottom",
-    labelPos: "over" | "on" | "under"
-) {
+function computeOffsets(tickPos: "top" | "bottom", labelPos: "over" | "on" | "under") {
     let offset = 0;
     let indicatorOffset = 0;
     let categoryLabelY = "height/2";
@@ -194,7 +191,7 @@ export function buildVegaFromInput(input: InputSpec): VegaSpec {
 
     const { offset, indicatorOffset, categoryLabelY } = computeOffsets(
         tickmarks.position,
-        labels.position
+        labels.position,
     );
 
     // Convert cumulative ends -> segment widths
@@ -237,8 +234,7 @@ export function buildVegaFromInput(input: InputSpec): VegaSpec {
             transform: [
                 {
                     type: "filter",
-                    expr:
-                        "datum.x1 < data('stacked')[data('stacked').length - 1].x1",
+                    expr: "datum.x1 < data('stacked')[data('stacked').length - 1].x1",
                 },
             ],
         },

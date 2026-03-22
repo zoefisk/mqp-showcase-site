@@ -1,23 +1,20 @@
-"use client"
+"use client";
 
-import {QuestionType, StudyQuestion} from "@/types/study_question";
-import {Divider, Paper, Stack, TextField, Typography} from "@mui/material";
+import { QuestionType, StudyQuestion } from "@/types/study_question";
+import { Divider, Paper, Stack, TextField, Typography } from "@mui/material";
 import * as React from "react";
 import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
-
-
 
 type StudyQuestionsExampleProps = {
     questions: StudyQuestion[];
 };
 
 type QuestionShellProps = {
-   question: StudyQuestion;
+    question: StudyQuestion;
     maxWidth?: "xs" | "sm" | "md" | "lg" | "xl";
 };
 
 function Question({ question, maxWidth = "md" }: QuestionShellProps) {
-
     return (
         <Paper
             variant="outlined"
@@ -29,49 +26,44 @@ function Question({ question, maxWidth = "md" }: QuestionShellProps) {
             })}
         >
             <Stack spacing={1}>
-                <QuestionPrompt prompt={question.questionPrompt} number={question.id}/>
-                <Divider/>
+                <QuestionPrompt prompt={question.questionPrompt} number={question.id} />
+                <Divider />
                 <QuestionBody question={question} />
             </Stack>
         </Paper>
     );
 }
 
-function QuestionPrompt({prompt, number}: {prompt: string; number: number}) {
+function QuestionPrompt({ prompt, number }: { prompt: string; number: number }) {
     return (
-            <Stack spacing={1.5}>
-                {/* Question Number */}
-                <Typography
-                    variant="overline"
-                    sx={{
-                        fontWeight: 700,
-                        color: "text.secondary",
-                        letterSpacing: 1,
-                    }}
-                >
-                    Question {number}
-                </Typography>
+        <Stack spacing={1.5}>
+            {/* Question Number */}
+            <Typography
+                variant="overline"
+                sx={{
+                    fontWeight: 700,
+                    color: "text.secondary",
+                    letterSpacing: 1,
+                }}
+            >
+                Question {number}
+            </Typography>
 
-                {/* Prompt */}
-                <Typography
-                    variant="h6"
-                    sx={{
-                        fontWeight: 600,
-                        lineHeight: 1.4,
-                    }}
-                >
-                    {prompt}
-                </Typography>
-            </Stack>
+            {/* Prompt */}
+            <Typography
+                variant="h6"
+                sx={{
+                    fontWeight: 600,
+                    lineHeight: 1.4,
+                }}
+            >
+                {prompt}
+            </Typography>
+        </Stack>
     );
 }
 
-function QuestionBody({
-                           question
-                       }: {
-        question: StudyQuestion;
-    }) {
-
+function QuestionBody({ question }: { question: StudyQuestion }) {
     switch (question.questionType) {
         case "multiple_choice":
             return (
@@ -144,7 +136,7 @@ function QuestionBody({
                     <Stack direction="row" spacing={1} justifyContent="space-between">
                         {Array.from(
                             { length: question.scale.max - question.scale.min + 1 },
-                            (_, index) => question.scale.min + index
+                            (_, index) => question.scale.min + index,
                         ).map((value) => (
                             <Stack
                                 key={value}
@@ -173,22 +165,15 @@ function QuestionBody({
     return <p>Error: Question doesn't exist or is set up improperly.</p>;
 }
 
-
-
-export default function StudyQuestionsSet({
-                                                  questions,
-                                              }: StudyQuestionsExampleProps) {
-
+export default function StudyQuestionsSet({ questions }: StudyQuestionsExampleProps) {
     if (questions == null) {
-        return (
-          <p>Error: Question set not found or not set up properly.</p>
-        )
+        return <p>Error: Question set not found or not set up properly.</p>;
     }
 
     return (
         <Stack spacing={2}>
             {questions.map((question) => (
-                <Question key={question.id} question={question}/>
+                <Question key={question.id} question={question} />
             ))}
         </Stack>
     );

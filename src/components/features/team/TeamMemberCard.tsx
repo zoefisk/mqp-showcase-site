@@ -280,8 +280,7 @@ function TeamMemberCardShell({ children }: React.PropsWithChildren) {
                 borderColor: "divider",
                 background:
                     "linear-gradient(180deg, rgba(255,255,255,0.9) 0%, rgba(250,250,252,1) 100%)",
-                transition:
-                    "transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease",
+                transition: "transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease",
                 overflow: "hidden",
                 display: "flex",
                 flexDirection: "column",

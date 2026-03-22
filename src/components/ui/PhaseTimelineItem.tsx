@@ -9,11 +9,7 @@ type PhaseTimelineItemProps = {
     body: string;
 };
 
-export default function PhaseTimelineItem({
-                                              number,
-                                              title,
-                                              body,
-                                          }: PhaseTimelineItemProps) {
+export default function PhaseTimelineItem({ number, title, body }: PhaseTimelineItemProps) {
     return (
         <Box
             sx={{

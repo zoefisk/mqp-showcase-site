@@ -36,13 +36,11 @@ Team members may occasionally contribute via pull requests.
 
 git checkout -b feature/short-description
 
-
 2. Make changes and commit
 
 3. Push the branch
 
 git push origin feature/short-description
-
 
 4. Open a Pull Request into `main`
 
@@ -65,9 +63,7 @@ Pull requests should:
 
 This project uses a lightweight structured commit format:
 
-
 type: short description
-
 
 ### Common Types
 
@@ -82,14 +78,12 @@ type: short description
 
 ### Examples
 
-
 feat: add likert scale question component
 fix: resolve nav loading spinner not resetting
 refactor: simplify question rendering logic
 style: adjust spacing in question cards
 docs: update contributions guide
 chore: clean up unused imports
-
 
 ---
 
@@ -108,11 +102,9 @@ chore: clean up unused imports
 
 Use descriptive, lowercase names:
 
-
 feature/likert-scale-ui
 fix/nav-loading-state
 refactor/question-types
-
 
 ---
 

@@ -63,10 +63,10 @@ export function normalizeInputSpec(input: InputSpec): InputSpec {
             categories: input.data?.categories?.length
                 ? input.data.categories
                 : [
-                    { name: "Low", end: 90, color: "#ef4444" },
-                    { name: "Normal", end: 140, color: "#22c55e" },
-                    { name: "High", end: 190, color: "#ef4444" },
-                ],
+                      { name: "Low", end: 90, color: "#ef4444" },
+                      { name: "Normal", end: 140, color: "#22c55e" },
+                      { name: "High", end: 190, color: "#ef4444" },
+                  ],
         },
         separation: {
             color: input.separation?.color ?? "#111111",
@@ -84,10 +84,10 @@ export function normalizeInputSpec(input: InputSpec): InputSpec {
         },
         value_indicator: input.value_indicator
             ? {
-                ...input.value_indicator,
-                value: input.value_indicator.value,
-                title: input.value_indicator.title ?? "",
-            }
+                  ...input.value_indicator,
+                  value: input.value_indicator.value,
+                  title: input.value_indicator.title ?? "",
+              }
             : undefined,
     };
 }
@@ -95,7 +95,7 @@ export function normalizeInputSpec(input: InputSpec): InputSpec {
 export function updateCategoryAt(
     categories: Category[],
     index: number,
-    patch: Partial<Category>
+    patch: Partial<Category>,
 ): Category[] {
     return categories.map((cat, i) => (i === index ? { ...cat, ...patch } : cat));
 }

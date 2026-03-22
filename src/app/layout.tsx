@@ -24,31 +24,31 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({
-                                       children,
-                                   }: Readonly<{
+    children,
+}: Readonly<{
     children: React.ReactNode;
 }>) {
     return (
         <html lang="en">
-        <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <ThemeRegistry>
-            <Box
-                sx={{
-                    position: "relative",
-                    minHeight: "100vh",
-                    bgcolor: "background.default",
-                }}
-            >
-                <BackgroundEffects />
+            <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+                <ThemeRegistry>
+                    <Box
+                        sx={{
+                            position: "relative",
+                            minHeight: "100vh",
+                            bgcolor: "background.default",
+                        }}
+                    >
+                        <BackgroundEffects />
 
-                <Box sx={{ position: "relative", zIndex: 1 }}>
-                    <SiteBadge />
-                    <FloatingNav />
-                    {children}
-                </Box>
-            </Box>
-        </ThemeRegistry>
-        </body>
+                        <Box sx={{ position: "relative", zIndex: 1 }}>
+                            <SiteBadge />
+                            <FloatingNav />
+                            {children}
+                        </Box>
+                    </Box>
+                </ThemeRegistry>
+            </body>
         </html>
     );
 }

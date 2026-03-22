@@ -43,10 +43,7 @@
                     "sort": {
                         "field": "order"
                     },
-                    "as": [
-                        "x0",
-                        "x1"
-                    ]
+                    "as": ["x0", "x1"]
                 },
                 {
                     "type": "formula",

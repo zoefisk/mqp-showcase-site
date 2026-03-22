@@ -67,11 +67,11 @@ type VegaGraphEditorProps = {
 };
 
 function EditorAccordion({
-                             title,
-                             icon,
-                             defaultExpanded = false,
-                             children,
-                         }: React.PropsWithChildren<{
+    title,
+    icon,
+    defaultExpanded = false,
+    children,
+}: React.PropsWithChildren<{
     title: string;
     icon?: React.ReactNode;
     defaultExpanded?: boolean;
@@ -106,18 +106,16 @@ function EditorAccordion({
                 </Stack>
             </AccordionSummary>
 
-            <AccordionDetails sx={{ px: 2.25, pb: 2.25 }}>
-                {children}
-            </AccordionDetails>
+            <AccordionDetails sx={{ px: 2.25, pb: 2.25 }}>{children}</AccordionDetails>
         </Accordion>
     );
 }
 
 function GraphFileSelector({
-                               manifest,
-                               value,
-                               onChange,
-                           }: {
+    manifest,
+    value,
+    onChange,
+}: {
     manifest: VegaGraphManifestItem[];
     value: string;
     onChange: (value: string) => void;
@@ -142,23 +140,18 @@ function GraphFileSelector({
 }
 
 function PreviewHeader({
-                           title,
-                           subtitle,
-                           mode,
-                           onModeChange,
-                       }: {
+    title,
+    subtitle,
+    mode,
+    onModeChange,
+}: {
     title: string;
     subtitle: string;
     mode: PreviewMode;
     onModeChange: (mode: PreviewMode) => void;
 }) {
     return (
-        <Stack
-            direction="row"
-            justifyContent="space-between"
-            alignItems="center"
-            spacing={2}
-        >
+        <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
             <Box>
                 <Typography variant="h5" fontWeight={700}>
                     {title}
@@ -192,9 +185,9 @@ function PreviewHeader({
 }
 
 function TitleSection({
-                          value,
-                          onChange,
-                      }: {
+    value,
+    onChange,
+}: {
     value: InputSpec;
     onChange: (next: InputSpec) => void;
 }) {
@@ -283,9 +276,9 @@ function TitleSection({
 }
 
 function AxisAndLabelsSection({
-                                  value,
-                                  onChange,
-                              }: {
+    value,
+    onChange,
+}: {
     value: InputSpec;
     onChange: (next: InputSpec) => void;
 }) {
@@ -405,9 +398,9 @@ function AxisAndLabelsSection({
 }
 
 function ValueIndicatorSection({
-                                   value,
-                                   onChange,
-                               }: {
+    value,
+    onChange,
+}: {
     value: InputSpec;
     onChange: (next: InputSpec) => void;
 }) {
@@ -419,7 +412,7 @@ function ValueIndicatorSection({
         value.data.categories[value.data.categories.length - 1]?.end ?? value.data.start;
 
     const [draftValue, setDraftValue] = React.useState(
-        indicator ? String(indicator.value) : String(minValue)
+        indicator ? String(indicator.value) : String(minValue),
     );
 
     React.useEffect(() => {
@@ -460,7 +453,12 @@ function ValueIndicatorSection({
         const parsed = Number(nextDraft);
 
         // Allow incomplete typing like "-", "", ".", etc. without breaking the graph
-        if (nextDraft.trim() === "" || nextDraft === "-" || nextDraft === "." || nextDraft === "-.") {
+        if (
+            nextDraft.trim() === "" ||
+            nextDraft === "-" ||
+            nextDraft === "." ||
+            nextDraft === "-."
+        ) {
             return;
         }
 
@@ -568,9 +566,9 @@ function ValueIndicatorSection({
 }
 
 function CategoriesSection({
-                               value,
-                               onChange,
-                           }: {
+    value,
+    onChange,
+}: {
     value: InputSpec;
     onChange: (next: InputSpec) => void;
 }) {
@@ -581,14 +579,8 @@ function CategoriesSection({
             {categories.map((category, index) => (
                 <Paper key={index} variant="outlined" sx={{ p: 2, borderRadius: 3 }}>
                     <Stack spacing={2}>
-                        <Stack
-                            direction="row"
-                            justifyContent="space-between"
-                            alignItems="center"
-                        >
-                            <Typography fontWeight={700}>
-                                Category {index + 1}
-                            </Typography>
+                        <Stack direction="row" justifyContent="space-between" alignItems="center">
+                            <Typography fontWeight={700}>Category {index + 1}</Typography>
 
                             <Tooltip title="Remove category">
                                 <span>
@@ -690,10 +682,7 @@ function CategoriesSection({
 }
 
 function escapeHtml(value: string): string {
-    return value
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;");
+    return value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
 function highlightJson(json: string, errorLocation?: JsonErrorLocation): string {
@@ -810,14 +799,14 @@ function getJsonErrorLocation(error: string, text: string): JsonErrorLocation {
 }
 
 function EditableJsonPanel({
-                               jsonText,
-                               editable,
-                               error,
-                               errorLocation,
-                               onChange,
-                               onCopy,
-                               onDownload,
-                           }: {
+    jsonText,
+    editable,
+    error,
+    errorLocation,
+    onChange,
+    onCopy,
+    onDownload,
+}: {
     jsonText: string;
     editable: boolean;
     error: string | null;
@@ -832,29 +821,28 @@ function EditableJsonPanel({
 
     const highlightedJson = React.useMemo(
         () => highlightJson(jsonText, errorLocation),
-        [jsonText, errorLocation]
+        [jsonText, errorLocation],
     );
 
-    const lineNumbers = React.useMemo(
-        () => getLineNumbers(jsonText),
-        [jsonText]
-    );
+    const lineNumbers = React.useMemo(() => getLineNumbers(jsonText), [jsonText]);
 
-    {lineNumbers.map((line) => {
-        const isErrorLine = errorLocation?.line === line;
+    {
+        lineNumbers.map((line) => {
+            const isErrorLine = errorLocation?.line === line;
 
-        return (
-            <Box
-                key={line}
-                sx={{
-                    color: isErrorLine ? "#f87171" : "rgba(255,255,255,0.45)",
-                    fontWeight: isErrorLine ? 700 : 400,
-                }}
-            >
-                {line}
-            </Box>
-        );
-    })}
+            return (
+                <Box
+                    key={line}
+                    sx={{
+                        color: isErrorLine ? "#f87171" : "rgba(255,255,255,0.45)",
+                        fontWeight: isErrorLine ? 700 : 400,
+                    }}
+                >
+                    {line}
+                </Box>
+            );
+        });
+    }
 
     function syncScroll(target: HTMLTextAreaElement | HTMLPreElement) {
         if (codeRef.current) {
@@ -1034,20 +1022,20 @@ function EditableJsonPanel({
 }
 
 function PreviewStage({
-                          title,
-                          subtitle,
-                          mode,
-                          spec,
-                          input,
-                          jsonText,
-                          jsonEditable,
-                          jsonError,
-                          jsonErrorLocation,
-                          onModeChange,
-                          onJsonTextChange,
-                          onCopyJson,
-                          onDownloadJson,
-                      }: {
+    title,
+    subtitle,
+    mode,
+    spec,
+    input,
+    jsonText,
+    jsonEditable,
+    jsonError,
+    jsonErrorLocation,
+    onModeChange,
+    onJsonTextChange,
+    onCopyJson,
+    onDownloadJson,
+}: {
     title: string;
     subtitle: string;
     mode: PreviewMode;
@@ -1074,7 +1062,12 @@ function PreviewStage({
             }}
         >
             <Stack spacing={2.5}>
-                <PreviewHeader title={title} subtitle={subtitle} mode={mode} onModeChange={onModeChange} />
+                <PreviewHeader
+                    title={title}
+                    subtitle={subtitle}
+                    mode={mode}
+                    onModeChange={onModeChange}
+                />
                 <Divider />
 
                 {mode === "graph" ? (
@@ -1112,13 +1105,13 @@ function PreviewStage({
 }
 
 function EditorSidebar({
-                           manifest,
-                           selectedFile,
-                           onSelectedFileChange,
-                           value,
-                           onChange,
-                           loadingManifest,
-                       }: {
+    manifest,
+    selectedFile,
+    onSelectedFileChange,
+    value,
+    onChange,
+    loadingManifest,
+}: {
     manifest: VegaGraphManifestItem[];
     selectedFile: string;
     onSelectedFileChange: (value: string) => void;
@@ -1128,10 +1121,7 @@ function EditorSidebar({
 }) {
     return (
         <Stack spacing={2}>
-            <EditorAccordion
-                title="Graph Source"
-                icon={<SourceOutlinedIcon fontSize="small" />}
-            >
+            <EditorAccordion title="Graph Source" icon={<SourceOutlinedIcon fontSize="small" />}>
                 {loadingManifest ? (
                     <Skeleton variant="rounded" width="100%" height={56} />
                 ) : (
@@ -1143,10 +1133,7 @@ function EditorSidebar({
                 )}
             </EditorAccordion>
 
-            <EditorAccordion
-                title="Title"
-                icon={<TitleOutlinedIcon fontSize="small" />}
-            >
+            <EditorAccordion title="Title" icon={<TitleOutlinedIcon fontSize="small" />}>
                 <TitleSection value={value} onChange={onChange} />
             </EditorAccordion>
 
@@ -1164,10 +1151,7 @@ function EditorSidebar({
                 <ValueIndicatorSection value={value} onChange={onChange} />
             </EditorAccordion>
 
-            <EditorAccordion
-                title="Categories"
-                icon={<ViewAgendaOutlinedIcon fontSize="small" />}
-            >
+            <EditorAccordion title="Categories" icon={<ViewAgendaOutlinedIcon fontSize="small" />}>
                 <CategoriesSection value={value} onChange={onChange} />
             </EditorAccordion>
         </Stack>
@@ -1226,11 +1210,7 @@ function PreviewStageSkeleton() {
             }}
         >
             <Stack spacing={2.5}>
-                <Stack
-                    direction="row"
-                    justifyContent="space-between"
-                    alignItems="center"
-                >
+                <Stack direction="row" justifyContent="space-between" alignItems="center">
                     <Box sx={{ flex: 1 }}>
                         <Skeleton variant="text" width={140} height={42} />
                         <Skeleton variant="text" width="55%" height={24} />
@@ -1262,9 +1242,9 @@ function PreviewStageSkeleton() {
 }
 
 function AccordionSkeleton({
-                               titleWidth = 140,
-                               rows = 3,
-                           }: {
+    titleWidth = 140,
+    rows = 3,
+}: {
     titleWidth?: number | string;
     rows?: number;
 }) {
@@ -1285,12 +1265,7 @@ function AccordionSkeleton({
                 </Stack>
 
                 {Array.from({ length: rows }).map((_, i) => (
-                    <Skeleton
-                        key={i}
-                        variant="rounded"
-                        width="100%"
-                        height={56}
-                    />
+                    <Skeleton key={i} variant="rounded" width="100%" height={56} />
                 ))}
             </Stack>
         </Paper>
@@ -1322,17 +1297,16 @@ async function ensureMinimumLoadingTime(startTime: number, minMs = MIN_LOADING_M
 }
 
 export default function VegaGraphEditor({
-                                            title,
-                                            subtitle,
-                                            jsonEditable = true,
-                                            showPropertyEditors = true,
-                                            graphSource,
-                                        }: VegaGraphEditorProps) {
-
+    title,
+    subtitle,
+    jsonEditable = true,
+    showPropertyEditors = true,
+    graphSource,
+}: VegaGraphEditorProps) {
     const [manifest, setManifest] = React.useState<VegaGraphManifestItem[]>([]);
 
     const [selectedFile, setSelectedFile] = React.useState(
-        graphSource ?? "/vega-graphs/default-rrnl.json"
+        graphSource ?? "/vega-graphs/default-rrnl.json",
     );
 
     const [inputSpec, setInputSpec] = React.useState<InputSpec>(createDefaultInputSpec());
@@ -1381,14 +1355,13 @@ export default function VegaGraphEditor({
                     setSelectedFile(graphSource);
                 } else {
                     const hasDefault = items.some(
-                        (item) => item.file === "/vega-graphs/default-rrnl.json"
+                        (item) => item.file === "/vega-graphs/default-rrnl.json",
                     );
 
                     if (!hasDefault && items.length > 0) {
                         setSelectedFile(items[0].file);
                     }
                 }
-
             } catch (err) {
                 await ensureMinimumLoadingTime(startedAt);
 
@@ -1523,7 +1496,6 @@ export default function VegaGraphEditor({
 
     return (
         <Stack spacing={3}>
-
             {error && <Alert severity="error">{error}</Alert>}
 
             <Stack spacing={3}>

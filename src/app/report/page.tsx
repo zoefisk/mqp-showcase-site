@@ -69,7 +69,11 @@ export default function ReportPage() {
                 </Box>
 
                 {/* Fallback link (helps if the browser blocks iframe PDFs) */}
-                <Typography variant="body2" color="text.secondary" sx={{ mt: 2, textAlign: "center" }}>
+                <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    sx={{ mt: 2, textAlign: "center" }}
+                >
                     If the PDF doesn’t display here,{" "}
                     <Box
                         component="a"

@@ -144,7 +144,12 @@ function escapeForInlineScript(value: string) {
     return JSON.stringify(value).replace(/</g, "\\u003c");
 }
 
-function injectSvgOverride(html: string, htmlFilePath?: string, svgFilePath?: string, svgText?: string) {
+function injectSvgOverride(
+    html: string,
+    htmlFilePath?: string,
+    svgFilePath?: string,
+    svgText?: string,
+) {
     if (!svgFilePath || !svgText) return html;
 
     const normalizedSvgPath = svgFilePath.startsWith("/") ? svgFilePath : `/${svgFilePath}`;
@@ -154,11 +159,7 @@ function injectSvgOverride(html: string, htmlFilePath?: string, svgFilePath?: st
         ? (htmlFilePath.startsWith("/") ? htmlFilePath : `/${htmlFilePath}`).replace(/[^/]+$/, "")
         : "/";
 
-    const possibleTargets = [
-        normalizedSvgPath,
-        svgFileName,
-        `${htmlDir}${svgFileName}`,
-    ];
+    const possibleTargets = [normalizedSvgPath, svgFileName, `${htmlDir}${svgFileName}`];
 
     const injectedScript = `
 <script>
@@ -237,11 +238,11 @@ function getGraphSourceChip(mode: SourceMode) {
 }
 
 function EditorAccordion({
-                             title,
-                             icon,
-                             defaultExpanded = false,
-                             children,
-                         }: React.PropsWithChildren<{
+    title,
+    icon,
+    defaultExpanded = false,
+    children,
+}: React.PropsWithChildren<{
     title: string;
     icon?: React.ReactNode;
     defaultExpanded?: boolean;
@@ -276,18 +277,16 @@ function EditorAccordion({
                 </Stack>
             </AccordionSummary>
 
-            <AccordionDetails sx={{ px: 2.25, pb: 2.25 }}>
-                {children}
-            </AccordionDetails>
+            <AccordionDetails sx={{ px: 2.25, pb: 2.25 }}>{children}</AccordionDetails>
         </Accordion>
     );
 }
 
 function GraphFileSelector({
-                               manifest,
-                               value,
-                               onChange,
-                           }: {
+    manifest,
+    value,
+    onChange,
+}: {
     manifest: D3GraphManifestItem[];
     value: string;
     onChange: (value: string) => void;
@@ -312,13 +311,13 @@ function GraphFileSelector({
 }
 
 function PreviewHeader({
-                           title,
-                           subtitle,
-                           previewMode,
-                           availableModes,
-                           onPreviewModeChange,
-                           sourceMode,
-                       }: {
+    title,
+    subtitle,
+    previewMode,
+    availableModes,
+    onPreviewModeChange,
+    sourceMode,
+}: {
     title: string;
     subtitle: string;
     previewMode: PreviewMode;
@@ -385,15 +384,15 @@ function PreviewHeader({
 }
 
 function CodePanel({
-                       label,
-                       text,
-                       editable,
-                       error,
-                       errorLocation,
-                       onChange,
-                       onCopy,
-                       onDownload,
-                   }: {
+    label,
+    text,
+    editable,
+    error,
+    errorLocation,
+    onChange,
+    onCopy,
+    onDownload,
+}: {
     label: string;
     text: string;
     editable: boolean;
@@ -408,7 +407,7 @@ function CodePanel({
 
     const highlightedText = React.useMemo(
         () => highlightHtml(text, errorLocation),
-        [text, errorLocation]
+        [text, errorLocation],
     );
 
     const lineNumbers = React.useMemo(() => getLineNumbers(text), [text]);
@@ -592,26 +591,26 @@ function CodePanel({
 }
 
 function PreviewStage({
-                          title,
-                          subtitle,
-                          selectedItem,
-                          previewMode,
-                          htmlText,
-                          svgText,
-                          htmlEditable,
-                          svgEditable,
-                          htmlError,
-                          htmlErrorLocation,
-                          svgError,
-                          svgErrorLocation,
-                          onPreviewModeChange,
-                          onHtmlTextChange,
-                          onSvgTextChange,
-                          onCopyHtml,
-                          onDownloadHtml,
-                          onCopySvg,
-                          onDownloadSvg,
-                      }: {
+    title,
+    subtitle,
+    selectedItem,
+    previewMode,
+    htmlText,
+    svgText,
+    htmlEditable,
+    svgEditable,
+    htmlError,
+    htmlErrorLocation,
+    svgError,
+    svgErrorLocation,
+    onPreviewModeChange,
+    onHtmlTextChange,
+    onSvgTextChange,
+    onCopyHtml,
+    onDownloadHtml,
+    onCopySvg,
+    onDownloadSvg,
+}: {
     title: string;
     subtitle: string;
     selectedItem: D3GraphManifestItem | null;
@@ -652,24 +651,19 @@ function PreviewStage({
             return buildSvgPreviewHtml(svgText);
         }
 
-        if (
-            activeSourceMode === "html+svg" &&
-            selectedItem.htmlFile &&
-            selectedItem.svgFile
-        ) {
+        if (activeSourceMode === "html+svg" && selectedItem.htmlFile && selectedItem.svgFile) {
             return injectSvgOverride(
                 htmlText,
                 selectedItem.htmlFile,
                 selectedItem.svgFile,
-                svgText
+                svgText,
             );
         }
 
         return htmlText;
     }, [selectedItem, activeSourceMode, htmlText, svgText]);
 
-    const previewFilePath =
-        selectedItem?.htmlFile ?? selectedItem?.svgFile ?? undefined;
+    const previewFilePath = selectedItem?.htmlFile ?? selectedItem?.svgFile ?? undefined;
 
     return (
         <Paper
@@ -712,11 +706,7 @@ function PreviewStage({
                                 bgcolor: "white",
                             }}
                         >
-                            <D3View
-                                html={previewHtml}
-                                filePath={previewFilePath}
-                                title={title}
-                            />
+                            <D3View html={previewHtml} filePath={previewFilePath} title={title} />
                         </Box>
                     </Box>
                 ) : previewMode === "html" ? (
@@ -802,13 +792,13 @@ function SidebarSkeleton() {
 }
 
 export default function D3GraphEditor({
-                                          title,
-                                          subtitle,
-                                          htmlEditable = true,
-                                          svgEditable = true,
-                                          graphSource,
-                                          allowGraphSelection = true,
-                                      }: D3GraphEditorProps) {
+    title,
+    subtitle,
+    htmlEditable = true,
+    svgEditable = true,
+    graphSource,
+    allowGraphSelection = true,
+}: D3GraphEditorProps) {
     const [manifest, setManifest] = React.useState<D3GraphManifestItem[]>([]);
     const [selectedGraphId, setSelectedGraphId] = React.useState<string>(graphSource ?? "");
     const [selectedItem, setSelectedItem] = React.useState<D3GraphManifestItem | null>(null);
@@ -824,12 +814,10 @@ export default function D3GraphEditor({
     const [error, setError] = React.useState<string | null>(null);
 
     const [htmlError, setHtmlError] = React.useState<string | null>(null);
-    const [htmlErrorLocation, setHtmlErrorLocation] =
-        React.useState<HtmlErrorLocation>(null);
+    const [htmlErrorLocation, setHtmlErrorLocation] = React.useState<HtmlErrorLocation>(null);
 
     const [svgError, setSvgError] = React.useState<string | null>(null);
-    const [svgErrorLocation, setSvgErrorLocation] =
-        React.useState<HtmlErrorLocation>(null);
+    const [svgErrorLocation, setSvgErrorLocation] = React.useState<HtmlErrorLocation>(null);
 
     React.useEffect(() => {
         let mounted = true;
@@ -1068,39 +1056,3 @@ export default function D3GraphEditor({
         </Stack>
     );
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

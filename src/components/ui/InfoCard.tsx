@@ -57,9 +57,7 @@ export default function InfoCard({ icon, title, body }: InfoCardProps) {
                 {icon && <span>{icon}</span>}
 
                 {/* Title: emphasized for quick scanning */}
-                <Typography fontWeight={700}>
-                    {title}
-                </Typography>
+                <Typography fontWeight={700}>{title}</Typography>
 
                 {/* Body: secondary supporting text */}
                 <Typography variant="body2" color="text.secondary">

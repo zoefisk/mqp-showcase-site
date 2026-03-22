@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { CodeBlock, dracula } from "react-code-blocks";
-import {IconButton, Tooltip, Typography} from "@mui/material";
+import { IconButton, Tooltip, Typography } from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import EditNoteSharp from "@mui/icons-material/EditNoteSharp";
@@ -18,7 +18,6 @@ export default function EditableCode({
     language = "python",
     showLineNumbers = false,
 }: EditableCodeProps) {
-
     const [copied, setCopied] = React.useState(false);
     const [edited, setEdited] = React.useState(false);
     const [currentCode, setCurrentCode] = React.useState(code);
@@ -46,12 +45,16 @@ export default function EditableCode({
                     {copied ? (
                         <>
                             <CheckIcon fontSize="small" color="success" />
-                            <Typography variant="body2" sx={{ ml: 0.5 }}>Copied!</Typography>
+                            <Typography variant="body2" sx={{ ml: 0.5 }}>
+                                Copied!
+                            </Typography>
                         </>
                     ) : (
                         <>
                             <ContentCopyIcon fontSize="small" />
-                            <Typography variant="body2" sx={{ ml: 0.5 }}>Copy code</Typography>
+                            <Typography variant="body2" sx={{ ml: 0.5 }}>
+                                Copy code
+                            </Typography>
                         </>
                     )}
                 </IconButton>
@@ -62,12 +65,16 @@ export default function EditableCode({
                     {edited ? (
                         <>
                             <CheckIcon fontSize="small" color="success" />
-                            <Typography variant="body2" sx={{ ml: 0.5 }}>Editing</Typography>
+                            <Typography variant="body2" sx={{ ml: 0.5 }}>
+                                Editing
+                            </Typography>
                         </>
                     ) : (
                         <>
                             <EditNoteSharp fontSize="small" />
-                            <Typography variant="body2" sx={{ ml: 0.5 }}>Edit</Typography>
+                            <Typography variant="body2" sx={{ ml: 0.5 }}>
+                                Edit
+                            </Typography>
                         </>
                     )}
                 </IconButton>
