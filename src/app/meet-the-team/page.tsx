@@ -2,9 +2,9 @@
 
 import * as React from "react";
 import { Box, Container, Divider, Stack, Typography } from "@mui/material";
-import TeamGrid from "@/components/features/team/TeamGrid";
 import { TEAM_MEMBERS } from "@/data/team";
 import PageHeader from "@/components/layout/PageHeader";
+import {TeamMemberCardGrid} from "@/components/features/team/TeamMemberCard";
 
 export default function MeetTheTeamPage() {
     return (
@@ -23,7 +23,7 @@ export default function MeetTheTeamPage() {
                     subheader={"Get to know the people behind the project."}
                 />
 
-                <TeamGrid members={TEAM_MEMBERS} />
+                <TeamMemberCardGrid members={TEAM_MEMBERS} />
             </Container>
         </Box>
     );

@@ -18,8 +18,38 @@ import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import TeamAvatar from "./TeamAvatar";
 import type { TeamMember } from "@/types/team_member";
 
-type Props = {
+/**
+ * Team member card system
+ *
+ * This file contains the complete UI for presenting team members in a responsive
+ * card-based layout. The card and grid are colocated because the grid is only
+ * used to render TeamMemberCard instances and does not currently provide value
+ * as a standalone reusable layout primitive.
+ *
+ * Exports:
+ * - TeamMemberCard: renders a single team member
+ * - TeamMemberCardGrid: renders a responsive grid of team member cards
+ *
+ * Internal composition:
+ * - TeamMemberCardShell: outer container handling borders, background, and hover state
+ * - TeamMemberHeader: decorative gradient banner
+ * - TeamMemberAvatar: styled wrapper around TeamAvatar
+ * - TeamMemberIdentity: name, degree, and optional minor
+ * - TeamMemberLinks: external contact/profile links
+ *
+ * Design goals:
+ * - Maintain consistent visual alignment across cards
+ * - Handle incomplete member data gracefully
+ * - Keep the layout readable across screen sizes
+ * - Support accessibility through labels and tooltips
+ */
+
+type TeamMemberCardProps = {
     member: TeamMember;
+};
+
+type TeamMemberCardGridProps = {
+    members: TeamMember[];
 };
 
 type TeamMemberLinksProps = {
@@ -30,6 +60,10 @@ type TeamMemberIdentityProps = {
     member: TeamMember;
 };
 
+/**
+ * Decorative top banner for the card.
+ * Falls back to default gradient values when custom member colors are absent.
+ */
 function TeamMemberHeader({ member }: { member: TeamMember }) {
     const from = member.gradient?.from ?? "rgba(25,118,210,0.16)";
     const to = member.gradient?.to ?? "rgba(156,39,176,0.10)";
@@ -46,7 +80,11 @@ function TeamMemberHeader({ member }: { member: TeamMember }) {
     );
 }
 
-function TeamMemberAvatar({ member }: Props) {
+/**
+ * Avatar presentation wrapper.
+ * Adds a subtle frame and shadow around the shared TeamAvatar component.
+ */
+function TeamMemberAvatar({ member }: TeamMemberCardProps) {
     return (
         <Box
             sx={{
@@ -61,6 +99,11 @@ function TeamMemberAvatar({ member }: Props) {
     );
 }
 
+/**
+ * Identity block for the team member.
+ * Uses reserved space so cards remain aligned even when text wraps
+ * or optional fields are missing.
+ */
 function TeamMemberIdentity({ member }: TeamMemberIdentityProps) {
     return (
         <Stack
@@ -68,7 +111,7 @@ function TeamMemberIdentity({ member }: TeamMemberIdentityProps) {
             alignItems="center"
             sx={{
                 width: "100%",
-                minHeight: 128, // reserve consistent space for name + chips
+                minHeight: 128,
                 justifyContent: "flex-start",
             }}
         >
@@ -78,7 +121,7 @@ function TeamMemberIdentity({ member }: TeamMemberIdentityProps) {
                 textAlign="center"
                 sx={{
                     lineHeight: 1.15,
-                    minHeight: 52, // keeps 1-line and 2-line names aligned
+                    minHeight: 52,
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
@@ -90,10 +133,9 @@ function TeamMemberIdentity({ member }: TeamMemberIdentityProps) {
             <Stack
                 spacing={1}
                 alignItems="center"
-                justifyContent="flex-start"
                 sx={{
                     width: "100%",
-                    minHeight: 64, // keeps chip area consistent
+                    minHeight: 64,
                 }}
             >
                 <Chip
@@ -110,10 +152,8 @@ function TeamMemberIdentity({ member }: TeamMemberIdentityProps) {
                             whiteSpace: "normal",
                             textAlign: "center",
                             lineHeight: 1.3,
-                            paddingTop: "6px",
-                            paddingBottom: "6px",
-                            paddingLeft: "14px",
-                            paddingRight: "14px",
+                            px: 1.75,
+                            py: 0.75,
                         },
                     }}
                 />
@@ -124,13 +164,9 @@ function TeamMemberIdentity({ member }: TeamMemberIdentityProps) {
                             label={`Minor: ${member.minor}`}
                             size="small"
                             variant="outlined"
-                            sx={{
-                                borderRadius: 999,
-                                fontWeight: 500,
-                            }}
+                            sx={{ borderRadius: 999, fontWeight: 500 }}
                         />
                     ) : (
-                        // invisible placeholder so cards without a minor stay aligned
                         <Box sx={{ height: 32, visibility: "hidden" }}>
                             <Chip label="Minor placeholder" size="small" />
                         </Box>
@@ -141,16 +177,13 @@ function TeamMemberIdentity({ member }: TeamMemberIdentityProps) {
     );
 }
 
+/**
+ * External profile and contact links.
+ * Fixed-size icon slots help preserve consistent footer alignment.
+ */
 function TeamMemberLinks({ member }: TeamMemberLinksProps) {
     return (
-        <Stack
-            direction="row"
-            spacing={1}
-            justifyContent="center"
-            sx={{
-                minHeight: 40,
-            }}
-        >
+        <Stack direction="row" spacing={1} justifyContent="center" sx={{ minHeight: 40 }}>
             <Box sx={{ width: 40, height: 40 }}>
                 {member.links?.linkedin && (
                     <Tooltip title="LinkedIn">
@@ -158,7 +191,7 @@ function TeamMemberLinks({ member }: TeamMemberLinksProps) {
                             component="a"
                             href={member.links.linkedin}
                             target="_blank"
-                            rel="noreferrer"
+                            rel="noopener noreferrer"
                             aria-label={`${member.name} LinkedIn`}
                             sx={{
                                 width: 40,
@@ -185,7 +218,7 @@ function TeamMemberLinks({ member }: TeamMemberLinksProps) {
                             component="a"
                             href={member.links.github}
                             target="_blank"
-                            rel="noreferrer"
+                            rel="noopener noreferrer"
                             aria-label={`${member.name} GitHub`}
                             sx={{
                                 width: 40,
@@ -233,6 +266,9 @@ function TeamMemberLinks({ member }: TeamMemberLinksProps) {
     );
 }
 
+/**
+ * Shared outer shell for the card.
+ */
 function TeamMemberCardShell({ children }: React.PropsWithChildren) {
     return (
         <Card
@@ -244,7 +280,8 @@ function TeamMemberCardShell({ children }: React.PropsWithChildren) {
                 borderColor: "divider",
                 background:
                     "linear-gradient(180deg, rgba(255,255,255,0.9) 0%, rgba(250,250,252,1) 100%)",
-                transition: "transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease",
+                transition:
+                    "transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease",
                 overflow: "hidden",
                 display: "flex",
                 flexDirection: "column",
@@ -260,7 +297,12 @@ function TeamMemberCardShell({ children }: React.PropsWithChildren) {
     );
 }
 
-export default function TeamMemberCard({ member }: Props) {
+/**
+ * Renders a single team member card.
+ *
+ * @param member Team member data object
+ */
+export function TeamMemberCard({ member }: TeamMemberCardProps) {
     return (
         <TeamMemberCardShell>
             <TeamMemberHeader member={member} />
@@ -275,13 +317,7 @@ export default function TeamMemberCard({ member }: Props) {
                     flexGrow: 1,
                 }}
             >
-                <Stack
-                    alignItems="center"
-                    sx={{
-                        mt: -5,
-                        height: "100%",
-                    }}
-                >
+                <Stack alignItems="center" sx={{ mt: -5, height: "100%" }}>
                     <TeamMemberAvatar member={member} />
 
                     <Box sx={{ mt: 2, width: "100%" }}>
@@ -305,3 +341,35 @@ export default function TeamMemberCard({ member }: Props) {
         </TeamMemberCardShell>
     );
 }
+
+/**
+ * Renders a responsive grid of team member cards.
+ *
+ * Layout behavior:
+ * - xs: 1 column
+ * - sm: 2 columns
+ * - md+: 4 columns
+ *
+ * @param members Array of team member objects to display
+ */
+export function TeamMemberCardGrid({ members }: TeamMemberCardGridProps) {
+    return (
+        <Box
+            sx={{
+                display: "grid",
+                gap: 3,
+                gridTemplateColumns: {
+                    xs: "1fr",
+                    sm: "repeat(2, 1fr)",
+                    md: "repeat(4, 1fr)",
+                },
+            }}
+        >
+            {members.map((member) => (
+                <TeamMemberCard key={member.id} member={member} />
+            ))}
+        </Box>
+    );
+}
+
+export default TeamMemberCard;
