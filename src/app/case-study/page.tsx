@@ -86,29 +86,7 @@ export default function CaseStudyPage() {
                 <ResearchNote title="Why this paper matters" mb={8}>
                     <Stack spacing={2.5}>
                         <Typography>
-                            The original study by Zikmund-Fisher and colleagues examined whether
-                            graphical presentation helps patients better distinguish between urgent
-                            and non-urgent deviations in laboratory test results. Rather than
-                            focusing only on whether a result was above or below normal, the study
-                            explored how different visual encodings affect perceived urgency and
-                            participants’ desire to immediately contact a health care provider.
-                        </Typography>
-
-                        <Typography>
-                            One of the central findings was that visual displays reduced perceived
-                            urgency for near-normal results when compared with tabular formats,
-                            while perceptions of clearly extreme values remained more stable. The
-                            paper also reports that gradient line displays produced the greatest
-                            sensitivity to changes in result severity when controlling for literacy
-                            and numeracy-related factors.
-                        </Typography>
-
-                        <Typography>
-                            For our project, this study is especially useful because it includes
-                            multiple RRNL-like visual forms that can be reconstructed as formal
-                            specifications. Replicating those graphs gives us a way to test whether
-                            our work can capture real designs from the literature, not just
-                            simplified examples created for demonstration purposes.
+                            [write about why the zikmund fisher study matters and what it tells us]
                         </Typography>
                     </Stack>
                 </ResearchNote>
@@ -126,21 +104,7 @@ export default function CaseStudyPage() {
                 >
                     <Stack spacing={2.5}>
                         <Typography>
-                            Our broader project is about building a structured way to specify
-                            reference range number lines and related clinical result graphics. This
-                            case study helps ground that work in a published research context.
-                            Instead of only showing that we can build RRNLs in the abstract, we can
-                            demonstrate that our approach is capable of reproducing known
-                            experimental stimuli and supporting a real evaluation pipeline.
-                        </Typography>
-
-                        <Typography>
-                            At this stage, we are recreating the study graphs with D3 and using the
-                            site to document both the underlying design choices and the replication
-                            workflow. In parallel, the existing Vega-based editor remains useful as
-                            a read-only visualization component for previewing related specification
-                            ideas and showing how structured graph definitions can be surfaced on
-                            the web.
+                            [connect the study to our project]
                         </Typography>
                     </Stack>
                 </Paper>

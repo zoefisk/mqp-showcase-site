@@ -38,17 +38,17 @@ export default function Home() {
                     <InfoCard
                         icon={<HealthAndSafetyOutlinedIcon />}
                         title="Problem"
-                        body="RRNLs can help patients interpret lab values, but they are often difficult to create consistently and reproduce across studies or tools."
+                        body="[1 sentence about the problem]"
                     />
                     <InfoCard
                         icon={<LightbulbOutlinedIcon />}
                         title="Solution"
-                        body="This project proposes a DSL that specifies the core elements of an RRNL, such as ranges, labels, colors, and value indicators, in a structured format."
+                        body="[1 sentence about the solution]"
                     />
                     <InfoCard
                         icon={<AutoGraphOutlinedIcon />}
                         title="Outcome"
-                        body="The result is a reusable workflow for generating and editing RRNL visualizations with a balance of simplicity, consistency, and flexibility."
+                        body="[1 sentence about the outcome]"
                     />
                 </Box>
 
@@ -65,24 +65,7 @@ export default function Home() {
                     }}
                 >
                     <Typography>
-                        Reference range number lines place a health value in context by showing
-                        whether it falls below, within, or above a clinically meaningful range.
-                        Rather than presenting a lab result as an isolated number, RRNLs provide
-                        structure that can support interpretation, especially for patients managing
-                        long-term conditions.
-                        <br />
-                        <br />
-                        This project investigates how those visualizations can be described
-                        declaratively instead of being manually recreated each time. By introducing
-                        a domain-specific language for RRNLs, the project makes it possible to
-                        define a graph using a small set of meaningful properties, including the
-                        overall range, categorical segments, labels, tick marks, and value
-                        indicator. That approach makes RRNLs easier to reproduce from prior
-                        literature and easier to adapt for future use.
-                        <br />
-                        <br />
-                        The broader goal is not just to generate graphs, but to support more
-                        consistent, understandable, and reusable health visualizations.
+                        [1-3 paragraphs about our project]
                     </Typography>
                 </Paper>
 
