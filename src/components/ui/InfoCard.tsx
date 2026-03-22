@@ -1,7 +1,34 @@
 "use client";
 
-import { Paper, Stack, Typography } from "@mui/material";
 import * as React from "react";
+import { Paper, Stack, Typography } from "@mui/material";
+
+/**
+ * InfoCard
+ *
+ * A reusable, presentation-focused card component used to display
+ * concise informational content with an optional icon, title, and body text.
+ *
+ * Designed for use in dashboards, landing sections, and feature highlights.
+ *
+ * Features:
+ * - Center-aligned layout for readability
+ * - Subtle hover elevation for interactivity
+ * - Consistent spacing using MUI Stack
+ * - Optional icon support for visual context
+ *
+ * Usage:
+ * <InfoCard
+ *   icon={<SomeIcon />}
+ *   title="Fast Rendering"
+ *   body="Graphs update instantly as you edit the specification."
+ * />
+ *
+ * Props:
+ * @param icon  Optional React node displayed above the title (e.g., icon)
+ * @param title Primary heading text for the card
+ * @param body  Supporting description text
+ */
 
 type InfoCardProps = {
     icon?: React.ReactNode;
@@ -13,20 +40,28 @@ export default function InfoCard({ icon, title, body }: InfoCardProps) {
     return (
         <Paper
             variant="outlined"
-            sx={{
+            sx={(theme) => ({
                 p: 2.5,
                 borderRadius: 3,
                 textAlign: "center",
-                transition: "all 0.2s ease",
+                transition: "transform 0.2s ease, box-shadow 0.2s ease",
+
                 "&:hover": {
                     transform: "translateY(-4px)",
-                    boxShadow: "0 12px 24px rgba(0,0,0,0.08)",
+                    boxShadow: theme.shadows[4],
                 },
-            }}
+            })}
         >
             <Stack spacing={1.5} alignItems="center">
-                {icon}
-                <Typography fontWeight={700}>{title}</Typography>
+                {/* Optional icon provides visual context */}
+                {icon && <span>{icon}</span>}
+
+                {/* Title: emphasized for quick scanning */}
+                <Typography fontWeight={700}>
+                    {title}
+                </Typography>
+
+                {/* Body: secondary supporting text */}
                 <Typography variant="body2" color="text.secondary">
                     {body}
                 </Typography>
