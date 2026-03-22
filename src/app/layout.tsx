@@ -2,10 +2,11 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import React from "react";
-import FloatingNav from "@/components/layout/FloatingNav";
-import ThemeRegistry from "@/theme/ThemeRegistry";
 import { Box } from "@mui/material";
+import FloatingNav from "@/components/layout/FloatingNav";
 import SiteBadge from "@/components/layout/SiteBadge";
+import ThemeRegistry from "@/theme/ThemeRegistry";
+import BackgroundEffects from "@/components/layout/BackgroundEffects";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -24,92 +25,24 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
                                        children,
-                                   }: {
+                                   }: Readonly<{
     children: React.ReactNode;
-}) {
+}>) {
     return (
         <html lang="en">
         <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <ThemeRegistry>
-            <Box sx={{ position: "relative", minHeight: "100vh" }}>
-                {/* GLOBAL BACKGROUND */}
-                <Box
-                    sx={{
-                        position: "fixed",
-                        inset: 0,
-                        pointerEvents: "none",
-                        overflow: "hidden",
-                        zIndex: 0,
-                    }}
-                >
-                    {/* RED */}
-                    <Box
-                        sx={{
-                            position: "absolute",
-                            top: 120,
-                            left: -140,
-                            width: 420,
-                            height: 420,
-                            borderRadius: "50%",
-                            background:
-                                "radial-gradient(circle, rgba(220, 38, 38, 0.16) 0%, rgba(220, 38, 38, 0.08) 35%, rgba(220, 38, 38, 0) 72%)",
-                            filter: "blur(28px)",
-                        }}
-                    />
+            <Box
+                sx={{
+                    position: "relative",
+                    minHeight: "100vh",
+                    bgcolor: "background.default",
+                }}
+            >
+                <BackgroundEffects />
 
-                    {/* BLUE */}
-                    <Box
-                        sx={{
-                            position: "absolute",
-                            top: 20,
-                            left: "50%",
-                            transform: "translateX(-50%)",
-                            width: 500,
-                            height: 260,
-                            borderRadius: "50%",
-                            background:
-                                "radial-gradient(circle, rgba(37, 99, 235, 0.14) 0%, rgba(59, 130, 246, 0.08) 45%, rgba(255,255,255,0) 75%)",
-                            filter: "blur(32px)",
-                        }}
-                    />
-
-                    {/* BLEND */}
-                    <Box
-                        sx={{
-                            position: "absolute",
-                            top: 220,
-                            right: -160,
-                            width: 420,
-                            height: 420,
-                            borderRadius: "50%",
-                            background:
-                                "radial-gradient(circle, rgba(220, 38, 38, 0.14) 0%, rgba(37, 99, 235, 0.08) 40%, rgba(255,255,255,0) 75%)",
-                            filter: "blur(28px)",
-                        }}
-                    />
-
-                    {/* GRID */}
-                    <Box
-                        sx={{
-                            position: "absolute",
-                            inset: 0,
-                            opacity: 0.2,
-                            backgroundImage: `
-                    linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px),
-                    linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px)
-                  `,
-                            backgroundSize: "32px 32px",
-                            maskImage:
-                                "radial-gradient(circle at center, black 40%, transparent 85%)",
-                            WebkitMaskImage:
-                                "radial-gradient(circle at center, black 40%, transparent 85%)",
-                        }}
-                    />
-                </Box>
-
-                {/* CONTENT */}
                 <Box sx={{ position: "relative", zIndex: 1 }}>
-                    <SiteBadge/>
+                    <SiteBadge />
                     <FloatingNav />
                     {children}
                 </Box>
