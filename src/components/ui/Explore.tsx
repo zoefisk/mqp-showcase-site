@@ -1,5 +1,5 @@
 import SectionTitle from "@/components/ui/SectionTitle";
-import {Box} from "@mui/material";
+import { Box } from "@mui/material";
 import LinkCard from "@/components/ui/LinkCard";
 import InsightsOutlinedIcon from "@mui/icons-material/InsightsOutlined";
 import Groups2OutlinedIcon from "@mui/icons-material/Groups2Outlined";

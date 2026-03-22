@@ -103,9 +103,7 @@ export default function CaseStudyPage() {
                     }}
                 >
                     <Stack spacing={2.5}>
-                        <Typography>
-                            [connect the study to our project]
-                        </Typography>
+                        <Typography>[connect the study to our project]</Typography>
                     </Stack>
                 </Paper>
 

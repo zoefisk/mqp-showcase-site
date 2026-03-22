@@ -64,9 +64,7 @@ export default function Home() {
                             "linear-gradient(180deg, rgba(255,255,255,0.96) 0%, rgba(248,250,252,1) 100%)",
                     }}
                 >
-                    <Typography>
-                        [1-3 paragraphs about our project]
-                    </Typography>
+                    <Typography>[1-3 paragraphs about our project]</Typography>
                 </Paper>
 
                 {/* HOW IT WORKS */}
@@ -111,7 +109,7 @@ export default function Home() {
                 </Stack>
 
                 {/* EXPLORE */}
-                <Explore/>
+                <Explore />
 
                 {/* WPI */}
                 <SectionTitle>About Worcester Polytechnic Institute</SectionTitle>
