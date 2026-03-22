@@ -9,10 +9,10 @@ import {
     Stack,
     Typography,
     alpha,
+    CircularProgress,
 } from "@mui/material";
 
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import SlideshowOutlinedIcon from "@mui/icons-material/SlideshowOutlined";
 import FactCheckOutlinedIcon from "@mui/icons-material/FactCheckOutlined";
 import InsightsOutlinedIcon from "@mui/icons-material/InsightsOutlined";
 import Groups2OutlinedIcon from "@mui/icons-material/Groups2Outlined";
@@ -56,6 +56,12 @@ function NavRail({ children }: React.PropsWithChildren) {
 function NavList() {
     const pathname = usePathname();
 
+    const [loadingHref, setLoadingHref] = React.useState<string | null>(null);
+
+    React.useEffect(() => {
+        setLoadingHref(null);
+    }, [pathname]);
+
     return (
         <Stack spacing={1.5} alignItems="flex-start">
             {NAV_ITEMS.map((item) => (
@@ -63,6 +69,8 @@ function NavList() {
                     key={item.href}
                     item={item}
                     isActive={pathname === item.href}
+                    isLoading={loadingHref === item.href}
+                    onNavigate={() => setLoadingHref(item.href)}
                 />
             ))}
         </Stack>
@@ -72,9 +80,13 @@ function NavList() {
 function NavListItem({
                          item,
                          isActive,
+                         isLoading,
+                         onNavigate,
                      }: {
     item: NavItem;
     isActive: boolean;
+    isLoading: boolean;
+    onNavigate: () => void;
 }) {
     const Icon = item.icon;
 
@@ -82,6 +94,7 @@ function NavListItem({
         <ButtonBase
             component={Link}
             href={item.href}
+            onClick={onNavigate}
             sx={(theme) => ({
                 position: "relative",
                 overflow: "hidden",
@@ -137,7 +150,15 @@ function NavListItem({
             })}
         >
             <NavIconSlot isActive={isActive}>
-                <Icon fontSize="small" />
+                {isLoading ? (
+                    <CircularProgress
+                        size={18}
+                        thickness={5}
+                        color="inherit"
+                    />
+                ) : (
+                    <Icon fontSize="small" />
+                )}
             </NavIconSlot>
 
             <NavLabel>{item.label}</NavLabel>
