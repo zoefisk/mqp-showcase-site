@@ -6,17 +6,11 @@ import { Box, Container, Paper, Stack, Typography } from "@mui/material";
 import LightbulbOutlinedIcon from "@mui/icons-material/LightbulbOutlined";
 import AutoGraphOutlinedIcon from "@mui/icons-material/AutoGraphOutlined";
 import HealthAndSafetyOutlinedIcon from "@mui/icons-material/HealthAndSafetyOutlined";
-import Groups2OutlinedIcon from "@mui/icons-material/Groups2Outlined";
-import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
-import InsightsOutlinedIcon from "@mui/icons-material/InsightsOutlined";
-
 import PageHeader from "@/components/layout/PageHeader";
-
 import SectionTitle from "@/components/ui/SectionTitle";
 import InfoCard from "@/components/ui/InfoCard";
 import StepCard from "@/components/ui/StepCard";
 import StepArrow from "@/components/ui/StepArrow";
-import LinkCard from "@/components/ui/LinkCard";
 
 import Explore from "@/components/ui/Explore";
 

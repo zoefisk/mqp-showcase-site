@@ -16,18 +16,12 @@ import ScienceOutlinedIcon from "@mui/icons-material/ScienceOutlined";
 import CodeOutlinedIcon from "@mui/icons-material/CodeOutlined";
 import PublicOutlinedIcon from "@mui/icons-material/PublicOutlined";
 import Groups2OutlinedIcon from "@mui/icons-material/Groups2Outlined";
-import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
-import InsightsOutlinedIcon from "@mui/icons-material/InsightsOutlined";
 import HubOutlinedIcon from "@mui/icons-material/HubOutlined";
 import PageHeader from "@/components/layout/PageHeader";
 
 import SectionTitle from "@/components/ui/SectionTitle";
-import LinkCard from "@/components/ui/LinkCard";
 import StudyStatCard from "@/components/ui/StudyStatCard";
 import ResearchNote from "@/components/ui/ResearchNote";
-import PhaseTimelineItem from "@/components/ui/PhaseTimelineItem";
-import ToolBadge from "@/components/ui/ToolBadge";
-import VegaGraphEditor from "@/components/features/visualizations/vega/VegaGraphEditor";
 import D3GraphEditor from "@/components/features/visualizations/d3/D3GraphEditor";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import StudyQuestionsSet from "@/components/ui/StudyQuestionsExample";
