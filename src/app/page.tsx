@@ -18,6 +18,8 @@ import StepCard from "@/components/ui/StepCard";
 import StepArrow from "@/components/ui/StepArrow";
 import LinkCard from "@/components/ui/LinkCard";
 
+import Explore from "@/components/ui/Explore";
+
 export default function Home() {
     return (
         <Box sx={{ minHeight: "100vh", py: { xs: 6, sm: 10 } }}>
@@ -132,36 +134,7 @@ export default function Home() {
                 </Stack>
 
                 {/* EXPLORE */}
-                <SectionTitle>Explore the Site</SectionTitle>
-                <Box
-                    sx={{
-                        display: "grid",
-                        gridTemplateColumns: { xs: "1fr", md: "repeat(3, 1fr)" },
-                        gap: 2,
-                        mb: 8,
-                    }}
-                >
-                    <LinkCard
-                        href="/graph-editor"
-                        icon={<InsightsOutlinedIcon />}
-                        title="Graph Editor"
-                        body="Experiment with the RRNL specification and see how structured inputs become generated visualizations."
-                    />
-
-                    <LinkCard
-                        href="/meet-the-team"
-                        icon={<Groups2OutlinedIcon />}
-                        title="Meet the Team"
-                        body="Learn more about the students behind the project and the people who contributed to the work."
-                    />
-
-                    <LinkCard
-                        href="/report"
-                        icon={<DescriptionOutlinedIcon />}
-                        title="View the Report"
-                        body="Read the full writeup for project context, design motivation, implementation, and future directions."
-                    />
-                </Box>
+                <Explore/>
 
                 {/* WPI */}
                 <SectionTitle>About Worcester Polytechnic Institute</SectionTitle>
