@@ -1,8 +1,19 @@
 import type { NextConfig } from "next";
 
+const repo = "mqp-showcase-site"
+
 const nextConfig: NextConfig = {
-    /* config options here */
     reactCompiler: true,
+
+    output: "export",
+    trailingSlash: true,
+
+    images: {
+        unoptimized: true
+    },
+
+    basePath: process.env.NODE_ENV === "production" ? `/${repo}` : "",
+    assetPrefix: process.env.NODE_ENV ===  "production" ? `/${repo}/` : "",
 };
 
 export default nextConfig;
