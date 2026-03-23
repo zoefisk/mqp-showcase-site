@@ -1,3 +1,5 @@
+import {basePath} from "@/lib/basePath";
+
 export type SourceMode = "html" | "html+svg" | "svg-only";
 
 export type D3GraphManifestItem = {
@@ -10,7 +12,7 @@ export type D3GraphManifestItem = {
 };
 
 export async function loadD3GraphManifest(): Promise<D3GraphManifestItem[]> {
-    const res = await fetch("/d3-graphs/index.json", {
+    const res = await fetch(`${basePath}/d3-graphs/index.json`, {
         cache: "no-store",
     });
 

@@ -1,4 +1,5 @@
 import { parseInputSpecs, type InputSpec } from "@/lib/vega/buildVega";
+import {basePath} from "@/lib/basePath";
 
 export type VegaGraphManifestItem = {
     id: string;
@@ -7,7 +8,7 @@ export type VegaGraphManifestItem = {
 };
 
 export async function loadVegaGraphManifest(): Promise<VegaGraphManifestItem[]> {
-    const res = await fetch("/vega-graphs/index.json", {
+    const res = await fetch(`${basePath}/vega-graphs/index.json`, {
         cache: "no-store",
     });
 

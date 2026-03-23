@@ -1,12 +1,13 @@
 "use client";
 
 import * as React from "react";
-import { Box, Button, Container, Divider, Stack, Typography } from "@mui/material";
+import { Box, Button, Container, Stack, Typography } from "@mui/material";
 import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import PageHeader from "@/components/layout/PageHeader";
+import {basePath} from "@/lib/basePath";
 
-const PDF_PATH = "/report.pdf";
+const PDF_PATH = `${basePath}/report.pdf`;
 
 export default function ReportPage() {
     return (
