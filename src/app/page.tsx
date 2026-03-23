@@ -68,45 +68,45 @@ export default function Home() {
                 </Paper>
 
                 {/* HOW IT WORKS */}
-                <SectionTitle>How It Works</SectionTitle>
-                <Stack
-                    direction={{ xs: "column", md: "row" }}
-                    alignItems="center"
-                    spacing={{ xs: 2, md: 1 }}
-                    mb={8}
-                >
-                    <StepCard
-                        title="Literature Examples"
-                        body="The project begins with examples of RRNLs from prior research and clinical visualization studies."
-                    />
+                {/*<SectionTitle>How It Works</SectionTitle>*/}
+                {/*<Stack*/}
+                {/*    direction={{ xs: "column", md: "row" }}*/}
+                {/*    alignItems="center"*/}
+                {/*    spacing={{ xs: 2, md: 1 }}*/}
+                {/*    mb={8}*/}
+                {/*>*/}
+                {/*    <StepCard*/}
+                {/*        title="Literature Examples"*/}
+                {/*        body="The project begins with examples of RRNLs from prior research and clinical visualization studies."*/}
+                {/*    />*/}
 
-                    <Box sx={{ display: { xs: "none", md: "flex" } }}>
-                        <StepArrow />
-                    </Box>
+                {/*    <Box sx={{ display: { xs: "none", md: "flex" } }}>*/}
+                {/*        <StepArrow />*/}
+                {/*    </Box>*/}
 
-                    <StepCard
-                        title="DSL Specification"
-                        body="Key components of the visualization are translated into a structured declarative specification."
-                    />
+                {/*    <StepCard*/}
+                {/*        title="DSL Specification"*/}
+                {/*        body="Key components of the visualization are translated into a structured declarative specification."*/}
+                {/*    />*/}
 
-                    <Box sx={{ display: { xs: "none", md: "flex" } }}>
-                        <StepArrow />
-                    </Box>
+                {/*    <Box sx={{ display: { xs: "none", md: "flex" } }}>*/}
+                {/*        <StepArrow />*/}
+                {/*    </Box>*/}
 
-                    <StepCard
-                        title="JSON Input"
-                        body="Those properties are stored in a machine-readable format that supports editing and reuse."
-                    />
+                {/*    <StepCard*/}
+                {/*        title="JSON Input"*/}
+                {/*        body="Those properties are stored in a machine-readable format that supports editing and reuse."*/}
+                {/*    />*/}
 
-                    <Box sx={{ display: { xs: "none", md: "flex" } }}>
-                        <StepArrow />
-                    </Box>
+                {/*    <Box sx={{ display: { xs: "none", md: "flex" } }}>*/}
+                {/*        <StepArrow />*/}
+                {/*    </Box>*/}
 
-                    <StepCard
-                        title="Generated RRNL"
-                        body="The specification can then be rendered into a visual number line and refined through the editor."
-                    />
-                </Stack>
+                {/*    <StepCard*/}
+                {/*        title="Generated RRNL"*/}
+                {/*        body="The specification can then be rendered into a visual number line and refined through the editor."*/}
+                {/*    />*/}
+                {/*</Stack>*/}
 
                 {/* EXPLORE */}
                 <Explore />
