@@ -8,14 +8,12 @@ import {
     Alert,
     Box,
     Button,
-    Divider,
     FormControl,
     IconButton,
     InputLabel,
     MenuItem,
     Paper,
     Select,
-    Skeleton,
     Stack,
     TextField,
     ToggleButton,
@@ -29,26 +27,36 @@ import CodeOutlinedIcon from "@mui/icons-material/CodeOutlined";
 import AutoGraphOutlinedIcon from "@mui/icons-material/AutoGraphOutlined";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
-import SourceOutlinedIcon from "@mui/icons-material/SourceOutlined";
 import TitleOutlinedIcon from "@mui/icons-material/TitleOutlined";
 import TuneOutlinedIcon from "@mui/icons-material/TuneOutlined";
 import AdsClickOutlinedIcon from "@mui/icons-material/AdsClickOutlined";
 import ViewAgendaOutlinedIcon from "@mui/icons-material/ViewAgendaOutlined";
-import ContentCopyOutlinedIcon from "@mui/icons-material/ContentCopyOutlined";
-import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
 
 import VegaView from "@/components/features/visualizations/vega/VegaView";
+import GraphWorkspace from "@/components/features/visualizations/shared/GraphWorkspace";
+import GraphSourceAccordion from "@/components/features/visualizations/shared/GraphSourceAccordion";
+import GraphPreviewHeader from "@/components/features/visualizations/shared/GraphPreviewHeader";
+import GraphPreviewCard from "@/components/features/visualizations/shared/GraphPreviewCard";
+import GraphPreviewSkeleton from "@/components/features/visualizations/shared/GraphPreviewSkeleton";
+import GraphCodePanel from "@/components/features/visualizations/shared/GraphCodePanel";
+import SidebarGroupSkeleton from "@/components/features/visualizations/shared/SidebarGroupSkeleton";
+import type { GraphPreviewModeOption } from "@/components/features/visualizations/shared/types";
+
+import { useGraphManifest } from "@/hooks/graphs/useGraphManifest";
+import { copyText } from "@/lib/graphs/clipboard";
+import { downloadTextFile } from "@/lib/graphs/downloads";
+import { ensureMinimumLoadingTime } from "@/lib/graphs/loading";
+
 import {
     buildVegaFromInput,
     parseInputSpecs,
     type InputSpec,
     type VegaSpec,
-} from "@/lib/vega/buildVega";
+} from "@/lib/graphs/vega/buildVega";
 import {
     loadVegaGraphManifest,
     loadVegaInputSpecsFromFile,
-    type VegaGraphManifestItem,
-} from "@/lib/vega/loadVegaGraph";
+} from "@/lib/graphs/vega/loadVegaGraph";
 import {
     addCategory,
     createDefaultInputSpec,
@@ -56,7 +64,7 @@ import {
     removeCategoryAt,
     type PreviewMode,
     updateCategoryAt,
-} from "@/lib/vega/editorHelpers";
+} from "@/lib/graphs/vega/editorHelpers";
 
 type VegaGraphEditorProps = {
     title: string;
@@ -66,19 +74,22 @@ type VegaGraphEditorProps = {
     graphSource?: string;
 };
 
-function EditorAccordion({
-    title,
-    icon,
-    defaultExpanded = false,
-    children,
-}: React.PropsWithChildren<{
+type JsonErrorLocation = {
+    line: number;
+    column: number;
+} | null;
+
+function SidebarAccordion({
+                              title,
+                              icon,
+                              children,
+                          }: React.PropsWithChildren<{
     title: string;
     icon?: React.ReactNode;
-    defaultExpanded?: boolean;
 }>) {
     return (
         <Accordion
-            defaultExpanded={defaultExpanded}
+            defaultExpanded={false}
             disableGutters
             elevation={0}
             sx={{
@@ -111,83 +122,10 @@ function EditorAccordion({
     );
 }
 
-function GraphFileSelector({
-    manifest,
-    value,
-    onChange,
-}: {
-    manifest: VegaGraphManifestItem[];
-    value: string;
-    onChange: (value: string) => void;
-}) {
-    return (
-        <FormControl fullWidth>
-            <InputLabel id="vega-graph-select-label">Graph file</InputLabel>
-            <Select
-                labelId="vega-graph-select-label"
-                value={value}
-                label="Graph file"
-                onChange={(e) => onChange(e.target.value)}
-            >
-                {manifest.map((item) => (
-                    <MenuItem key={item.id} value={item.file}>
-                        {item.label}
-                    </MenuItem>
-                ))}
-            </Select>
-        </FormControl>
-    );
-}
-
-function PreviewHeader({
-    title,
-    subtitle,
-    mode,
-    onModeChange,
-}: {
-    title: string;
-    subtitle: string;
-    mode: PreviewMode;
-    onModeChange: (mode: PreviewMode) => void;
-}) {
-    return (
-        <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
-            <Box>
-                <Typography variant="h5" fontWeight={700}>
-                    {title}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                    {subtitle}
-                </Typography>
-            </Box>
-
-            <ToggleButtonGroup
-                size="small"
-                exclusive
-                value={mode}
-                onChange={(_, value) => {
-                    if (value) onModeChange(value);
-                }}
-            >
-                <ToggleButton value="graph">
-                    <Tooltip title="Graph view">
-                        <AutoGraphOutlinedIcon fontSize="small" />
-                    </Tooltip>
-                </ToggleButton>
-                <ToggleButton value="json">
-                    <Tooltip title="JSON view">
-                        <CodeOutlinedIcon fontSize="small" />
-                    </Tooltip>
-                </ToggleButton>
-            </ToggleButtonGroup>
-        </Stack>
-    );
-}
-
 function TitleSection({
-    value,
-    onChange,
-}: {
+                          value,
+                          onChange,
+                      }: {
     value: InputSpec;
     onChange: (next: InputSpec) => void;
 }) {
@@ -276,9 +214,9 @@ function TitleSection({
 }
 
 function AxisAndLabelsSection({
-    value,
-    onChange,
-}: {
+                                  value,
+                                  onChange,
+                              }: {
     value: InputSpec;
     onChange: (next: InputSpec) => void;
 }) {
@@ -398,9 +336,9 @@ function AxisAndLabelsSection({
 }
 
 function ValueIndicatorSection({
-    value,
-    onChange,
-}: {
+                                   value,
+                                   onChange,
+                               }: {
     value: InputSpec;
     onChange: (next: InputSpec) => void;
 }) {
@@ -452,7 +390,6 @@ function ValueIndicatorSection({
 
         const parsed = Number(nextDraft);
 
-        // Allow incomplete typing like "-", "", ".", etc. without breaking the graph
         if (
             nextDraft.trim() === "" ||
             nextDraft === "-" ||
@@ -566,9 +503,9 @@ function ValueIndicatorSection({
 }
 
 function CategoriesSection({
-    value,
-    onChange,
-}: {
+                               value,
+                               onChange,
+                           }: {
     value: InputSpec;
     onChange: (next: InputSpec) => void;
 }) {
@@ -740,39 +677,7 @@ function getLineNumbers(text: string): number[] {
     return Array.from({ length: count }, (_, i) => i + 1);
 }
 
-type JsonErrorLocation = {
-    line: number;
-    column: number;
-} | null;
-
-function getIndexFromLineColumn(text: string, line: number, column: number): number {
-    const lines = text.split("\n");
-    let index = 0;
-
-    for (let i = 0; i < line - 1; i++) {
-        index += (lines[i]?.length ?? 0) + 1;
-    }
-
-    return index + Math.max(0, column - 1);
-}
-
-function getLineStartIndexes(text: string): number[] {
-    const starts = [0];
-
-    for (let i = 0; i < text.length; i++) {
-        if (text[i] === "\n") {
-            starts.push(i + 1);
-        }
-    }
-
-    return starts;
-}
-
 function getJsonErrorLocation(error: string, text: string): JsonErrorLocation {
-    // Chrome/Firefox-style examples:
-    // "Expected ',' or '}' after property value in JSON at position 123"
-    // "Unexpected token } in JSON at position 45"
-
     const positionMatch = error.match(/position\s+(\d+)/i);
     if (positionMatch) {
         const position = Number(positionMatch[1]);
@@ -785,7 +690,6 @@ function getJsonErrorLocation(error: string, text: string): JsonErrorLocation {
         }
     }
 
-    // Generic fallback if the error already mentions line/column
     const lineColumnMatch = error.match(/line\s+(\d+).*column\s+(\d+)/i);
     if (lineColumnMatch) {
         const line = Number(lineColumnMatch[1]);
@@ -798,249 +702,24 @@ function getJsonErrorLocation(error: string, text: string): JsonErrorLocation {
     return null;
 }
 
-function EditableJsonPanel({
-    jsonText,
-    editable,
-    error,
-    errorLocation,
-    onChange,
-    onCopy,
-    onDownload,
-}: {
-    jsonText: string;
-    editable: boolean;
-    error: string | null;
-    errorLocation: JsonErrorLocation;
-    onChange: (next: string) => void;
-    onCopy: () => void;
-    onDownload: () => void;
-}) {
-    const textareaRef = React.useRef<HTMLTextAreaElement | null>(null);
-    const codeRef = React.useRef<HTMLPreElement | null>(null);
-    const linesRef = React.useRef<HTMLDivElement | null>(null);
-
-    const highlightedJson = React.useMemo(
-        () => highlightJson(jsonText, errorLocation),
-        [jsonText, errorLocation],
-    );
-
-    const lineNumbers = React.useMemo(() => getLineNumbers(jsonText), [jsonText]);
-
-    {
-        lineNumbers.map((line) => {
-            const isErrorLine = errorLocation?.line === line;
-
-            return (
-                <Box
-                    key={line}
-                    sx={{
-                        color: isErrorLine ? "#f87171" : "rgba(255,255,255,0.45)",
-                        fontWeight: isErrorLine ? 700 : 400,
-                    }}
-                >
-                    {line}
-                </Box>
-            );
-        });
-    }
-
-    function syncScroll(target: HTMLTextAreaElement | HTMLPreElement) {
-        if (codeRef.current) {
-            codeRef.current.scrollTop = target.scrollTop;
-            codeRef.current.scrollLeft = target.scrollLeft;
-        }
-
-        if (linesRef.current) {
-            linesRef.current.scrollTop = target.scrollTop;
-        }
-    }
-
-    return (
-        <Stack spacing={2}>
-            <Stack direction="row" justifyContent="space-between" alignItems="center">
-                <Typography variant="body2" color="text.secondary">
-                    {editable ? "Editable live JSON" : "Read-only live JSON"}
-                </Typography>
-
-                <Stack direction="row" spacing={0.5}>
-                    <Tooltip title="Download JSON file">
-                        <IconButton onClick={onDownload}>
-                            <DownloadOutlinedIcon fontSize="small" />
-                        </IconButton>
-                    </Tooltip>
-
-                    <Tooltip title="Copy JSON">
-                        <IconButton onClick={onCopy}>
-                            <ContentCopyOutlinedIcon fontSize="small" />
-                        </IconButton>
-                    </Tooltip>
-                </Stack>
-            </Stack>
-
-            {editable && error && <Alert severity="error">{error}</Alert>}
-
-            <Box
-                sx={{
-                    border: "1px solid",
-                    borderColor: error && editable ? "error.main" : "divider",
-                    borderRadius: 3,
-                    overflow: "hidden",
-                    bgcolor: "#0f172a",
-                    display: "grid",
-                    gridTemplateColumns: "56px 1fr",
-
-                    minHeight: 420,
-                    maxHeight: 600,
-                }}
-            >
-                <Box
-                    ref={linesRef}
-                    sx={{
-                        overflow: "hidden",
-                        bgcolor: "#0b1220",
-                        borderRight: "1px solid rgba(255,255,255,0.08)",
-                        color: "rgba(255,255,255,0.45)",
-                        fontFamily:
-                            'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
-                        fontSize: 13,
-                        lineHeight: "22px",
-                        py: 2,
-                        px: 1.5,
-                        textAlign: "right",
-                        userSelect: "none",
-                    }}
-                >
-                    {lineNumbers.map((line) => (
-                        <Box key={line}>{line}</Box>
-                    ))}
-                </Box>
-
-                <Box sx={{ position: "relative", minHeight: 420 }}>
-                    <Box
-                        sx={{
-                            position: "absolute",
-                            inset: 0,
-                            overflow: "hidden",
-                        }}
-                    >
-                        <Box
-                            component="pre"
-                            ref={codeRef}
-                            aria-hidden
-                            sx={{
-                                m: 0,
-                                p: 2,
-                                height: "100%",
-                                overflow: "auto",
-                                whiteSpace: "pre",
-                                wordWrap: "normal",
-                                fontFamily:
-                                    'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
-                                fontSize: 13,
-                                lineHeight: "22px",
-                                color: "#e2e8f0",
-                                pointerEvents: "none",
-                                "& .json-key": {
-                                    color: "#93c5fd",
-                                },
-                                "& .json-string": {
-                                    color: "#86efac",
-                                },
-                                "& .json-number": {
-                                    color: "#f9a8d4",
-                                },
-                                "& .json-boolean": {
-                                    color: "#fcd34d",
-                                },
-                                "& .json-null": {
-                                    color: "#c4b5fd",
-                                },
-                                "& .json-punctuation": {
-                                    color: "#94a3b8",
-                                },
-                                "& .json-error-line": {
-                                    textDecorationLine: "underline",
-                                    textDecorationStyle: "wavy",
-                                    textDecorationColor: "#ef4444",
-                                    textUnderlineOffset: "3px",
-                                    backgroundColor: "rgba(239, 68, 68, 0.08)",
-                                },
-                            }}
-                            dangerouslySetInnerHTML={{ __html: highlightedJson || " " }}
-                        />
-                    </Box>
-
-                    {editable ? (
-                        <Box
-                            component="textarea"
-                            ref={textareaRef}
-                            spellCheck={false}
-                            value={jsonText}
-                            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
-                                onChange(e.target.value)
-                            }
-                            onScroll={(e: React.UIEvent<HTMLTextAreaElement>) =>
-                                syncScroll(e.currentTarget)
-                            }
-                            sx={{
-                                position: "absolute",
-                                inset: 0,
-                                width: "100%",
-                                height: "100%",
-                                border: "none",
-                                outline: "none",
-                                resize: "none",
-                                m: 0,
-                                p: 2,
-                                background: "transparent",
-                                color: "transparent",
-                                caretColor: "#ffffff",
-                                WebkitTextFillColor: "transparent",
-                                overflow: "auto",
-                                whiteSpace: "pre",
-                                wordWrap: "normal",
-                                fontFamily:
-                                    'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
-                                fontSize: 13,
-                                lineHeight: "22px",
-                                tabSize: 2,
-                            }}
-                        />
-                    ) : (
-                        <Box
-                            sx={{
-                                position: "absolute",
-                                inset: 0,
-                                pointerEvents: "none",
-                            }}
-                        />
-                    )}
-                </Box>
-            </Box>
-        </Stack>
-    );
-}
-
 function PreviewStage({
-    title,
-    subtitle,
-    mode,
-    spec,
-    input,
-    jsonText,
-    jsonEditable,
-    jsonError,
-    jsonErrorLocation,
-    onModeChange,
-    onJsonTextChange,
-    onCopyJson,
-    onDownloadJson,
-}: {
+                          title,
+                          subtitle,
+                          mode,
+                          spec,
+                          jsonText,
+                          jsonEditable,
+                          jsonError,
+                          jsonErrorLocation,
+                          onModeChange,
+                          onJsonTextChange,
+                          onCopyJson,
+                          onDownloadJson,
+                      }: {
     title: string;
     subtitle: string;
     mode: PreviewMode;
     spec: VegaSpec | null;
-    input: InputSpec | null;
     jsonText: string;
     jsonEditable: boolean;
     jsonError: string | null;
@@ -1050,110 +729,109 @@ function PreviewStage({
     onCopyJson: () => void;
     onDownloadJson: () => void;
 }) {
+    const highlightedJson = React.useMemo(
+        () => highlightJson(jsonText, jsonErrorLocation ?? undefined),
+        [jsonText, jsonErrorLocation],
+    );
+
+    const lineNumbers = React.useMemo(() => getLineNumbers(jsonText), [jsonText]);
+
+    const availableModes: GraphPreviewModeOption<PreviewMode>[] = [
+        {
+            value: "graph",
+            label: "Graph view",
+            icon: <AutoGraphOutlinedIcon fontSize="small" />,
+        },
+        {
+            value: "json",
+            label: "JSON view",
+            icon: <CodeOutlinedIcon fontSize="small" />,
+        },
+    ];
+
     return (
-        <Paper
-            variant="outlined"
-            sx={{
-                borderRadius: 4,
-                p: { xs: 2, sm: 3, md: 4 },
-                minHeight: 420,
-                background:
-                    "linear-gradient(180deg, rgba(255,255,255,0.96) 0%, rgba(248,250,252,1) 100%)",
-            }}
-        >
-            <Stack spacing={2.5}>
-                <PreviewHeader
+        <GraphPreviewCard
+            minHeight={200}
+            header={
+                <GraphPreviewHeader
                     title={title}
                     subtitle={subtitle}
                     mode={mode}
+                    availableModes={availableModes}
                     onModeChange={onModeChange}
                 />
-                <Divider />
-
-                {mode === "graph" ? (
-                    spec ? (
-                        <Box
-                            sx={{
-                                minHeight: 260,
-                                display: "flex",
-                                justifyContent: "center",
-                                alignItems: "center",
-                                pt: 2,
-                            }}
-                        >
-                            <VegaView spec={spec as any} />
-                        </Box>
-                    ) : (
-                        <Alert severity="warning">
-                            Unable to build Vega spec from the current RRNL properties.
-                        </Alert>
-                    )
+            }
+        >
+            {mode === "graph" ? (
+                spec ? (
+                    <Box
+                        sx={{
+                            width: "100%",
+                            height: 400,
+                            pt: 1,
+                        }}
+                    >
+                        <VegaView spec={spec as any} />
+                    </Box>
                 ) : (
-                    <EditableJsonPanel
-                        jsonText={jsonText}
-                        editable={jsonEditable}
-                        error={jsonEditable ? jsonError : null}
-                        errorLocation={jsonEditable ? jsonErrorLocation : null}
-                        onChange={onJsonTextChange}
-                        onCopy={onCopyJson}
-                        onDownload={onDownloadJson}
-                    />
-                )}
-            </Stack>
-        </Paper>
+                    <Alert severity="warning">
+                        Unable to build Vega spec from the current RRNL properties.
+                    </Alert>
+                )
+            ) : (
+                <GraphCodePanel
+                    label="JSON"
+                    text={jsonText}
+                    editable={jsonEditable}
+                    error={jsonEditable ? jsonError : null}
+                    errorLocation={jsonEditable ? jsonErrorLocation : null}
+                    highlightedHtml={highlightedJson}
+                    lineNumbers={lineNumbers}
+                    onChange={onJsonTextChange}
+                    onCopy={onCopyJson}
+                    onDownload={onDownloadJson}
+                    language="json"
+                    minHeight={420}
+                    maxHeight={600}
+                />
+            )}
+        </GraphPreviewCard>
     );
 }
 
 function EditorSidebar({
-    manifest,
-    selectedFile,
-    onSelectedFileChange,
-    value,
-    onChange,
-    loadingManifest,
-}: {
-    manifest: VegaGraphManifestItem[];
-    selectedFile: string;
-    onSelectedFileChange: (value: string) => void;
+                           value,
+                           onChange,
+                       }: {
     value: InputSpec;
     onChange: (next: InputSpec) => void;
-    loadingManifest: boolean;
 }) {
     return (
         <Stack spacing={2}>
-            <EditorAccordion title="Graph Source" icon={<SourceOutlinedIcon fontSize="small" />}>
-                {loadingManifest ? (
-                    <Skeleton variant="rounded" width="100%" height={56} />
-                ) : (
-                    <GraphFileSelector
-                        manifest={manifest}
-                        value={selectedFile}
-                        onChange={onSelectedFileChange}
-                    />
-                )}
-            </EditorAccordion>
-
-            <EditorAccordion title="Title" icon={<TitleOutlinedIcon fontSize="small" />}>
+            <SidebarAccordion title="Title" icon={<TitleOutlinedIcon fontSize="small" />}>
                 <TitleSection value={value} onChange={onChange} />
-            </EditorAccordion>
+            </SidebarAccordion>
 
-            <EditorAccordion
+            <SidebarAccordion
                 title="Axis, Labels, and Separation"
                 icon={<TuneOutlinedIcon fontSize="small" />}
             >
                 <AxisAndLabelsSection value={value} onChange={onChange} />
-            </EditorAccordion>
+            </SidebarAccordion>
 
-            <EditorAccordion
+            <SidebarAccordion
                 title="Value Indicator"
                 icon={<AdsClickOutlinedIcon fontSize="small" />}
             >
                 <ValueIndicatorSection value={value} onChange={onChange} />
-            </EditorAccordion>
+            </SidebarAccordion>
 
-            <EditorAccordion title="Categories" icon={<ViewAgendaOutlinedIcon fontSize="small" />}>
+            <SidebarAccordion
+                title="Categories"
+                icon={<ViewAgendaOutlinedIcon fontSize="small" />}
+            >
                 <CategoriesSection value={value} onChange={onChange} />
-            </EditorAccordion>
+            </SidebarAccordion>
         </Stack>
     );
 }
@@ -1197,123 +875,26 @@ function tryParseEditableJson(rawText: string): {
     }
 }
 
-function PreviewStageSkeleton() {
-    return (
-        <Paper
-            variant="outlined"
-            sx={{
-                borderRadius: 4,
-                p: { xs: 2, sm: 3, md: 4 },
-                minHeight: 420,
-                background:
-                    "linear-gradient(180deg, rgba(255,255,255,0.96) 0%, rgba(248,250,252,1) 100%)",
-            }}
-        >
-            <Stack spacing={2.5}>
-                <Stack direction="row" justifyContent="space-between" alignItems="center">
-                    <Box sx={{ flex: 1 }}>
-                        <Skeleton variant="text" width={140} height={42} />
-                        <Skeleton variant="text" width="55%" height={24} />
-                    </Box>
-
-                    <Skeleton variant="rounded" width={92} height={36} />
-                </Stack>
-
-                <Divider />
-
-                <Box
-                    sx={{
-                        minHeight: 260,
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        pt: 2,
-                    }}
-                >
-                    <Stack spacing={2} alignItems="center" sx={{ width: "100%" }}>
-                        <Skeleton variant="rounded" width="85%" height={28} />
-                        <Skeleton variant="rounded" width="78%" height={120} />
-                        <Skeleton variant="rounded" width="70%" height={22} />
-                    </Stack>
-                </Box>
-            </Stack>
-        </Paper>
-    );
-}
-
-function AccordionSkeleton({
-    titleWidth = 140,
-    rows = 3,
-}: {
-    titleWidth?: number | string;
-    rows?: number;
-}) {
-    return (
-        <Paper
-            variant="outlined"
-            sx={{
-                borderRadius: 4,
-                p: 2.25,
-                background:
-                    "linear-gradient(180deg, rgba(255,255,255,0.96) 0%, rgba(248,250,252,1) 100%)",
-            }}
-        >
-            <Stack spacing={2}>
-                <Stack direction="row" alignItems="center" spacing={1.25}>
-                    <Skeleton variant="circular" width={18} height={18} />
-                    <Skeleton variant="text" width={titleWidth} height={28} />
-                </Stack>
-
-                {Array.from({ length: rows }).map((_, i) => (
-                    <Skeleton key={i} variant="rounded" width="100%" height={56} />
-                ))}
-            </Stack>
-        </Paper>
-    );
-}
-
-function EditorSidebarSkeleton() {
-    return (
-        <Stack spacing={2}>
-            <AccordionSkeleton titleWidth={120} rows={2} />
-            <AccordionSkeleton titleWidth={70} rows={3} />
-            <AccordionSkeleton titleWidth={180} rows={4} />
-            <AccordionSkeleton titleWidth={120} rows={3} />
-            <AccordionSkeleton titleWidth={100} rows={4} />
-        </Stack>
-    );
-}
-
-const MIN_LOADING_MS = 500;
-
-// i made the minimum loading time 1 second because i think it looks better than 0.1 second tbh lest jarring lol
-async function ensureMinimumLoadingTime(startTime: number, minMs = MIN_LOADING_MS) {
-    const elapsed = Date.now() - startTime;
-    const remaining = Math.max(0, minMs - elapsed);
-
-    if (remaining > 0) {
-        await new Promise((resolve) => setTimeout(resolve, remaining));
-    }
-}
-
 export default function VegaGraphEditor({
-    title,
-    subtitle,
-    jsonEditable = true,
-    showPropertyEditors = true,
-    graphSource,
-}: VegaGraphEditorProps) {
-    const [manifest, setManifest] = React.useState<VegaGraphManifestItem[]>([]);
-
-    const [selectedFile, setSelectedFile] = React.useState(
-        graphSource ?? "/vega-graphs/default-rrnl.json",
-    );
+                                            title,
+                                            subtitle,
+                                            jsonEditable = true,
+                                            showPropertyEditors = true,
+                                            graphSource,
+                                        }: VegaGraphEditorProps) {
+    const {
+        manifest,
+        selectedId,
+        setSelectedId,
+        selectedItem,
+        loadingManifest,
+        error,
+        setError,
+    } = useGraphManifest(loadVegaGraphManifest, graphSource);
 
     const [inputSpec, setInputSpec] = React.useState<InputSpec>(createDefaultInputSpec());
     const [previewMode, setPreviewMode] = React.useState<PreviewMode>("graph");
-    const [loadingManifest, setLoadingManifest] = React.useState(true);
     const [loadingGraph, setLoadingGraph] = React.useState(false);
-    const [error, setError] = React.useState<string | null>(null);
 
     const [jsonText, setJsonText] = React.useState<string>(stringifySpec(createDefaultInputSpec()));
     const [jsonError, setJsonError] = React.useState<string | null>(null);
@@ -1329,61 +910,10 @@ export default function VegaGraphEditor({
     }, [inputSpec]);
 
     React.useEffect(() => {
-        if (!showPropertyEditors && graphSource) {
-            setSelectedFile(graphSource);
-        }
-    }, [showPropertyEditors, graphSource]);
-
-    React.useEffect(() => {
-        let mounted = true;
-
-        async function init() {
-            const startedAt = Date.now();
-
-            try {
-                setLoadingManifest(true);
-                setError(null);
-
-                const items = await loadVegaGraphManifest();
-                await ensureMinimumLoadingTime(startedAt);
-
-                if (!mounted) return;
-
-                setManifest(items);
-
-                if (!showPropertyEditors && graphSource) {
-                    setSelectedFile(graphSource);
-                } else {
-                    const hasDefault = items.some(
-                        (item) => item.file === "/vega-graphs/default-rrnl.json",
-                    );
-
-                    if (!hasDefault && items.length > 0) {
-                        setSelectedFile(items[0].file);
-                    }
-                }
-            } catch (err) {
-                await ensureMinimumLoadingTime(startedAt);
-
-                if (!mounted) return;
-                setError(err instanceof Error ? err.message : "Failed to load manifest.");
-            } finally {
-                if (mounted) setLoadingManifest(false);
-            }
-        }
-
-        init();
-
-        return () => {
-            mounted = false;
-        };
-    }, [showPropertyEditors, graphSource]);
-
-    React.useEffect(() => {
         let mounted = true;
 
         async function loadSelectedGraph() {
-            if (!selectedFile) return;
+            if (!selectedItem?.file) return;
 
             const startedAt = Date.now();
 
@@ -1392,7 +922,7 @@ export default function VegaGraphEditor({
                 setError(null);
                 setJsonError(null);
 
-                const parsedInputs = await loadVegaInputSpecsFromFile(selectedFile);
+                const parsedInputs = await loadVegaInputSpecsFromFile(selectedItem.file);
                 const firstInput = parsedInputs[0] ?? createDefaultInputSpec();
                 const normalized = normalizeInputSpec(firstInput);
 
@@ -1403,20 +933,21 @@ export default function VegaGraphEditor({
                 setInputSpec(normalized);
                 setJsonText(stringifySpec(normalized));
                 setJsonError(null);
-                setIsEditingJson(false);
                 setJsonErrorLocation(null);
+                setIsEditingJson(false);
             } catch (err) {
                 await ensureMinimumLoadingTime(startedAt);
 
                 if (!mounted) return;
+
                 setError(err instanceof Error ? err.message : "Failed to load graph.");
 
                 const fallback = createDefaultInputSpec();
                 setInputSpec(fallback);
                 setJsonText(stringifySpec(fallback));
                 setJsonError(null);
-                setIsEditingJson(false);
                 setJsonErrorLocation(null);
+                setIsEditingJson(false);
             } finally {
                 if (mounted) setLoadingGraph(false);
             }
@@ -1427,7 +958,7 @@ export default function VegaGraphEditor({
         return () => {
             mounted = false;
         };
-    }, [selectedFile]);
+    }, [selectedItem, setError]);
 
     React.useEffect(() => {
         if (isEditingJson) return;
@@ -1435,29 +966,11 @@ export default function VegaGraphEditor({
     }, [inputSpec, isEditingJson]);
 
     async function handleCopyJson() {
-        try {
-            await navigator.clipboard.writeText(jsonText);
-        } catch {
-            // no-op
-        }
+        await copyText(jsonText);
     }
 
     function handleDownloadJson() {
-        try {
-            const blob = new Blob([jsonText], { type: "application/json;charset=utf-8" });
-            const url = URL.createObjectURL(blob);
-
-            const link = document.createElement("a");
-            link.href = url;
-            link.download = "rrnl-graph.json";
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-
-            URL.revokeObjectURL(url);
-        } catch {
-            // no-op
-        }
+        downloadTextFile(jsonText, "rrnl-graph.json", "application/json;charset=utf-8");
     }
 
     function handleJsonTextChange(nextText: string) {
@@ -1485,6 +998,7 @@ export default function VegaGraphEditor({
     function handlePropertyChange(next: InputSpec) {
         setInputSpec(next);
         setJsonError(null);
+        setJsonErrorLocation(null);
 
         if (!isEditingJson) {
             setJsonText(stringifySpec(next));
@@ -1495,46 +1009,57 @@ export default function VegaGraphEditor({
     }
 
     return (
-        <Stack spacing={3}>
-            {error && <Alert severity="error">{error}</Alert>}
-
-            <Stack spacing={3}>
-                {loadingGraph ? (
-                    <>
-                        <PreviewStageSkeleton />
-                        {showPropertyEditors && <EditorSidebarSkeleton />}
-                    </>
-                ) : (
-                    <>
-                        <PreviewStage
-                            title={title}
-                            subtitle={subtitle}
-                            mode={previewMode}
-                            spec={builtSpec}
-                            input={inputSpec}
-                            jsonText={jsonText}
-                            jsonEditable={jsonEditable}
-                            jsonError={jsonError}
-                            jsonErrorLocation={jsonErrorLocation}
-                            onModeChange={setPreviewMode}
-                            onJsonTextChange={handleJsonTextChange}
-                            onCopyJson={handleCopyJson}
-                            onDownloadJson={handleDownloadJson}
+        <GraphWorkspace error={error}>
+            {loadingGraph ? (
+                <>
+                    <GraphPreviewSkeleton
+                        minHeight={420}
+                        controlsWidth={92}
+                        previewHeight={260}
+                        titleWidth={140}
+                        subtitleWidth="55%"
+                    />
+                    {showPropertyEditors && (
+                        <SidebarGroupSkeleton
+                            items={[
+                                { titleWidth: 70, rows: 3 },
+                                { titleWidth: 180, rows: 4 },
+                                { titleWidth: 120, rows: 3 },
+                                { titleWidth: 100, rows: 4 },
+                            ]}
                         />
+                    )}
+                </>
+            ) : (
+                <>
+                    <PreviewStage
+                        title={title}
+                        subtitle={subtitle}
+                        mode={previewMode}
+                        spec={builtSpec}
+                        jsonText={jsonText}
+                        jsonEditable={jsonEditable}
+                        jsonError={jsonError}
+                        jsonErrorLocation={jsonErrorLocation}
+                        onModeChange={setPreviewMode}
+                        onJsonTextChange={handleJsonTextChange}
+                        onCopyJson={handleCopyJson}
+                        onDownloadJson={handleDownloadJson}
+                    />
 
-                        {showPropertyEditors && (
-                            <EditorSidebar
-                                manifest={manifest}
-                                selectedFile={selectedFile}
-                                onSelectedFileChange={setSelectedFile}
-                                value={inputSpec}
-                                onChange={handlePropertyChange}
-                                loadingManifest={loadingManifest}
+                    {showPropertyEditors && (
+                        <>
+                            <GraphSourceAccordion
+                                items={manifest}
+                                value={selectedId}
+                                onChange={setSelectedId}
+                                loading={loadingManifest}
                             />
-                        )}
-                    </>
-                )}
-            </Stack>
-        </Stack>
+                            <EditorSidebar value={inputSpec} onChange={handlePropertyChange} />
+                        </>
+                    )}
+                </>
+            )}
+        </GraphWorkspace>
     );
 }

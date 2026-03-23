@@ -1,4 +1,4 @@
-import type { InputSpec, Category } from "@/lib/vega/buildVega";
+import type { InputSpec, Category } from "@/lib/graphs/vega/buildVega";
 
 export type PreviewMode = "graph" | "json";
 

@@ -2,19 +2,12 @@
 
 import * as React from "react";
 import {
-    Accordion,
-    AccordionDetails,
-    AccordionSummary,
     Alert,
     Box,
     Chip,
     Divider,
-    FormControl,
     IconButton,
-    InputLabel,
-    MenuItem,
     Paper,
-    Select,
     Skeleton,
     Stack,
     ToggleButton,
@@ -23,86 +16,44 @@ import {
     Typography,
 } from "@mui/material";
 
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import CodeOutlinedIcon from "@mui/icons-material/CodeOutlined";
 import AutoGraphOutlinedIcon from "@mui/icons-material/AutoGraphOutlined";
-import SourceOutlinedIcon from "@mui/icons-material/SourceOutlined";
 import ContentCopyOutlinedIcon from "@mui/icons-material/ContentCopyOutlined";
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
 import HtmlOutlinedIcon from "@mui/icons-material/HtmlOutlined";
 import ImageOutlinedIcon from "@mui/icons-material/ImageOutlined";
 
 import D3View from "@/components/features/visualizations/d3/D3View";
+import GraphWorkspace from "@/components/features/visualizations/shared/GraphWorkspace";
+import GraphSourceAccordion from "@/components/features/visualizations/shared/GraphSourceAccordion";
+import { useGraphManifest } from "@/hooks/graphs/useGraphManifest";
+import { copyText } from "@/lib/graphs/clipboard";
+import { downloadTextFile } from "@/lib/graphs/downloads";
+import { ensureMinimumLoadingTime } from "@/lib/graphs/loading";
 import {
-    ensureMinimumLoadingTime,
     getLineNumbers,
     highlightHtml,
     type HtmlErrorLocation,
-} from "@/lib/d3/editorHelpers";
+} from "@/lib/graphs/d3/editorHelpers";
 import {
     type D3GraphManifestItem,
     type SourceMode,
     loadD3GraphManifest,
-    loadD3HtmlFromFile,
-} from "@/lib/d3/loadD3Graph";
+    loadD3TextFromFile,
+} from "@/lib/graphs/d3/loadD3Graph";
 
 type PreviewMode = "graph" | "html" | "svg";
-type CodeKind = "html" | "svg";
-
-type RawManifestItem = {
-    id: string;
-    label: string;
-    file?: string;
-    htmlFile?: string;
-    svgFile?: string;
-    requiresSvg?: boolean;
-    mode?: SourceMode | "html" | "svg";
-};
-
-type NormalizedManifestItem = {
-    id: string;
-    label: string;
-    htmlFile?: string;
-    svgFile?: string;
-    sourceMode: SourceMode;
-};
 
 type D3GraphEditorProps = {
     title: string;
     subtitle: string;
-    htmlEditable?: boolean;
-    svgEditable?: boolean;
     graphSource?: string;
     allowGraphSelection?: boolean;
+    showCodeEditors?: boolean;
+    htmlEditable?: boolean;
+    svgEditable?: boolean;
+    defaultPreviewMode?: PreviewMode;
 };
-
-function normalizeManifestItem(item: RawManifestItem): NormalizedManifestItem {
-    const htmlFile =
-        item.htmlFile ??
-        (item.file && item.file.toLowerCase().endsWith(".html") ? item.file : undefined);
-
-    const svgFile =
-        item.svgFile ??
-        (item.file && item.file.toLowerCase().endsWith(".svg") ? item.file : undefined);
-
-    let sourceMode: SourceMode = "html";
-
-    if (item.mode === "svg") {
-        sourceMode = "svg-only";
-    } else if (item.mode === "html+svg" || item.requiresSvg || (htmlFile && svgFile)) {
-        sourceMode = "html+svg";
-    } else if (item.mode === "svg-only" || (!htmlFile && svgFile)) {
-        sourceMode = "svg-only";
-    }
-
-    return {
-        id: item.id,
-        label: item.label,
-        htmlFile,
-        svgFile,
-        sourceMode,
-    };
-}
 
 function buildSvgPreviewHtml(svgText: string) {
     return `<!DOCTYPE html>
@@ -216,16 +167,6 @@ function injectSvgOverride(
     return `<!DOCTYPE html><html><head>${injectedScript}</head><body>${html}</body></html>`;
 }
 
-function detectDefaultPreviewMode(item: NormalizedManifestItem | null): PreviewMode {
-    if (!item) return "graph";
-    return "graph";
-}
-
-function detectDefaultCodeKind(item: NormalizedManifestItem | null): CodeKind {
-    if (!item) return "html";
-    return item.sourceMode === "svg-only" ? "svg" : "html";
-}
-
 function getGraphSourceChip(mode: SourceMode) {
     switch (mode) {
         case "html":
@@ -237,162 +178,34 @@ function getGraphSourceChip(mode: SourceMode) {
     }
 }
 
-function EditorAccordion({
-    title,
-    icon,
-    defaultExpanded = false,
-    children,
-}: React.PropsWithChildren<{
-    title: string;
-    icon?: React.ReactNode;
-    defaultExpanded?: boolean;
-}>) {
-    return (
-        <Accordion
-            defaultExpanded={defaultExpanded}
-            disableGutters
-            elevation={0}
-            sx={{
-                border: "1px solid",
-                borderColor: "divider",
-                borderRadius: "18px !important",
-                overflow: "hidden",
-                background:
-                    "linear-gradient(180deg, rgba(255,255,255,0.96) 0%, rgba(248,250,252,1) 100%)",
-                "&:before": {
-                    display: "none",
-                },
-            }}
-        >
-            <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                sx={{
-                    px: 2.25,
-                    py: 0.25,
-                }}
-            >
-                <Stack direction="row" spacing={1.25} alignItems="center">
-                    {icon}
-                    <Typography fontWeight={700}>{title}</Typography>
-                </Stack>
-            </AccordionSummary>
+function getAvailableModes(
+    item: D3GraphManifestItem | null,
+    showCodeEditors: boolean,
+): PreviewMode[] {
+    if (!item) return ["graph"];
 
-            <AccordionDetails sx={{ px: 2.25, pb: 2.25 }}>{children}</AccordionDetails>
-        </Accordion>
-    );
-}
+    const modes: PreviewMode[] = ["graph"];
 
-function GraphFileSelector({
-    manifest,
-    value,
-    onChange,
-}: {
-    manifest: D3GraphManifestItem[];
-    value: string;
-    onChange: (value: string) => void;
-}) {
-    return (
-        <FormControl fullWidth>
-            <InputLabel id="d3-graph-select-label">Graph file</InputLabel>
-            <Select
-                labelId="d3-graph-select-label"
-                value={value}
-                label="Graph file"
-                onChange={(e) => onChange(e.target.value)}
-            >
-                {manifest.map((item) => (
-                    <MenuItem key={item.id} value={item.id}>
-                        {item.label}
-                    </MenuItem>
-                ))}
-            </Select>
-        </FormControl>
-    );
-}
+    if (!showCodeEditors) {
+        return modes;
+    }
 
-function PreviewHeader({
-    title,
-    subtitle,
-    previewMode,
-    availableModes,
-    onPreviewModeChange,
-    sourceMode,
-}: {
-    title: string;
-    subtitle: string;
-    previewMode: PreviewMode;
-    availableModes: PreviewMode[];
-    onPreviewModeChange: (mode: PreviewMode) => void;
-    sourceMode: SourceMode;
-}) {
-    const chip = getGraphSourceChip(sourceMode);
+    if (item.htmlFile) modes.push("html");
+    if (item.svgFile) modes.push("svg");
 
-    return (
-        <Stack
-            direction={{ xs: "column", md: "row" }}
-            justifyContent="space-between"
-            alignItems={{ xs: "flex-start", md: "center" }}
-            spacing={2}
-        >
-            <Box>
-                <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 0.5 }}>
-                    <Typography variant="h5" fontWeight={700}>
-                        {title}
-                    </Typography>
-                    <Chip label={chip.label} color={chip.color} size="small" variant="outlined" />
-                </Stack>
-
-                <Typography variant="body2" color="text.secondary">
-                    {subtitle}
-                </Typography>
-            </Box>
-
-            <ToggleButtonGroup
-                size="small"
-                exclusive
-                value={previewMode}
-                onChange={(_, value) => {
-                    if (value) onPreviewModeChange(value);
-                }}
-            >
-                {availableModes.includes("graph") && (
-                    <ToggleButton value="graph">
-                        <Tooltip title="Graph preview">
-                            <AutoGraphOutlinedIcon fontSize="small" />
-                        </Tooltip>
-                    </ToggleButton>
-                )}
-
-                {availableModes.includes("html") && (
-                    <ToggleButton value="html">
-                        <Tooltip title="HTML source">
-                            <HtmlOutlinedIcon fontSize="small" />
-                        </Tooltip>
-                    </ToggleButton>
-                )}
-
-                {availableModes.includes("svg") && (
-                    <ToggleButton value="svg">
-                        <Tooltip title="SVG source">
-                            <ImageOutlinedIcon fontSize="small" />
-                        </Tooltip>
-                    </ToggleButton>
-                )}
-            </ToggleButtonGroup>
-        </Stack>
-    );
+    return modes;
 }
 
 function CodePanel({
-    label,
-    text,
-    editable,
-    error,
-    errorLocation,
-    onChange,
-    onCopy,
-    onDownload,
-}: {
+                       label,
+                       text,
+                       editable,
+                       error,
+                       errorLocation,
+                       onChange,
+                       onCopy,
+                       onDownload,
+                   }: {
     label: string;
     text: string;
     editable: boolean;
@@ -590,27 +403,101 @@ function CodePanel({
     );
 }
 
+function PreviewHeader({
+                           title,
+                           subtitle,
+                           previewMode,
+                           availableModes,
+                           onPreviewModeChange,
+                           sourceMode,
+                       }: {
+    title: string;
+    subtitle: string;
+    previewMode: PreviewMode;
+    availableModes: PreviewMode[];
+    onPreviewModeChange: (mode: PreviewMode) => void;
+    sourceMode: SourceMode;
+}) {
+    const chip = getGraphSourceChip(sourceMode);
+
+    return (
+        <Stack
+            direction={{ xs: "column", md: "row" }}
+            justifyContent="space-between"
+            alignItems={{ xs: "flex-start", md: "center" }}
+            spacing={2}
+        >
+            <Box>
+                <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 0.5 }}>
+                    <Typography variant="h5" fontWeight={700}>
+                        {title}
+                    </Typography>
+                    <Chip label={chip.label} color={chip.color} size="small" variant="outlined" />
+                </Stack>
+
+                <Typography variant="body2" color="text.secondary">
+                    {subtitle}
+                </Typography>
+            </Box>
+
+            <ToggleButtonGroup
+                size="small"
+                exclusive
+                value={previewMode}
+                onChange={(_, value) => {
+                    if (value) onPreviewModeChange(value);
+                }}
+            >
+                {availableModes.includes("graph") && (
+                    <ToggleButton value="graph">
+                        <Tooltip title="Graph preview">
+                            <AutoGraphOutlinedIcon fontSize="small" />
+                        </Tooltip>
+                    </ToggleButton>
+                )}
+
+                {availableModes.includes("html") && (
+                    <ToggleButton value="html">
+                        <Tooltip title="HTML source">
+                            <HtmlOutlinedIcon fontSize="small" />
+                        </Tooltip>
+                    </ToggleButton>
+                )}
+
+                {availableModes.includes("svg") && (
+                    <ToggleButton value="svg">
+                        <Tooltip title="SVG source">
+                            <ImageOutlinedIcon fontSize="small" />
+                        </Tooltip>
+                    </ToggleButton>
+                )}
+            </ToggleButtonGroup>
+        </Stack>
+    );
+}
+
 function PreviewStage({
-    title,
-    subtitle,
-    selectedItem,
-    previewMode,
-    htmlText,
-    svgText,
-    htmlEditable,
-    svgEditable,
-    htmlError,
-    htmlErrorLocation,
-    svgError,
-    svgErrorLocation,
-    onPreviewModeChange,
-    onHtmlTextChange,
-    onSvgTextChange,
-    onCopyHtml,
-    onDownloadHtml,
-    onCopySvg,
-    onDownloadSvg,
-}: {
+                          title,
+                          subtitle,
+                          selectedItem,
+                          previewMode,
+                          htmlText,
+                          svgText,
+                          htmlEditable,
+                          svgEditable,
+                          htmlError,
+                          htmlErrorLocation,
+                          svgError,
+                          svgErrorLocation,
+                          showCodeEditors,
+                          onPreviewModeChange,
+                          onHtmlTextChange,
+                          onSvgTextChange,
+                          onCopyHtml,
+                          onDownloadHtml,
+                          onCopySvg,
+                          onDownloadSvg,
+                      }: {
     title: string;
     subtitle: string;
     selectedItem: D3GraphManifestItem | null;
@@ -623,6 +510,7 @@ function PreviewStage({
     htmlErrorLocation: HtmlErrorLocation;
     svgError: string | null;
     svgErrorLocation: HtmlErrorLocation;
+    showCodeEditors: boolean;
     onPreviewModeChange: (mode: PreviewMode) => void;
     onHtmlTextChange: (next: string) => void;
     onSvgTextChange: (next: string) => void;
@@ -632,15 +520,10 @@ function PreviewStage({
     onDownloadSvg: () => void;
 }) {
     const activeSourceMode = selectedItem?.sourceMode ?? "html";
-
-    const availableModes = React.useMemo(() => {
-        const modes: PreviewMode[] = ["graph"];
-
-        if (selectedItem?.htmlFile) modes.push("html");
-        if (selectedItem?.requiresSvg && selectedItem?.svgFile) modes.push("svg");
-
-        return modes;
-    }, [selectedItem]);
+    const availableModes = React.useMemo(
+        () => getAvailableModes(selectedItem, showCodeEditors),
+        [selectedItem, showCodeEditors],
+    );
 
     const previewHtml = React.useMemo(() => {
         if (!selectedItem) {
@@ -769,49 +652,30 @@ function PreviewStageSkeleton() {
     );
 }
 
-function SidebarSkeleton() {
-    return (
-        <Paper
-            variant="outlined"
-            sx={{
-                borderRadius: 4,
-                p: 2.25,
-                background:
-                    "linear-gradient(180deg, rgba(255,255,255,0.96) 0%, rgba(248,250,252,1) 100%)",
-            }}
-        >
-            <Stack spacing={2}>
-                <Stack direction="row" alignItems="center" spacing={1.25}>
-                    <Skeleton variant="circular" width={18} height={18} />
-                    <Skeleton variant="text" width={120} height={28} />
-                </Stack>
-                <Skeleton variant="rounded" width="100%" height={56} />
-            </Stack>
-        </Paper>
-    );
-}
-
 export default function D3GraphEditor({
-    title,
-    subtitle,
-    htmlEditable = true,
-    svgEditable = true,
-    graphSource,
-    allowGraphSelection = true,
-}: D3GraphEditorProps) {
-    const [manifest, setManifest] = React.useState<D3GraphManifestItem[]>([]);
-    const [selectedGraphId, setSelectedGraphId] = React.useState<string>(graphSource ?? "");
-    const [selectedItem, setSelectedItem] = React.useState<D3GraphManifestItem | null>(null);
+                                          title,
+                                          subtitle,
+                                          graphSource,
+                                          allowGraphSelection = true,
+                                          showCodeEditors = true,
+                                          htmlEditable = true,
+                                          svgEditable = true,
+                                          defaultPreviewMode = "graph",
+                                      }: D3GraphEditorProps) {
+    const {
+        manifest,
+        selectedId,
+        setSelectedId,
+        selectedItem,
+        loadingManifest,
+        error,
+        setError,
+    } = useGraphManifest(loadD3GraphManifest, graphSource);
 
     const [htmlText, setHtmlText] = React.useState("");
     const [svgText, setSvgText] = React.useState("");
-
-    const [previewMode, setPreviewMode] = React.useState<PreviewMode>("graph");
-
-    const [loadingManifest, setLoadingManifest] = React.useState(true);
+    const [previewMode, setPreviewMode] = React.useState<PreviewMode>(defaultPreviewMode);
     const [loadingGraph, setLoadingGraph] = React.useState(false);
-
-    const [error, setError] = React.useState<string | null>(null);
 
     const [htmlError, setHtmlError] = React.useState<string | null>(null);
     const [htmlErrorLocation, setHtmlErrorLocation] = React.useState<HtmlErrorLocation>(null);
@@ -820,55 +684,10 @@ export default function D3GraphEditor({
     const [svgErrorLocation, setSvgErrorLocation] = React.useState<HtmlErrorLocation>(null);
 
     React.useEffect(() => {
-        let mounted = true;
-
-        async function init() {
-            const startedAt = Date.now();
-
-            try {
-                setLoadingManifest(true);
-                setError(null);
-
-                const items = await loadD3GraphManifest();
-                await ensureMinimumLoadingTime(startedAt);
-
-                if (!mounted) return;
-
-                setManifest(items);
-
-                let nextSelectedId = graphSource ?? "";
-
-                if (!nextSelectedId && items.length > 0) {
-                    nextSelectedId = items[0].id;
-                }
-
-                setSelectedGraphId(nextSelectedId);
-
-                const found = items.find((item) => item.id === nextSelectedId) ?? items[0] ?? null;
-                setSelectedItem(found ?? null);
-            } catch (err) {
-                await ensureMinimumLoadingTime(startedAt);
-
-                if (!mounted) return;
-                setError(err instanceof Error ? err.message : "Failed to load graph manifest.");
-            } finally {
-                if (mounted) setLoadingManifest(false);
-            }
+        if (!showCodeEditors && previewMode !== "graph") {
+            setPreviewMode("graph");
         }
-
-        init();
-
-        return () => {
-            mounted = false;
-        };
-    }, [graphSource]);
-
-    React.useEffect(() => {
-        if (!manifest.length) return;
-
-        const found = manifest.find((item) => item.id === selectedGraphId) ?? null;
-        setSelectedItem(found);
-    }, [manifest, selectedGraphId]);
+    }, [showCodeEditors, previewMode]);
 
     React.useEffect(() => {
         let mounted = true;
@@ -885,13 +704,12 @@ export default function D3GraphEditor({
                 setSvgError(null);
 
                 const htmlPromise = selectedItem.htmlFile
-                    ? loadD3HtmlFromFile(selectedItem.htmlFile)
+                    ? loadD3TextFromFile(selectedItem.htmlFile)
                     : Promise.resolve("");
 
-                const svgPromise =
-                    selectedItem.requiresSvg && selectedItem.svgFile
-                        ? loadD3HtmlFromFile(selectedItem.svgFile)
-                        : Promise.resolve("");
+                const svgPromise = selectedItem.svgFile
+                    ? loadD3TextFromFile(selectedItem.svgFile)
+                    : Promise.resolve("");
 
                 const [html, svg] = await Promise.all([htmlPromise, svgPromise]);
 
@@ -907,13 +725,15 @@ export default function D3GraphEditor({
                 setSvgError(null);
                 setSvgErrorLocation(null);
 
-                if (previewMode === "svg" && !selectedItem.requiresSvg) {
-                    setPreviewMode("html");
+                const availableModes = getAvailableModes(selectedItem, showCodeEditors);
+                if (!availableModes.includes(previewMode)) {
+                    setPreviewMode("graph");
                 }
             } catch (err) {
                 await ensureMinimumLoadingTime(startedAt);
 
                 if (!mounted) return;
+
                 setError(err instanceof Error ? err.message : "Failed to load graph files.");
                 setHtmlText("");
                 setSvgText("");
@@ -927,40 +747,14 @@ export default function D3GraphEditor({
         return () => {
             mounted = false;
         };
-    }, [selectedItem]);
+    }, [selectedItem, previewMode, setError, showCodeEditors]);
 
     async function handleCopyHtml() {
-        try {
-            await navigator.clipboard.writeText(htmlText);
-        } catch {
-            // no-op
-        }
+        await copyText(htmlText);
     }
 
     async function handleCopySvg() {
-        try {
-            await navigator.clipboard.writeText(svgText);
-        } catch {
-            // no-op
-        }
-    }
-
-    function downloadTextFile(content: string, filename: string, mimeType: string) {
-        try {
-            const blob = new Blob([content], { type: mimeType });
-            const url = URL.createObjectURL(blob);
-
-            const link = document.createElement("a");
-            link.href = url;
-            link.download = filename;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-
-            URL.revokeObjectURL(url);
-        } catch {
-            // no-op
-        }
+        await copyText(svgText);
     }
 
     function handleDownloadHtml() {
@@ -993,66 +787,51 @@ export default function D3GraphEditor({
         setSvgError(null);
         setSvgErrorLocation(null);
 
-        if (selectedItem?.requiresSvg && !/<svg[\s>]/i.test(nextText)) {
+        if (selectedItem?.svgFile && !/<svg[\s>]/i.test(nextText)) {
             setSvgError("This does not look like a complete SVG file.");
             setSvgErrorLocation({ line: 1, column: 1 });
         }
     }
 
     return (
-        <Stack spacing={3}>
-            {error && <Alert severity="error">{error}</Alert>}
+        <GraphWorkspace error={error}>
+            {allowGraphSelection && (
+                <GraphSourceAccordion
+                    title="Graph Source"
+                    items={manifest}
+                    value={selectedId}
+                    onChange={setSelectedId}
+                    loading={loadingManifest}
+                    disabled={Boolean(graphSource)}
+                />
+            )}
 
-            <Stack spacing={3}>
-                {loadingGraph ? (
-                    <>
-                        <PreviewStageSkeleton />
-                        {allowGraphSelection && <SidebarSkeleton />}
-                    </>
-                ) : (
-                    <>
-                        <PreviewStage
-                            title={title}
-                            subtitle={subtitle}
-                            selectedItem={selectedItem}
-                            previewMode={previewMode}
-                            htmlText={htmlText}
-                            svgText={svgText}
-                            htmlEditable={htmlEditable}
-                            svgEditable={svgEditable}
-                            htmlError={htmlError}
-                            htmlErrorLocation={htmlErrorLocation}
-                            svgError={svgError}
-                            svgErrorLocation={svgErrorLocation}
-                            onPreviewModeChange={setPreviewMode}
-                            onHtmlTextChange={handleHtmlTextChange}
-                            onSvgTextChange={handleSvgTextChange}
-                            onCopyHtml={handleCopyHtml}
-                            onDownloadHtml={handleDownloadHtml}
-                            onCopySvg={handleCopySvg}
-                            onDownloadSvg={handleDownloadSvg}
-                        />
-
-                        {allowGraphSelection && (
-                            <EditorAccordion
-                                title="Graph Source"
-                                icon={<SourceOutlinedIcon fontSize="small" />}
-                                defaultExpanded
-                            >
-                                {loadingManifest ? (
-                                    <Skeleton variant="rounded" width="100%" height={56} />
-                                ) : (
-                                    <GraphFileSelector
-                                        manifest={manifest}
-                                        value={selectedGraphId}
-                                        onChange={setSelectedGraphId}
-                                    />
-                                )}
-                            </EditorAccordion>
-                        )}
-                    </>
-                )}
-            </Stack>
-        </Stack>
+            {loadingGraph ? (
+                <PreviewStageSkeleton />
+            ) : (
+                <PreviewStage
+                    title={title}
+                    subtitle={subtitle}
+                    selectedItem={selectedItem}
+                    previewMode={previewMode}
+                    htmlText={htmlText}
+                    svgText={svgText}
+                    htmlEditable={htmlEditable}
+                    svgEditable={svgEditable}
+                    htmlError={htmlError}
+                    htmlErrorLocation={htmlErrorLocation}
+                    svgError={svgError}
+                    svgErrorLocation={svgErrorLocation}
+                    showCodeEditors={showCodeEditors}
+                    onPreviewModeChange={setPreviewMode}
+                    onHtmlTextChange={handleHtmlTextChange}
+                    onSvgTextChange={handleSvgTextChange}
+                    onCopyHtml={handleCopyHtml}
+                    onDownloadHtml={handleDownloadHtml}
+                    onCopySvg={handleCopySvg}
+                    onDownloadSvg={handleDownloadSvg}
+                />
+            )}
+        </GraphWorkspace>
     );
 }
