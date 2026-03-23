@@ -1,4 +1,5 @@
 import { TeamMember } from "@/types/team_member";
+import {basePath} from "@/lib/basePath";
 
 export const TEAM_MEMBERS: TeamMember[] = [
     {
@@ -7,7 +8,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
         degree: "Bioinformatics & Computational Biology",
         minor: "Data Science",
         blurb: "",
-        photoSrc: "/team-images/morgan.png",
+        photoSrc: `${basePath}/team-images/morgan.png`,
         gradient: {
             from: "rgba(0, 150, 136, 0.25)", // teal
             to: "rgba(76, 175, 80, 0.25)", // green
@@ -24,7 +25,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
         degree: "Computer Science",
         minor: "Data Science",
         blurb: "",
-        photoSrc: "/team-images/skyler.jpg",
+        photoSrc: `${basePath}/team-images/skyler.png`,
         gradient: {
             from: "rgba(63, 81, 181, 0.25)", // indigo
             to: "rgba(0, 188, 212, 0.25)", // cyan
@@ -39,7 +40,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
         name: "Zachary Medailleu",
         degree: "Computer Science",
         blurb: "",
-        photoSrc: "/team-images/zach.png",
+        photoSrc: `${basePath}/team-images/zach.png`,
         gradient: {
             from: "rgba(255, 152, 0, 0.25)", // orange
             to: "rgba(244, 67, 54, 0.25)", // red
@@ -55,7 +56,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
         name: "Zoë Fisk",
         degree: "Computer Science",
         blurb: "",
-        photoSrc: "/team-images/zoe.jpg",
+        photoSrc: `${basePath}/team-images/zoe.jpg`,
         gradient: {
             from: "rgba(33, 150, 243, 0.25)", // blue
             to: "rgba(156, 39, 176, 0.25)", // purple
