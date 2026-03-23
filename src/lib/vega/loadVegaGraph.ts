@@ -1,5 +1,5 @@
 import { parseInputSpecs, type InputSpec } from "@/lib/vega/buildVega";
-import {basePath} from "@/lib/basePath";
+import { basePath } from "@/lib/basePath";
 
 export type VegaGraphManifestItem = {
     id: string;
@@ -16,7 +16,12 @@ export async function loadVegaGraphManifest(): Promise<VegaGraphManifestItem[]> 
         throw new Error("Failed to load Vega graph manifest.");
     }
 
-    return res.json();
+    const items: VegaGraphManifestItem[] = await res.json();
+
+    return items.map((item) => ({
+        ...item,
+        file: `${basePath}${item.file}`,
+    }));
 }
 
 export async function loadVegaInputSpecsFromFile(filePath: string): Promise<InputSpec[]> {

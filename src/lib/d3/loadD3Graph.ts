@@ -1,4 +1,4 @@
-import {basePath} from "@/lib/basePath";
+import { basePath } from "@/lib/basePath";
 
 export type SourceMode = "html" | "html+svg" | "svg-only";
 
@@ -20,7 +20,13 @@ export async function loadD3GraphManifest(): Promise<D3GraphManifestItem[]> {
         throw new Error("Failed to load D3 graph manifest.");
     }
 
-    return res.json();
+    const items: D3GraphManifestItem[] = await res.json();
+
+    return items.map((item) => ({
+        ...item,
+        htmlFile: item.htmlFile ? `${basePath}${item.htmlFile}` : undefined,
+        svgFile: item.svgFile ? `${basePath}${item.svgFile}` : undefined,
+    }));
 }
 
 export async function loadD3HtmlFromFile(filePath: string): Promise<string> {
