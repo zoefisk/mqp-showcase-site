@@ -1,5 +1,5 @@
 import { TeamMember } from "@/types/team_member";
-import {basePath} from "@/lib/basePath";
+import { basePath } from "@/lib/basePath";
 
 export const TEAM_MEMBERS: TeamMember[] = [
     {

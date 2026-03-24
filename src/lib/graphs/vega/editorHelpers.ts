@@ -1,4 +1,4 @@
-import type { InputSpec, Category } from "@/lib/vega/buildVega";
+import {InputSpec, Category, parseInputSpecs} from "@/lib/graphs/vega/buildVega";
 
 export type PreviewMode = "graph" | "json";
 
@@ -107,4 +107,43 @@ export function removeCategoryAt(categories: Category[], index: number): Categor
 export function addCategory(categories: Category[]): Category[] {
     const previousEnd = categories.length > 0 ? categories[categories.length - 1].end : 0;
     return [...categories, createDefaultCategory(categories.length, previousEnd)];
+}
+
+export function stringifySpec(input: InputSpec): string {
+    return JSON.stringify(input, null, 2);
+}
+
+export function tryParseEditableJson(rawText: string): {
+    nextInput: InputSpec | null;
+    error: string | null;
+} {
+    try {
+        const raw = JSON.parse(rawText);
+        const parsed = parseInputSpecs(raw);
+        const first = parsed[0];
+
+        if (!first) {
+            return {
+                nextInput: null,
+                error: "JSON is valid, but no RRNL spec was found.",
+            };
+        }
+
+        return {
+            nextInput: normalizeInputSpec(first),
+            error: null,
+        };
+    } catch (err) {
+        if (err instanceof Error) {
+            return {
+                nextInput: null,
+                error: err.message,
+            };
+        }
+
+        return {
+            nextInput: null,
+            error: "Invalid JSON.",
+        };
+    }
 }

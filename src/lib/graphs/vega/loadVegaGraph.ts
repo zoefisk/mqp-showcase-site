@@ -1,5 +1,5 @@
-import { parseInputSpecs, type InputSpec } from "@/lib/vega/buildVega";
-import { basePath } from "@/lib/basePath";
+import { parseInputSpecs, type InputSpec } from "@/lib/graphs/vega/buildVega";
+import { withBasePath } from "@/lib/graphs/asset";
 
 export type VegaGraphManifestItem = {
     id: string;
@@ -8,7 +8,7 @@ export type VegaGraphManifestItem = {
 };
 
 export async function loadVegaGraphManifest(): Promise<VegaGraphManifestItem[]> {
-    const res = await fetch(`${basePath}/vega-graphs/index.json`, {
+    const res = await fetch(withBasePath("/vega-graphs/index.json")!, {
         cache: "no-store",
     });
 
@@ -20,7 +20,7 @@ export async function loadVegaGraphManifest(): Promise<VegaGraphManifestItem[]> 
 
     return items.map((item) => ({
         ...item,
-        file: `${basePath}${item.file}`,
+        file: withBasePath(item.file)!,
     }));
 }
 

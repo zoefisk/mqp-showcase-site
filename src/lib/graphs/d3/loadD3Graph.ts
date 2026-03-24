@@ -1,4 +1,4 @@
-import { basePath } from "@/lib/basePath";
+import { withBasePath } from "@/lib/graphs/asset";
 
 export type SourceMode = "html" | "html+svg" | "svg-only";
 
@@ -12,7 +12,7 @@ export type D3GraphManifestItem = {
 };
 
 export async function loadD3GraphManifest(): Promise<D3GraphManifestItem[]> {
-    const res = await fetch(`${basePath}/d3-graphs/index.json`, {
+    const res = await fetch(withBasePath("/d3-graphs/index.json")!, {
         cache: "no-store",
     });
 
@@ -24,12 +24,12 @@ export async function loadD3GraphManifest(): Promise<D3GraphManifestItem[]> {
 
     return items.map((item) => ({
         ...item,
-        htmlFile: item.htmlFile ? `${basePath}${item.htmlFile}` : undefined,
-        svgFile: item.svgFile ? `${basePath}${item.svgFile}` : undefined,
+        htmlFile: withBasePath(item.htmlFile),
+        svgFile: withBasePath(item.svgFile),
     }));
 }
 
-export async function loadD3HtmlFromFile(filePath: string): Promise<string> {
+export async function loadD3TextFromFile(filePath: string): Promise<string> {
     const res = await fetch(filePath, {
         cache: "no-store",
     });
