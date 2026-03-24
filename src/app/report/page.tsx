@@ -1,15 +1,19 @@
-"use client";
-
 import * as React from "react";
 import { Box, Button, Container, Stack, Typography } from "@mui/material";
 import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import PageHeader from "@/components/layout/PageHeader";
 import { basePath } from "@/lib/basePath";
+import ComingSoon from "@/components/ui/ComingSoon";
 
 const PDF_PATH = `${basePath}/report.pdf`;
 
 export default function ReportPage() {
+
+    if (process.env.NODE_ENV === "production") {
+        return <ComingSoon />;
+    }
+
     return (
         <Box sx={{ minHeight: "100vh", py: { xs: 6, sm: 10 } }}>
             <Container maxWidth="md">

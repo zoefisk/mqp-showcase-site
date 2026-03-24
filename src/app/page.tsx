@@ -1,7 +1,5 @@
-"use client";
-
 import * as React from "react";
-import { Box, Container, Paper, Stack, Typography } from "@mui/material";
+import { Box, Container, Link, Paper, Stack, Typography } from "@mui/material";
 
 import LightbulbOutlinedIcon from "@mui/icons-material/LightbulbOutlined";
 import AutoGraphOutlinedIcon from "@mui/icons-material/AutoGraphOutlined";
@@ -124,19 +122,12 @@ export default function Home() {
                 >
                     <Stack spacing={2.5}>
                         <Typography>
-                            Worcester Polytechnic Institute (WPI) is a top-tier, STEM-focused
-                            university with an R1 research classification and global leadership in
-                            project-based learning. Founded in 1865, WPI’s distinctive approach
-                            integrates classroom theory with real-world practice, preparing students
-                            to tackle critical challenges through inclusive education, impactful
-                            projects, and interdisciplinary research.
-                        </Typography>
-
-                        <Typography>
-                            At WPI, the MQP (Major Qualifying Project) is a team-based,
-                            professional-level design or research experience. It represents the
-                            culmination of undergraduate education and emphasizes communication,
-                            interdisciplinary thinking, and real-world impact.
+                            Worcester Polytechnic Institute (WPI) is a top-tier, STEM-focused university with an R1 research classification and global
+                            leadership in project-based learning. Founded in 1865, WPI’s distinctive approach integrates classroom theory with real-world
+                            practice, preparing students to tackle critical challenges through inclusive education, impactful projects, and interdisciplinary
+                            research. With more than 70 bachelor’s, master’s, and doctoral degree programs across 18 academic departments and over
+                            50 global project centers, WPI advances knowledge and innovation in fields such as life sciences, smart technologies, advanced
+                            materials and manufacturing, and global innovation. Learn more at <Link href={"https://www.wpi.edu/"} target="_blank" rel="noreferrer" >www.wpi.edu</Link>.
                         </Typography>
                     </Stack>
                 </Paper>

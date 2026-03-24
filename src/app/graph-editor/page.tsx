@@ -1,11 +1,10 @@
 import * as React from "react";
-import PageShell from "@/components/layout/PageShell";
 import VegaGraphEditor from "@/components/features/visualizations/vega/VegaGraphEditor";
 import PageHeader from "@/components/layout/PageHeader";
 
 export default function GraphEditorPage() {
     return (
-        <PageShell maxWidth="lg">
+        <>
             <PageHeader
                 eyebrowLabel={"MAKE YOUR OWN RRNL"}
                 mainHeader={"Graph Editor"}
@@ -20,6 +19,6 @@ export default function GraphEditorPage() {
                     "Load an RRNL template, edit its properties, and preview the live Vega output."
                 }
             />
-        </PageShell>
+        </>
     );
 }

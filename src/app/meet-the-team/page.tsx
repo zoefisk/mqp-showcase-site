@@ -1,5 +1,3 @@
-"use client";
-
 import * as React from "react";
 import { Box, Container, Divider, Stack, Typography } from "@mui/material";
 import { TEAM_MEMBERS } from "@/data/team";
