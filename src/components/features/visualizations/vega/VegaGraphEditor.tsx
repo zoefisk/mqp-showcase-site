@@ -60,8 +60,10 @@ import {
     normalizeInputSpec,
     removeCategoryAt,
     type PreviewMode,
-    updateCategoryAt,
+    updateCategoryAt, stringifySpec, tryParseEditableJson,
 } from "@/lib/graphs/vega/editorHelpers";
+import SidebarAccordion from "@/components/features/visualizations/shared/SidebarAccordion";
+import {getLineNumbers} from "@/lib/graphs/codePanel";
 
 type VegaGraphEditorProps = {
     title: string;
@@ -75,49 +77,6 @@ type JsonErrorLocation = {
     line: number;
     column: number;
 } | null;
-
-function SidebarAccordion({
-    title,
-    icon,
-    children,
-}: React.PropsWithChildren<{
-    title: string;
-    icon?: React.ReactNode;
-}>) {
-    return (
-        <Accordion
-            defaultExpanded={false}
-            disableGutters
-            elevation={0}
-            sx={{
-                border: "1px solid",
-                borderColor: "divider",
-                borderRadius: "18px !important",
-                overflow: "hidden",
-                background:
-                    "linear-gradient(180deg, rgba(255,255,255,0.96) 0%, rgba(248,250,252,1) 100%)",
-                "&:before": {
-                    display: "none",
-                },
-            }}
-        >
-            <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                sx={{
-                    px: 2.25,
-                    py: 0.25,
-                }}
-            >
-                <Stack direction="row" spacing={1.25} alignItems="center">
-                    {icon}
-                    <Typography fontWeight={700}>{title}</Typography>
-                </Stack>
-            </AccordionSummary>
-
-            <AccordionDetails sx={{ px: 2.25, pb: 2.25 }}>{children}</AccordionDetails>
-        </Accordion>
-    );
-}
 
 function TitleSection({
     value,
@@ -669,11 +628,6 @@ function highlightJson(json: string, errorLocation?: JsonErrorLocation): string 
         .join("\n");
 }
 
-function getLineNumbers(text: string): number[] {
-    const count = text.split("\n").length;
-    return Array.from({ length: count }, (_, i) => i + 1);
-}
-
 function getJsonErrorLocation(error: string, text: string): JsonErrorLocation {
     const positionMatch = error.match(/position\s+(\d+)/i);
     if (positionMatch) {
@@ -828,45 +782,6 @@ function EditorSidebar({
             </SidebarAccordion>
         </Stack>
     );
-}
-
-function stringifySpec(input: InputSpec): string {
-    return JSON.stringify(input, null, 2);
-}
-
-function tryParseEditableJson(rawText: string): {
-    nextInput: InputSpec | null;
-    error: string | null;
-} {
-    try {
-        const raw = JSON.parse(rawText);
-        const parsed = parseInputSpecs(raw);
-        const first = parsed[0];
-
-        if (!first) {
-            return {
-                nextInput: null,
-                error: "JSON is valid, but no RRNL spec was found.",
-            };
-        }
-
-        return {
-            nextInput: normalizeInputSpec(first),
-            error: null,
-        };
-    } catch (err) {
-        if (err instanceof Error) {
-            return {
-                nextInput: null,
-                error: err.message,
-            };
-        }
-
-        return {
-            nextInput: null,
-            error: "Invalid JSON.",
-        };
-    }
 }
 
 export default function VegaGraphEditor({

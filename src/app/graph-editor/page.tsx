@@ -20,13 +20,6 @@ export default function GraphEditorPage() {
                     "Load an RRNL template, edit its properties, and preview the live Vega output."
                 }
             />
-
-            {/*<VegaGraphEditor*/}
-            {/*    title={"Preview 2"}*/}
-            {/*    subtitle={"Load an RRNL template, edit its properties, and preview the live Vega output."}*/}
-            {/*    showPropertyEditors={false}*/}
-            {/*    graphSource={"/vega-graphs/replicatedstudyD.json"}*/}
-            {/*/>*/}
         </PageShell>
     );
 }

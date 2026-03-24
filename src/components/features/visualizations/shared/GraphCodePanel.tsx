@@ -191,7 +191,9 @@ export default function GraphCodePanel({
                                 m: 0,
                                 p: 2,
                                 height: "100%",
-                                overflow: "auto",
+                                overflowX: "auto",
+                                overflowY: "auto",
+                                overscrollBehavior: "contain",
                                 whiteSpace: "pre",
                                 wordWrap: "normal",
                                 fontFamily:
@@ -199,7 +201,7 @@ export default function GraphCodePanel({
                                 fontSize: 13,
                                 lineHeight: "22px",
                                 color: "#e2e8f0",
-                                pointerEvents: "none",
+                                pointerEvents: editable ? "none" : "auto",
                                 ...tokenStyles,
                             }}
                             dangerouslySetInnerHTML={{ __html: highlightedHtml || " " }}
@@ -222,6 +224,9 @@ export default function GraphCodePanel({
                                 inset: 0,
                                 width: "100%",
                                 height: "100%",
+                                overflowX: "auto",
+                                overflowY: "auto",
+                                overscrollBehavior: "contain",
                                 border: "none",
                                 outline: "none",
                                 resize: "none",

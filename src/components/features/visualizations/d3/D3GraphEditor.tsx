@@ -577,13 +577,16 @@ function PreviewStage({
                             width: "100%",
                             minHeight: 420,
                             flex: 1,
-                            pt: 2,
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
                         }}
                     >
                         <Box
                             sx={{
                                 width: "100%",
                                 minHeight: 420,
+                                height: 420,
                                 overflow: "hidden",
                                 borderRadius: 3,
                                 bgcolor: "white",
