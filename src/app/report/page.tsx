@@ -9,7 +9,6 @@ import ComingSoon from "@/components/ui/ComingSoon";
 const PDF_PATH = `${basePath}/report.pdf`;
 
 export default function ReportPage() {
-
     if (process.env.NODE_ENV === "production") {
         return <ComingSoon />;
     }

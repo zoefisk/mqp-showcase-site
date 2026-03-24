@@ -336,7 +336,7 @@ export function TeamMemberCard({ member }: TeamMemberCardProps) {
                             width: "100%",
                         }}
                     >
-                        <Divider sx={{ mb: 2, mt: 2}} />
+                        <Divider sx={{ mb: 2, mt: 2 }} />
 
                         <Box
                             sx={{

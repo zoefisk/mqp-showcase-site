@@ -1,16 +1,15 @@
 import * as React from "react";
-import {Accordion, AccordionDetails, AccordionSummary, Stack, Typography} from "@mui/material";
+import { Accordion, AccordionDetails, AccordionSummary, Stack, Typography } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 export default function SidebarAccordion({
-                              title,
-                              icon,
-                              children,
-                          }: React.PropsWithChildren<{
+    title,
+    icon,
+    children,
+}: React.PropsWithChildren<{
     title: string;
     icon?: React.ReactNode;
 }>) {
-
     return (
         <Accordion
             defaultExpanded={false}

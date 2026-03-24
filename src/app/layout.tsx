@@ -45,9 +45,7 @@ export default function RootLayout({
                         <Box sx={{ position: "relative", zIndex: 1 }}>
                             <SiteBadge />
                             <FloatingNav />
-                            <PageShell>
-                                {children}
-                            </PageShell>
+                            <PageShell>{children}</PageShell>
                         </Box>
                     </Box>
                 </ThemeRegistry>

@@ -3,7 +3,7 @@
 import * as React from "react";
 import { Box } from "@mui/material";
 import { injectBaseTag } from "@/lib/graphs/d3/injectBaseTag";
-import {injectCenteredLayout} from "@/lib/graphs/d3/injectCenteredLayout";
+import { injectCenteredLayout } from "@/lib/graphs/d3/injectCenteredLayout";
 
 type Props = {
     html: string;
@@ -11,18 +11,11 @@ type Props = {
     title?: string;
 };
 
-export default function D3View({
-                                   html,
-                                   filePath,
-                                   title = "D3 Graph Preview",
-                               }: Props) {
-
-
+export default function D3View({ html, filePath, title = "D3 Graph Preview" }: Props) {
     const srcDoc = React.useMemo(() => {
         const withBase = injectBaseTag(html, filePath);
         return injectCenteredLayout(withBase);
     }, [html, filePath]);
-
 
     return (
         <Box

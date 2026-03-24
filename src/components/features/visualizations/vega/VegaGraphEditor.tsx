@@ -60,10 +60,12 @@ import {
     normalizeInputSpec,
     removeCategoryAt,
     type PreviewMode,
-    updateCategoryAt, stringifySpec, tryParseEditableJson,
+    updateCategoryAt,
+    stringifySpec,
+    tryParseEditableJson,
 } from "@/lib/graphs/vega/editorHelpers";
 import SidebarAccordion from "@/components/features/visualizations/shared/SidebarAccordion";
-import {getLineNumbers} from "@/lib/graphs/codePanel";
+import { getLineNumbers } from "@/lib/graphs/codePanel";
 
 type VegaGraphEditorProps = {
     title: string;

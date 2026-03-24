@@ -1,5 +1,3 @@
-
-
 export function injectCenteredLayout(html: string) {
     const centeringStyles = `
 <style>
