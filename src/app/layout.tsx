@@ -7,6 +7,7 @@ import FloatingNav from "@/components/layout/FloatingNav";
 import SiteBadge from "@/components/layout/SiteBadge";
 import ThemeRegistry from "@/theme/ThemeRegistry";
 import BackgroundEffects from "@/components/layout/BackgroundEffects";
+import PageShell from "@/components/layout/PageShell";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -44,7 +45,9 @@ export default function RootLayout({
                         <Box sx={{ position: "relative", zIndex: 1 }}>
                             <SiteBadge />
                             <FloatingNav />
-                            {children}
+                            <PageShell>
+                                {children}
+                            </PageShell>
                         </Box>
                     </Box>
                 </ThemeRegistry>

@@ -5,7 +5,7 @@ import PageHeader from "@/components/layout/PageHeader";
 
 export default function GraphEditorPage() {
     return (
-        <PageShell maxWidth="lg">
+        <>
             <PageHeader
                 eyebrowLabel={"MAKE YOUR OWN RRNL"}
                 mainHeader={"Graph Editor"}
@@ -27,6 +27,6 @@ export default function GraphEditorPage() {
             {/*    showPropertyEditors={false}*/}
             {/*    graphSource={"/vega-graphs/replicatedstudyD.json"}*/}
             {/*/>*/}
-        </PageShell>
+        </>
     );
 }
