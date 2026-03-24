@@ -25,6 +25,8 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import StudyQuestionsSet from "@/components/ui/StudyQuestionsExample";
 import { FINAL_QUESTIONS, VIZ_QUESTIONS } from "@/data/caseStudyQuestions";
 
+import { caseStudyContent } from "@/content/case-study/content";
+
 export default function CaseStudyPage() {
     return (
         <Box
@@ -36,9 +38,9 @@ export default function CaseStudyPage() {
         >
             <Container maxWidth="md">
                 <PageHeader
-                    eyebrowLabel="ZIKMUND-FISHER REPLICATED STUDY"
-                    mainHeader="Case Study"
-                    subheader="To evaluate our specification approach in a realistic setting, we are replicating the study “Graphics help patients distinguish between urgent and non-urgent deviations in laboratory test results” by recreating its stimuli and adapting the workflow for a modern online experiment."
+                    eyebrowLabel={caseStudyContent.pageHeader.eyebrowLabel}
+                    mainHeader={caseStudyContent.pageHeader.mainHeader}
+                    subheader={caseStudyContent.pageHeader.subheader}
                 />
 
                 <SectionTitle>Study Snapshot</SectionTitle>
@@ -56,40 +58,40 @@ export default function CaseStudyPage() {
                 >
                     <StudyStatCard
                         icon={<ScienceOutlinedIcon />}
-                        label="Original Basis"
-                        value="Published Study"
-                        description="We are replicating a prior research study on patient interpretation of lab result graphics."
+                        label={caseStudyContent.studySnapshot.cards.originalBasis.label}
+                        value={caseStudyContent.studySnapshot.cards.originalBasis.value}
+                        description={caseStudyContent.studySnapshot.cards.originalBasis.description}
                     />
                     <StudyStatCard
                         icon={<CodeOutlinedIcon />}
-                        label="Stimulus Build"
-                        value="D3 Recreation"
-                        description="The original graphs are being recreated as closely as possible with D3."
+                        label={caseStudyContent.studySnapshot.cards.stimulusBuild.label}
+                        value={caseStudyContent.studySnapshot.cards.stimulusBuild.value}
+                        description={caseStudyContent.studySnapshot.cards.stimulusBuild.value}
                     />
                     <StudyStatCard
                         icon={<PublicOutlinedIcon />}
-                        label="Experiment Platform"
-                        value="ReVISit.dev"
-                        description="The online study is being configured and deployed through ReVISit."
+                        label={caseStudyContent.studySnapshot.cards.experimentPlatform.label}
+                        value={caseStudyContent.studySnapshot.cards.experimentPlatform.value}
+                        description={
+                            caseStudyContent.studySnapshot.cards.experimentPlatform.description
+                        }
                     />
                     <StudyStatCard
                         icon={<Groups2OutlinedIcon />}
-                        label="Recruitment"
-                        value="Prolific"
-                        description="Participants are being recruited through Prolific for the live study."
+                        label={caseStudyContent.studySnapshot.cards.recruitment.label}
+                        value={caseStudyContent.studySnapshot.cards.recruitment.value}
+                        description={caseStudyContent.studySnapshot.cards.recruitment.description}
                     />
                 </Box>
 
-                <SectionTitle>Background on the Original Study</SectionTitle>
-                <ResearchNote title="Why this paper matters" mb={8}>
+                <SectionTitle>{caseStudyContent.background.title}</SectionTitle>
+                <ResearchNote title={caseStudyContent.background.noteTitle} mb={8}>
                     <Stack spacing={2.5}>
-                        <Typography>
-                            [write about why the zikmund fisher study matters and what it tells us]
-                        </Typography>
+                        <Typography>{caseStudyContent.background.body}</Typography>
                     </Stack>
                 </ResearchNote>
 
-                <SectionTitle>Why This Case Study Matters for Our Project</SectionTitle>
+                <SectionTitle>{caseStudyContent.projectConnection.title}</SectionTitle>
                 <Paper
                     variant="outlined"
                     sx={{
@@ -101,11 +103,11 @@ export default function CaseStudyPage() {
                     }}
                 >
                     <Stack spacing={2.5}>
-                        <Typography>[connect the study to our project]</Typography>
+                        <Typography>{caseStudyContent.projectConnection.body}</Typography>
                     </Stack>
                 </Paper>
 
-                <SectionTitle>Study Questions</SectionTitle>
+                <SectionTitle>{caseStudyContent.studyQuestions.title}</SectionTitle>
                 <Paper
                     variant="outlined"
                     sx={{
@@ -125,7 +127,7 @@ export default function CaseStudyPage() {
                         </Stack>
 
                         <Typography color="text.secondary">
-                            Users were asked the following question sets during the study.
+                            {caseStudyContent.studyQuestions.intro}
                         </Typography>
 
                         <Stack spacing={1.5}>
@@ -143,11 +145,13 @@ export default function CaseStudyPage() {
                                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                                     <Stack spacing={0.25}>
                                         <Typography fontWeight={600}>
-                                            For each visualization
+                                            {caseStudyContent.studyQuestions.perVisualization.title}
                                         </Typography>
                                         <Typography variant="body2" color="text.secondary">
-                                            For every visualization that users saw, they were asked
-                                            the following questions.
+                                            {
+                                                caseStudyContent.studyQuestions.perVisualization
+                                                    .description
+                                            }
                                         </Typography>
                                     </Stack>
                                 </AccordionSummary>
@@ -171,11 +175,13 @@ export default function CaseStudyPage() {
                                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                                     <Stack spacing={0.25}>
                                         <Typography fontWeight={600}>
-                                            End of main visualizations
+                                            {caseStudyContent.studyQuestions.finalQuestions.title}
                                         </Typography>
                                         <Typography variant="body2" color="text.secondary">
-                                            After completing the main visualizations, users were
-                                            asked the following questions.
+                                            {
+                                                caseStudyContent.studyQuestions.finalQuestions
+                                                    .description
+                                            }
                                         </Typography>
                                     </Stack>
                                 </AccordionSummary>
@@ -188,7 +194,7 @@ export default function CaseStudyPage() {
                     </Stack>
                 </Paper>
 
-                <SectionTitle>Stimulus / Specification Preview</SectionTitle>
+                <SectionTitle>{caseStudyContent.specificationPreview.title}</SectionTitle>
                 <Paper
                     variant="outlined"
                     sx={{
@@ -208,10 +214,7 @@ export default function CaseStudyPage() {
                         </Stack>
 
                         <Typography color="text.secondary">
-                            This section uses the current Vega-based editor in a read-only
-                            configuration as a specification-oriented companion to the replication
-                            work. A dedicated D3 viewer can be added later as the recreated stimuli
-                            are finalized.
+                            {caseStudyContent.specificationPreview.intro}
                         </Typography>
 
                         <Stack spacing={1.5}>
