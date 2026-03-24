@@ -20,7 +20,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-    title: "RRNL MQP",
+    title: "RRNL Showcase (WPI MQP)",
     description: "RRNL MQP",
 };
 
