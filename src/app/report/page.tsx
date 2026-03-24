@@ -1,5 +1,3 @@
-"use client";
-
 import * as React from "react";
 import { Box, Button, Container, Stack, Typography } from "@mui/material";
 import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";

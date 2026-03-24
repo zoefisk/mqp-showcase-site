@@ -1,5 +1,3 @@
-"use client";
-
 import * as React from "react";
 import { Box, Container, Link, Paper, Stack, Typography } from "@mui/material";
 
