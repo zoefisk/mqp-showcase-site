@@ -316,24 +316,36 @@ export function TeamMemberCard({ member }: TeamMemberCardProps) {
                     flexGrow: 1,
                 }}
             >
-                <Stack alignItems="center" sx={{ mt: -5, height: "100%" }}>
+                <Stack
+                    alignItems="center"
+                    sx={{
+                        mt: -5,
+                        flex: 1,
+                        width: "100%",
+                    }}
+                >
                     <TeamMemberAvatar member={member} />
 
                     <Box sx={{ mt: 2, width: "100%" }}>
                         <TeamMemberIdentity member={member} />
                     </Box>
 
-                    <Divider flexItem sx={{ my: 2 }} />
-
                     <Box
                         sx={{
                             mt: "auto",
                             width: "100%",
-                            display: "flex",
-                            justifyContent: "center",
                         }}
                     >
-                        <TeamMemberLinks member={member} />
+                        <Divider sx={{ mb: 2, mt: 2}} />
+
+                        <Box
+                            sx={{
+                                display: "flex",
+                                justifyContent: "center",
+                            }}
+                        >
+                            <TeamMemberLinks member={member} />
+                        </Box>
                     </Box>
                 </Stack>
             </CardContent>
