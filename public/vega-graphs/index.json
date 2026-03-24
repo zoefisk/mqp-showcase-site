@@ -23,5 +23,15 @@
         "id": "replicatedstudyD",
         "label": "Replicated Study D",
         "file": "/vega-graphs/replicatedstudyD.json"
+    },
+    {
+        "id": "asthmacontrol",
+        "label": "Asthma Control",
+        "file": "/vega-graphs/asthmacontrol.json"
+    },
+    {
+        "id": "bloodpressure",
+        "label": "Blood Pressure",
+        "file": "/vega-graphs/bloodpressure.json"
     }
 ]
