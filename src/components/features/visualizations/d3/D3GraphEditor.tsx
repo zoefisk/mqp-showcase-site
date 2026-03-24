@@ -197,15 +197,15 @@ function getAvailableModes(
 }
 
 function CodePanel({
-                       label,
-                       text,
-                       editable,
-                       error,
-                       errorLocation,
-                       onChange,
-                       onCopy,
-                       onDownload,
-                   }: {
+    label,
+    text,
+    editable,
+    error,
+    errorLocation,
+    onChange,
+    onCopy,
+    onDownload,
+}: {
     label: string;
     text: string;
     editable: boolean;
@@ -404,13 +404,13 @@ function CodePanel({
 }
 
 function PreviewHeader({
-                           title,
-                           subtitle,
-                           previewMode,
-                           availableModes,
-                           onPreviewModeChange,
-                           sourceMode,
-                       }: {
+    title,
+    subtitle,
+    previewMode,
+    availableModes,
+    onPreviewModeChange,
+    sourceMode,
+}: {
     title: string;
     subtitle: string;
     previewMode: PreviewMode;
@@ -477,27 +477,27 @@ function PreviewHeader({
 }
 
 function PreviewStage({
-                          title,
-                          subtitle,
-                          selectedItem,
-                          previewMode,
-                          htmlText,
-                          svgText,
-                          htmlEditable,
-                          svgEditable,
-                          htmlError,
-                          htmlErrorLocation,
-                          svgError,
-                          svgErrorLocation,
-                          showCodeEditors,
-                          onPreviewModeChange,
-                          onHtmlTextChange,
-                          onSvgTextChange,
-                          onCopyHtml,
-                          onDownloadHtml,
-                          onCopySvg,
-                          onDownloadSvg,
-                      }: {
+    title,
+    subtitle,
+    selectedItem,
+    previewMode,
+    htmlText,
+    svgText,
+    htmlEditable,
+    svgEditable,
+    htmlError,
+    htmlErrorLocation,
+    svgError,
+    svgErrorLocation,
+    showCodeEditors,
+    onPreviewModeChange,
+    onHtmlTextChange,
+    onSvgTextChange,
+    onCopyHtml,
+    onDownloadHtml,
+    onCopySvg,
+    onDownloadSvg,
+}: {
     title: string;
     subtitle: string;
     selectedItem: D3GraphManifestItem | null;
@@ -653,24 +653,17 @@ function PreviewStageSkeleton() {
 }
 
 export default function D3GraphEditor({
-                                          title,
-                                          subtitle,
-                                          graphSource,
-                                          allowGraphSelection = true,
-                                          showCodeEditors = true,
-                                          htmlEditable = true,
-                                          svgEditable = true,
-                                          defaultPreviewMode = "graph",
-                                      }: D3GraphEditorProps) {
-    const {
-        manifest,
-        selectedId,
-        setSelectedId,
-        selectedItem,
-        loadingManifest,
-        error,
-        setError,
-    } = useGraphManifest(loadD3GraphManifest, graphSource);
+    title,
+    subtitle,
+    graphSource,
+    allowGraphSelection = true,
+    showCodeEditors = true,
+    htmlEditable = true,
+    svgEditable = true,
+    defaultPreviewMode = "graph",
+}: D3GraphEditorProps) {
+    const { manifest, selectedId, setSelectedId, selectedItem, loadingManifest, error, setError } =
+        useGraphManifest(loadD3GraphManifest, graphSource);
 
     const [htmlText, setHtmlText] = React.useState("");
     const [svgText, setSvgText] = React.useState("");

@@ -53,10 +53,7 @@ import {
     type InputSpec,
     type VegaSpec,
 } from "@/lib/graphs/vega/buildVega";
-import {
-    loadVegaGraphManifest,
-    loadVegaInputSpecsFromFile,
-} from "@/lib/graphs/vega/loadVegaGraph";
+import { loadVegaGraphManifest, loadVegaInputSpecsFromFile } from "@/lib/graphs/vega/loadVegaGraph";
 import {
     addCategory,
     createDefaultInputSpec,
@@ -80,10 +77,10 @@ type JsonErrorLocation = {
 } | null;
 
 function SidebarAccordion({
-                              title,
-                              icon,
-                              children,
-                          }: React.PropsWithChildren<{
+    title,
+    icon,
+    children,
+}: React.PropsWithChildren<{
     title: string;
     icon?: React.ReactNode;
 }>) {
@@ -123,9 +120,9 @@ function SidebarAccordion({
 }
 
 function TitleSection({
-                          value,
-                          onChange,
-                      }: {
+    value,
+    onChange,
+}: {
     value: InputSpec;
     onChange: (next: InputSpec) => void;
 }) {
@@ -214,9 +211,9 @@ function TitleSection({
 }
 
 function AxisAndLabelsSection({
-                                  value,
-                                  onChange,
-                              }: {
+    value,
+    onChange,
+}: {
     value: InputSpec;
     onChange: (next: InputSpec) => void;
 }) {
@@ -336,9 +333,9 @@ function AxisAndLabelsSection({
 }
 
 function ValueIndicatorSection({
-                                   value,
-                                   onChange,
-                               }: {
+    value,
+    onChange,
+}: {
     value: InputSpec;
     onChange: (next: InputSpec) => void;
 }) {
@@ -503,9 +500,9 @@ function ValueIndicatorSection({
 }
 
 function CategoriesSection({
-                               value,
-                               onChange,
-                           }: {
+    value,
+    onChange,
+}: {
     value: InputSpec;
     onChange: (next: InputSpec) => void;
 }) {
@@ -703,19 +700,19 @@ function getJsonErrorLocation(error: string, text: string): JsonErrorLocation {
 }
 
 function PreviewStage({
-                          title,
-                          subtitle,
-                          mode,
-                          spec,
-                          jsonText,
-                          jsonEditable,
-                          jsonError,
-                          jsonErrorLocation,
-                          onModeChange,
-                          onJsonTextChange,
-                          onCopyJson,
-                          onDownloadJson,
-                      }: {
+    title,
+    subtitle,
+    mode,
+    spec,
+    jsonText,
+    jsonEditable,
+    jsonError,
+    jsonErrorLocation,
+    onModeChange,
+    onJsonTextChange,
+    onCopyJson,
+    onDownloadJson,
+}: {
     title: string;
     subtitle: string;
     mode: PreviewMode;
@@ -800,9 +797,9 @@ function PreviewStage({
 }
 
 function EditorSidebar({
-                           value,
-                           onChange,
-                       }: {
+    value,
+    onChange,
+}: {
     value: InputSpec;
     onChange: (next: InputSpec) => void;
 }) {
@@ -826,10 +823,7 @@ function EditorSidebar({
                 <ValueIndicatorSection value={value} onChange={onChange} />
             </SidebarAccordion>
 
-            <SidebarAccordion
-                title="Categories"
-                icon={<ViewAgendaOutlinedIcon fontSize="small" />}
-            >
+            <SidebarAccordion title="Categories" icon={<ViewAgendaOutlinedIcon fontSize="small" />}>
                 <CategoriesSection value={value} onChange={onChange} />
             </SidebarAccordion>
         </Stack>
@@ -876,21 +870,14 @@ function tryParseEditableJson(rawText: string): {
 }
 
 export default function VegaGraphEditor({
-                                            title,
-                                            subtitle,
-                                            jsonEditable = true,
-                                            showPropertyEditors = true,
-                                            graphSource,
-                                        }: VegaGraphEditorProps) {
-    const {
-        manifest,
-        selectedId,
-        setSelectedId,
-        selectedItem,
-        loadingManifest,
-        error,
-        setError,
-    } = useGraphManifest(loadVegaGraphManifest, graphSource);
+    title,
+    subtitle,
+    jsonEditable = true,
+    showPropertyEditors = true,
+    graphSource,
+}: VegaGraphEditorProps) {
+    const { manifest, selectedId, setSelectedId, selectedItem, loadingManifest, error, setError } =
+        useGraphManifest(loadVegaGraphManifest, graphSource);
 
     const [inputSpec, setInputSpec] = React.useState<InputSpec>(createDefaultInputSpec());
     const [previewMode, setPreviewMode] = React.useState<PreviewMode>("graph");

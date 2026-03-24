@@ -9,11 +9,7 @@ type Props = {
     minHeight?: number;
 };
 
-export default function GraphPreviewCard({
-                                             children,
-                                             header,
-                                             minHeight = 250,
-                                         }: Props) {
+export default function GraphPreviewCard({ children, header, minHeight = 250 }: Props) {
     return (
         <Paper
             variant="outlined"

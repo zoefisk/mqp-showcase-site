@@ -12,12 +12,12 @@ type Props = {
 };
 
 export default function GraphPreviewSkeleton({
-                                                 minHeight = 420,
-                                                 titleWidth = 180,
-                                                 subtitleWidth = "55%",
-                                                 controlsWidth = 124,
-                                                 previewHeight = 420,
-                                             }: Props) {
+    minHeight = 420,
+    titleWidth = 180,
+    subtitleWidth = "55%",
+    controlsWidth = 124,
+    previewHeight = 420,
+}: Props) {
     return (
         <Paper
             variant="outlined"

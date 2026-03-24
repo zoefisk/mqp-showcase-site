@@ -22,10 +22,7 @@ export function injectBaseTag(html: string, filePath?: string): string {
 
     // Case 2: <html> exists but no <head> → create one
     if (/<html[^>]*>/i.test(html)) {
-        return html.replace(
-            /<html([^>]*)>/i,
-            `<html$1><head>${baseTag}</head>`,
-        );
+        return html.replace(/<html([^>]*)>/i, `<html$1><head>${baseTag}</head>`);
     }
 
     // Case 3: no structure → wrap whole document

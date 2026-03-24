@@ -31,13 +31,13 @@ type Props = {
 };
 
 export default function GraphSourceAccordion({
-                                                 title = "Graph Source",
-                                                 items,
-                                                 value,
-                                                 onChange,
-                                                 loading = false,
-                                                 disabled = false,
-                                             }: Props) {
+    title = "Graph Source",
+    items,
+    value,
+    onChange,
+    loading = false,
+    disabled = false,
+}: Props) {
     return (
         <Accordion
             disableGutters
@@ -63,9 +63,7 @@ export default function GraphSourceAccordion({
                     <Skeleton variant="rounded" width="100%" height={56} />
                 ) : (
                     <FormControl fullWidth disabled={disabled}>
-                        <InputLabel id="graph-source-select-label">
-                            Graph
-                        </InputLabel>
+                        <InputLabel id="graph-source-select-label">Graph</InputLabel>
                         <Select
                             labelId="graph-source-select-label"
                             label="Graph"

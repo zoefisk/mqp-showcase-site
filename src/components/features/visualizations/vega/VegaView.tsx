@@ -12,11 +12,11 @@ type Props = {
 };
 
 export default function VegaView({
-                                     spec,
-                                     title = "Vega Graph Preview",
-                                     scale = 1.35,
-                                     onError,
-                                 }: Props) {
+    spec,
+    title = "Vega Graph Preview",
+    scale = 1.35,
+    onError,
+}: Props) {
     const containerRef = React.useRef<HTMLDivElement | null>(null);
     const viewRef = React.useRef<Result | null>(null);
 
@@ -40,9 +40,7 @@ export default function VegaView({
                 if (!isMounted) return;
 
                 const message =
-                    err instanceof Error
-                        ? err.message
-                        : "Failed to render Vega visualization.";
+                    err instanceof Error ? err.message : "Failed to render Vega visualization.";
 
                 onError?.(message);
             }

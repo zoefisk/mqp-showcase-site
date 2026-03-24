@@ -1,14 +1,7 @@
 "use client";
 
 import * as React from "react";
-import {
-    Alert,
-    Box,
-    IconButton,
-    Stack,
-    Tooltip,
-    Typography,
-} from "@mui/material";
+import { Alert, Box, IconButton, Stack, Tooltip, Typography } from "@mui/material";
 
 import ContentCopyOutlinedIcon from "@mui/icons-material/ContentCopyOutlined";
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
@@ -35,20 +28,20 @@ type Props = {
 };
 
 export default function GraphCodePanel({
-                                           label,
-                                           text,
-                                           editable,
-                                           error,
-                                           errorLocation,
-                                           highlightedHtml,
-                                           onChange,
-                                           onCopy,
-                                           onDownload,
-                                           lineNumbers,
-                                           minHeight = 420,
-                                           maxHeight = 650,
-                                           language,
-                                       }: Props) {
+    label,
+    text,
+    editable,
+    error,
+    errorLocation,
+    highlightedHtml,
+    onChange,
+    onCopy,
+    onDownload,
+    lineNumbers,
+    minHeight = 420,
+    maxHeight = 650,
+    language,
+}: Props) {
     const codeRef = React.useRef<HTMLPreElement | null>(null);
     const linesRef = React.useRef<HTMLDivElement | null>(null);
 
@@ -66,50 +59,50 @@ export default function GraphCodePanel({
     const tokenStyles =
         language === "json"
             ? {
-                "& .json-key": {
-                    color: "#93c5fd",
-                },
-                "& .json-string": {
-                    color: "#86efac",
-                },
-                "& .json-number": {
-                    color: "#f9a8d4",
-                },
-                "& .json-boolean": {
-                    color: "#fcd34d",
-                },
-                "& .json-null": {
-                    color: "#c4b5fd",
-                },
-                "& .json-punctuation": {
-                    color: "#94a3b8",
-                },
-                "& .json-error-line": {
-                    textDecorationLine: "underline",
-                    textDecorationStyle: "wavy",
-                    textDecorationColor: "#ef4444",
-                    textUnderlineOffset: "3px",
-                    backgroundColor: "rgba(239, 68, 68, 0.08)",
-                },
-            }
+                  "& .json-key": {
+                      color: "#93c5fd",
+                  },
+                  "& .json-string": {
+                      color: "#86efac",
+                  },
+                  "& .json-number": {
+                      color: "#f9a8d4",
+                  },
+                  "& .json-boolean": {
+                      color: "#fcd34d",
+                  },
+                  "& .json-null": {
+                      color: "#c4b5fd",
+                  },
+                  "& .json-punctuation": {
+                      color: "#94a3b8",
+                  },
+                  "& .json-error-line": {
+                      textDecorationLine: "underline",
+                      textDecorationStyle: "wavy",
+                      textDecorationColor: "#ef4444",
+                      textUnderlineOffset: "3px",
+                      backgroundColor: "rgba(239, 68, 68, 0.08)",
+                  },
+              }
             : {
-                "& .html-tag": {
-                    color: "#93c5fd",
-                },
-                "& .html-string": {
-                    color: "#86efac",
-                },
-                "& .html-comment": {
-                    color: "#94a3b8",
-                },
-                "& .html-error-line": {
-                    textDecorationLine: "underline",
-                    textDecorationStyle: "wavy",
-                    textDecorationColor: "#ef4444",
-                    textUnderlineOffset: "3px",
-                    backgroundColor: "rgba(239, 68, 68, 0.08)",
-                },
-            };
+                  "& .html-tag": {
+                      color: "#93c5fd",
+                  },
+                  "& .html-string": {
+                      color: "#86efac",
+                  },
+                  "& .html-comment": {
+                      color: "#94a3b8",
+                  },
+                  "& .html-error-line": {
+                      textDecorationLine: "underline",
+                      textDecorationStyle: "wavy",
+                      textDecorationColor: "#ef4444",
+                      textUnderlineOffset: "3px",
+                      backgroundColor: "rgba(239, 68, 68, 0.08)",
+                  },
+              };
 
     return (
         <Stack spacing={2}>

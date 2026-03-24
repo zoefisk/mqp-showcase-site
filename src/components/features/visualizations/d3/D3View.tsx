@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import {injectBaseTag} from "@/lib/graphs/d3/injectBaseTag";
+import { injectBaseTag } from "@/lib/graphs/d3/injectBaseTag";
 
 type Props = {
     html: string;

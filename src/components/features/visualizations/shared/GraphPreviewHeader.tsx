@@ -23,13 +23,13 @@ type Props<TMode extends string> = {
 };
 
 export default function GraphPreviewHeader<TMode extends string>({
-                                                                     title,
-                                                                     subtitle,
-                                                                     mode,
-                                                                     availableModes,
-                                                                     onModeChange,
-                                                                     badge,
-                                                                 }: Props<TMode>) {
+    title,
+    subtitle,
+    mode,
+    availableModes,
+    onModeChange,
+    badge,
+}: Props<TMode>) {
     return (
         <Stack
             direction={{ xs: "column", md: "row" }}

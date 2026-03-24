@@ -31,19 +31,14 @@ export function useGraphManifest<T extends { id: string }>(
 
                 setManifest(items);
 
-                const nextSelectedId =
-                    initialSelectedId || items[0]?.id || "";
+                const nextSelectedId = initialSelectedId || items[0]?.id || "";
 
                 setSelectedId(nextSelectedId);
             } catch (err) {
                 await ensureMinimumLoadingTime(startedAt);
 
                 if (!mounted) return;
-                setError(
-                    err instanceof Error
-                        ? err.message
-                        : "Failed to load graph manifest.",
-                );
+                setError(err instanceof Error ? err.message : "Failed to load graph manifest.");
             } finally {
                 if (mounted) setLoadingManifest(false);
             }

@@ -1,6 +1,6 @@
 import type { NextConfig } from "next";
 
-const repo = "mqp-showcase-site"
+const repo = "mqp-showcase-site";
 
 const nextConfig: NextConfig = {
     reactCompiler: true,
@@ -9,7 +9,7 @@ const nextConfig: NextConfig = {
     trailingSlash: true,
 
     images: {
-        unoptimized: true
+        unoptimized: true,
     },
 
     basePath: process.env.NODE_ENV === "production" ? `/${repo}` : "",

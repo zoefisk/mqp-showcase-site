@@ -8,10 +8,7 @@ type Props = {
     rows?: number;
 };
 
-export default function SidebarAccordionSkeleton({
-                                                     titleWidth = 140,
-                                                     rows = 3,
-                                                 }: Props) {
+export default function SidebarAccordionSkeleton({ titleWidth = 140, rows = 3 }: Props) {
     return (
         <Paper
             variant="outlined"
