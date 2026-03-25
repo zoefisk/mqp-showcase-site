@@ -1,0 +1,55 @@
+import InfoCard from "../../components/ui/InfoCard";
+import SectionTitle from "@/components/ui/SectionTitle";
+
+import HealthAndSafetyOutlinedIcon from "@mui/icons-material/HealthAndSafetyOutlined";
+import LightbulbOutlinedIcon from "@mui/icons-material/LightbulbOutlined";
+import AutoGraphOutlinedIcon from "@mui/icons-material/AutoGraphOutlined";
+import {Box} from "@mui/material";
+
+[//]: # "INFOCARDS CONTENT"
+
+export const sectionTitleText = "Quick Overview";
+
+export const problemTitleText = "The Problem";
+export const problemText =
+    "RRNLs can help patients interpret lab values, but they are often difficult to create consistently and reproduce across studies or tools.";
+
+export const solutionTitleText = "The Solution";
+export const solutionText =
+    "Our DSL provides a set of customizable properties for generating consistent RRNLs at scale.";
+
+export const outcomeTitleText = "The Outcome";
+export const outcomeText =
+    "Developers, doctors, and patients can more easily interpret and reproduce data.";
+
+[//]: # "INFOCARDS JSX"
+
+<SectionTitle>{sectionTitleText}</SectionTitle>
+
+<Box
+    sx={{
+        display: "grid",
+        gridTemplateColumns: { xs: "1fr", md: "repeat(3, 1fr)" },
+        gap: 2,
+        mb: 8,
+    }}
+>
+    <InfoCard
+        icon={<HealthAndSafetyOutlinedIcon />}
+        title={problemTitleText}
+        body={problemText}
+    />
+
+    <InfoCard
+        icon={<LightbulbOutlinedIcon />}
+        title={solutionTitleText}
+        body={solutionText}
+    />
+
+    <InfoCard
+        icon={<AutoGraphOutlinedIcon />}
+        title={outcomeTitleText}
+        body={outcomeText}
+    />
+
+</Box>
