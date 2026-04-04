@@ -3,7 +3,7 @@ import * as React from "react";
 import PageHeader from "@/components/layout/PageHeader";
 import { CiWarning } from "react-icons/ci";
 
-export default function ComingSoon() {
+export default function ComingSoonReport() {
     return (
         <Container maxWidth="md">
             <PageHeader

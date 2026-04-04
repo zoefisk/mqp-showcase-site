@@ -10,6 +10,7 @@ import FactCheckOutlinedIcon from "@mui/icons-material/FactCheckOutlined";
 import InsightsOutlinedIcon from "@mui/icons-material/InsightsOutlined";
 import Groups2OutlinedIcon from "@mui/icons-material/Groups2Outlined";
 import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
+import FormatListBulletedOutlinedIcon from "@mui/icons-material/FormatListBulletedOutlined";
 
 type NavItem = {
     label: string;
@@ -22,6 +23,7 @@ const NAV_ITEMS: NavItem[] = [
     { label: "Case Study", href: "/case-study", icon: FactCheckOutlinedIcon },
     { label: "Graph Editor", href: "/graph-editor", icon: InsightsOutlinedIcon },
     { label: "Meet the Team", href: "/meet-the-team", icon: Groups2OutlinedIcon },
+    { label: "Citations", href: "/citations", icon: FormatListBulletedOutlinedIcon },
     { label: "View the Report", href: "/report", icon: DescriptionOutlinedIcon },
 ];
 
