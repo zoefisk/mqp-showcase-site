@@ -4,13 +4,13 @@ import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import PageHeader from "@/components/layout/PageHeader";
 import { basePath } from "@/lib/basePath";
-import ComingSoon from "@/components/ui/ComingSoon";
+import ComingSoonReport from "@/components/ui/ComingSoonReport";
 
 const PDF_PATH = `${basePath}/report.pdf`;
 
 export default function ReportPage() {
     if (process.env.NODE_ENV === "production") {
-        return <ComingSoon />;
+        return <ComingSoonReport />;
     }
 
     return (
