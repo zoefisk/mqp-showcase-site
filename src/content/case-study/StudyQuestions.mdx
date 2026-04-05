@@ -1,0 +1,36 @@
+import CaseStudyQuestionSection from "@/components/case-study/CaseStudyQuestionSection";
+import { FINAL_QUESTIONS, VIZ_QUESTIONS } from "@/data/caseStudyQuestions";
+
+export const sectionTitle = "Study Questions";
+
+export const intro =
+    "This section summarizes the question sets participants saw during and after the main visualizations.";
+
+export const perVisualization = {
+    title: "Per visualization",
+    description:
+        "For every visualization that users saw, they were asked the following questions.",
+};
+
+export const finalQuestions = {
+    title: "End of main visualizations",
+    description:
+        "After completing the main visualizations, users were asked the following questions.",
+};
+
+<CaseStudyQuestionSection
+    sectionTitle={sectionTitle}
+    intro={intro}
+    groups={[
+        {
+            title: perVisualization.title,
+            description: perVisualization.description,
+            questions: VIZ_QUESTIONS,
+        },
+        {
+            title: finalQuestions.title,
+            description: finalQuestions.description,
+            questions: FINAL_QUESTIONS,
+        },
+    ]}
+/>
