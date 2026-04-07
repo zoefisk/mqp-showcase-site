@@ -1,0 +1,16 @@
+import ResearchNote from "@/components/ui/ResearchNote";
+import { Stack, Typography } from "@mui/material";
+import SectionTitle from "@/components/ui/SectionTitle";
+
+export const sectionTitle = "Background";
+export const noteTitle = "Why this study mattered";
+export const body =
+    "This case study gave us a concrete way to test whether our DSL and supporting tooling could recreate real RRNL stimuli from prior literature. It also provided a structured example of how our grammar can support reproducibility across visual conditions.";
+
+<SectionTitle>{sectionTitle}</SectionTitle>
+
+<ResearchNote title={noteTitle} mb={8}>
+    <Stack spacing={2.5}>
+        <Typography>{body}</Typography>
+    </Stack>
+</ResearchNote>
