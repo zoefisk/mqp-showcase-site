@@ -3,7 +3,7 @@ import type { NextConfig } from "next";
 const repo = "mqp-showcase-site";
 
 const nextConfig: NextConfig = {
-    reactCompiler: true,
+    // reactCompiler: true,
 
     output: "export",
     trailingSlash: true,

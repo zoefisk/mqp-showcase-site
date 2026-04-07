@@ -4,7 +4,7 @@ import * as React from "react";
 interface PageHeaderProps {
     eyebrowLabel?: string;
     mainHeader: string;
-    subheader?: string;
+    subheader?: string | React.ReactNode;
     children?: React.ReactNode;
 }
 

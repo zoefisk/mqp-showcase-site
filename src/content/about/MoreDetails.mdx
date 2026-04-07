@@ -1,0 +1,36 @@
+export const sectionTitleText =
+    "MORE DETAILS ABOUT THIS PROJECT"
+
+export const textContentBeforeReadMore =
+    "Personal health data can inform patients and guide health-related decisions, but low literacy levels can limit its effectiveness. Additionally, the stress associated with accessing healthcare information, particularly in emergency or intensive care situations, can increase cognitive load and negatively affect information retention. These factors make it challenging to understand, retain, and apply health information in decision-making, but data visualizations help address this by conveying complex information more clearly and reducing cognitive burden."
+
+export const textContentAfterReadMore =
+    "Reference range number lines (RRNLs) are visualizations that have shown strong potential for improving comprehension of health information. These visualizations display a single-value datum along a continuous scale that is categorically classified based on reference ranges. However, RRNLs are not well-defined, and there is no formalized method for designing them. In this project, we propose a domain-specific language (DSL) that breaks RRNLs into their core components and provides a standardized method for generating them. Our website showcases this DSL and includes an editor for creating RRNLs in a consistent and reproducible manner."
+
+
+
+
+
+
+
+
+import SectionTitle from "../../components/ui/SectionTitle";
+import ExpandableTextSection from "../../components/ui/ExpandableTextSection";
+import {Paper} from "@mui/material";
+
+<SectionTitle>{sectionTitleText}</SectionTitle>
+<Paper
+    variant="outlined"
+    sx={{
+        p: { xs: 2.5, sm: 3.5 },
+        borderRadius: 4,
+        mb: 8,
+        background:
+            "linear-gradient(180deg, rgba(255,255,255,0.96) 0%, rgba(248,250,252,1) 100%)",
+    }}
+>
+    <ExpandableTextSection
+        expandedText={textContentAfterReadMore}
+        previewText={textContentBeforeReadMore}
+    />
+</Paper>
