@@ -15,8 +15,6 @@ const nextConfig: NextConfig = {
         unoptimized: true,
     },
 
-    basePath: process.env.NODE_ENV === "production" ? `/${repo}` : "",
-
     pageExtensions: ["ts", "tsx", "md", "mdx"],
 };
 
