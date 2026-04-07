@@ -1,0 +1,23 @@
+import { Paper, Stack, Typography } from "@mui/material";
+import SectionTitle from "@/components/ui/SectionTitle";
+
+export const sectionTitle = "Project Connection";
+export const body =
+    "This replication work directly connects the website, DSL, and visualization pipeline to a real use case. Rather than presenting the grammar only in the abstract, the case study shows how it can support the recreation of literature-based RRNL stimuli in a more systematic way.";
+
+<SectionTitle>{sectionTitle}</SectionTitle>
+
+<Paper
+    variant="outlined"
+    sx={{
+        p: { xs: 2.5, sm: 3.5 },
+        borderRadius: 4,
+        mb: 8,
+        background:
+            "linear-gradient(180deg, rgba(255,255,255,0.96) 0%, rgba(248,250,252,1) 100%)",
+    }}
+>
+    <Stack spacing={2.5}>
+        <Typography>{body}</Typography>
+    </Stack>
+</Paper>

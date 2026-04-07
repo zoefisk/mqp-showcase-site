@@ -1,0 +1,32 @@
+import CaseStudySnapshot from "@/components/case-study/CaseStudySnapshot";
+
+export const sectionTitle = "Study Snapshot";
+
+export const cards = [
+    {
+        label: "Original Basis",
+        value: "Zikmund-Fisher et al.",
+        description: "Replication-oriented recreation of the original study stimuli.",
+        icon: "science",
+    },
+    {
+        label: "Stimulus Build",
+        value: "Vega + D3",
+        description: "Stimuli were recreated using our editor pipeline and supporting D3 work.",
+        icon: "code",
+    },
+    {
+        label: "Experiment Platform",
+        value: "ReVISit",
+        description: "Study flow and participant-facing materials were deployed in ReVISit.",
+        icon: "public",
+    },
+    {
+        label: "Recruitment",
+        value: "Prolific",
+        description: "Participants were recruited using Prolific.",
+        icon: "groups",
+    },
+];
+
+<CaseStudySnapshot sectionTitle={sectionTitle} cards={cards} />

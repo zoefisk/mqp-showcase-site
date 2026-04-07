@@ -25,14 +25,14 @@ export const TEAM_MEMBERS: TeamMember[] = [
         degree: "Computer Science",
         minor: "Data Science",
         blurb: "",
-        photoSrc: `${basePath}/team-images/skyler.png`,
+        photoSrc: `${basePath}/team-images/skyler.jpg`,
         gradient: {
             from: "rgba(63, 81, 181, 0.25)", // indigo
             to: "rgba(0, 188, 212, 0.25)", // cyan
         },
         links: {
-            linkedin: "https://linkedin.com",
-            github: "https://github.com",
+            linkedin: "https://www.linkedin.com/in/skyler-lin ",
+            email: "skylerlin.nyc@gmail.com",
         },
     },
     {
