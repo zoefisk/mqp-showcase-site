@@ -60,6 +60,20 @@ type TeamMemberIdentityProps = {
     member: TeamMember;
 };
 
+const iconStyles = (variant: "primary" | "secondary" | "default") => ({
+    width: 40,
+    height: 40,
+    bgcolor: "action.hover",
+    border: "1px solid",
+    borderColor: "divider",
+    "&:hover":
+        variant === "primary"
+            ? { bgcolor: "primary.50", borderColor: "primary.light" }
+            : variant === "secondary"
+                ? { bgcolor: "secondary.50", borderColor: "secondary.light" }
+                : { bgcolor: "action.selected", borderColor: "text.primary" },
+});
+
 /**
  * Decorative top banner for the card.
  * Falls back to default gradient values when custom member colors are absent.
@@ -182,86 +196,66 @@ function TeamMemberIdentity({ member }: TeamMemberIdentityProps) {
  * Fixed-size icon slots help preserve consistent footer alignment.
  */
 function TeamMemberLinks({ member }: TeamMemberLinksProps) {
+    const links = [];
+
+    if (member.links?.linkedin) {
+        links.push(
+            <Tooltip key="linkedin" title="LinkedIn">
+                <IconButton
+                    component="a"
+                    href={member.links.linkedin}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`${member.name} LinkedIn`}
+                    sx={iconStyles("primary")}
+                >
+                    <LinkedInIcon fontSize="small" />
+                </IconButton>
+            </Tooltip>
+        );
+    }
+
+    if (member.links?.github) {
+        links.push(
+            <Tooltip key="github" title="GitHub">
+                <IconButton
+                    component="a"
+                    href={member.links.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`${member.name} GitHub`}
+                    sx={iconStyles("default")}
+                >
+                    <GitHubIcon fontSize="small" />
+                </IconButton>
+            </Tooltip>
+        );
+    }
+
+    if (member.links?.email) {
+        links.push(
+            <Tooltip key="email" title="Email">
+                <IconButton
+                    component="a"
+                    href={`mailto:${member.links.email}`}
+                    aria-label={`${member.name} email`}
+                    sx={iconStyles("secondary")}
+                >
+                    <EmailOutlinedIcon fontSize="small" />
+                </IconButton>
+            </Tooltip>
+        );
+    }
+
     return (
-        <Stack direction="row" spacing={1} justifyContent="center" sx={{ minHeight: 40 }}>
-            <Box sx={{ width: 40, height: 40 }}>
-                {member.links?.linkedin && (
-                    <Tooltip title="LinkedIn">
-                        <IconButton
-                            component="a"
-                            href={member.links.linkedin}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            aria-label={`${member.name} LinkedIn`}
-                            sx={{
-                                width: 40,
-                                height: 40,
-                                bgcolor: "action.hover",
-                                border: "1px solid",
-                                borderColor: "divider",
-                                "&:hover": {
-                                    bgcolor: "primary.50",
-                                    borderColor: "primary.light",
-                                },
-                            }}
-                        >
-                            <LinkedInIcon fontSize="small" />
-                        </IconButton>
-                    </Tooltip>
-                )}
-            </Box>
-
-            <Box sx={{ width: 40, height: 40 }}>
-                {member.links?.github && (
-                    <Tooltip title="GitHub">
-                        <IconButton
-                            component="a"
-                            href={member.links.github}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            aria-label={`${member.name} GitHub`}
-                            sx={{
-                                width: 40,
-                                height: 40,
-                                bgcolor: "action.hover",
-                                border: "1px solid",
-                                borderColor: "divider",
-                                "&:hover": {
-                                    bgcolor: "action.selected",
-                                    borderColor: "text.primary",
-                                },
-                            }}
-                        >
-                            <GitHubIcon fontSize="small" />
-                        </IconButton>
-                    </Tooltip>
-                )}
-            </Box>
-
-            <Box sx={{ width: 40, height: 40 }}>
-                {member.links?.email && (
-                    <Tooltip title="Email">
-                        <IconButton
-                            component="a"
-                            href={`mailto:${member.links.email}`}
-                            aria-label={`${member.name} email`}
-                            sx={{
-                                width: 40,
-                                height: 40,
-                                bgcolor: "action.hover",
-                                border: "1px solid",
-                                borderColor: "divider",
-                                "&:hover": {
-                                    bgcolor: "secondary.50",
-                                    borderColor: "secondary.light",
-                                },
-                            }}
-                        >
-                            <EmailOutlinedIcon fontSize="small" />
-                        </IconButton>
-                    </Tooltip>
-                )}
-            </Box>
+        <Stack
+            direction="row"
+            spacing={1}
+            justifyContent="center"
+            alignItems="center"
+            sx={{ minHeight: 40 }}
+        >
+            {links}
         </Stack>
     );
 }
