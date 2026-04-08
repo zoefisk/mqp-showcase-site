@@ -20,7 +20,6 @@
         "@mdx-js/react": "^3.1.1",
         "@mui/icons-material": "^7.3.7",
         "@mui/material": "^7.3.7",
-        "@mui/material-nextjs": "^9.0.0",
         "@next/mdx": "^16.2.1",
         "@types/mdx": "^2.0.13",
         "next": "16.1.6",
