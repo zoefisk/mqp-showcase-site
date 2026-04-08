@@ -152,25 +152,35 @@ function TeamMemberIdentity({ member }: TeamMemberIdentityProps) {
                     minHeight: 64,
                 }}
             >
-                <Chip
-                    label={member.degree || " "}
-                    size="medium"
+                <Box
                     sx={{
-                        borderRadius: 999,
-                        fontWeight: 600,
-                        bgcolor: "action.hover",
-                        height: "auto",
-                        maxWidth: 190,
-                        "& .MuiChip-label": {
-                            display: "block",
-                            whiteSpace: "normal",
-                            textAlign: "center",
-                            lineHeight: 1.3,
-                            px: 1.75,
-                            py: 0.75,
-                        },
+                        minHeight: 58,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        width: "100%",
                     }}
-                />
+                >
+                    <Chip
+                        label={member.degree || " "}
+                        size="medium"
+                        sx={{
+                            borderRadius: 999,
+                            fontWeight: 600,
+                            bgcolor: "action.hover",
+                            height: "auto",
+                            width: 300,
+                            "& .MuiChip-label": {
+                                display: "block",
+                                whiteSpace: "normal",
+                                textAlign: "center",
+                                lineHeight: 1.3,
+                                px: 1.75,
+                                py: 0.75,
+                            },
+                        }}
+                    />
+                </Box>
 
                 <Box sx={{ minHeight: 32, display: "flex", alignItems: "center" }}>
                     {member.minor ? (
@@ -268,6 +278,7 @@ function TeamMemberCardShell({ children }: React.PropsWithChildren) {
         <Card
             elevation={0}
             sx={{
+                width: 250,
                 height: "100%",
                 borderRadius: 4,
                 border: "1px solid",
@@ -361,13 +372,10 @@ export function TeamMemberCardGrid({ members }: TeamMemberCardGridProps) {
     return (
         <Box
             sx={{
-                display: "grid",
+                display: "flex",
+                flexWrap: "wrap",
                 gap: 3,
-                gridTemplateColumns: {
-                    xs: "1fr",
-                    sm: "repeat(2, 1fr)",
-                    md: "repeat(4, 1fr)",
-                },
+                justifyContent: "center",
             }}
         >
             {members.map((member) => (
