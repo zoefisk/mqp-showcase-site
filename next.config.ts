@@ -3,9 +3,8 @@ import createMDX from "@next/mdx";
 
 const repo = "mqp-showcase-site";
 
-const withMDX = createMDX({
-    extension: /\.mdx?$/,
-});
+const nextConfig: NextConfig = {
+    // reactCompiler: true,
 
 const nextConfig: NextConfig = {
     output: "export",
