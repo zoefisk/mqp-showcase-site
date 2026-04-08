@@ -1,12 +1,10 @@
 import type { NextConfig } from "next";
-import createMDX from "@next/mdx";
 
 const repo = "mqp-showcase-site";
 
 const nextConfig: NextConfig = {
     // reactCompiler: true,
 
-const nextConfig: NextConfig = {
     output: "export",
     trailingSlash: true,
 
@@ -14,7 +12,7 @@ const nextConfig: NextConfig = {
         unoptimized: true,
     },
 
-    pageExtensions: ["ts", "tsx", "md", "mdx"],
+    basePath: process.env.NODE_ENV === "production" ? `/${repo}` : "",
 };
 
-export default withMDX(nextConfig);
+export default nextConfig;

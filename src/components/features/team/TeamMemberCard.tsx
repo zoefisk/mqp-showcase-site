@@ -60,20 +60,6 @@ type TeamMemberIdentityProps = {
     member: TeamMember;
 };
 
-const iconStyles = (variant: "primary" | "secondary" | "default") => ({
-    width: 40,
-    height: 40,
-    bgcolor: "action.hover",
-    border: "1px solid",
-    borderColor: "divider",
-    "&:hover":
-        variant === "primary"
-            ? { bgcolor: "primary.50", borderColor: "primary.light" }
-            : variant === "secondary"
-                ? { bgcolor: "secondary.50", borderColor: "secondary.light" }
-                : { bgcolor: "action.selected", borderColor: "text.primary" },
-});
-
 /**
  * Decorative top banner for the card.
  * Falls back to default gradient values when custom member colors are absent.
@@ -152,35 +138,25 @@ function TeamMemberIdentity({ member }: TeamMemberIdentityProps) {
                     minHeight: 64,
                 }}
             >
-                <Box
+                <Chip
+                    label={member.degree || " "}
+                    size="medium"
                     sx={{
-                        minHeight: 58,
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        width: "100%",
+                        borderRadius: 999,
+                        fontWeight: 600,
+                        bgcolor: "action.hover",
+                        height: "auto",
+                        maxWidth: 190,
+                        "& .MuiChip-label": {
+                            display: "block",
+                            whiteSpace: "normal",
+                            textAlign: "center",
+                            lineHeight: 1.3,
+                            px: 1.75,
+                            py: 0.75,
+                        },
                     }}
-                >
-                    <Chip
-                        label={member.degree || " "}
-                        size="medium"
-                        sx={{
-                            borderRadius: 999,
-                            fontWeight: 600,
-                            bgcolor: "action.hover",
-                            height: "auto",
-                            width: 300,
-                            "& .MuiChip-label": {
-                                display: "block",
-                                whiteSpace: "normal",
-                                textAlign: "center",
-                                lineHeight: 1.3,
-                                px: 1.75,
-                                py: 0.75,
-                            },
-                        }}
-                    />
-                </Box>
+                />
 
                 <Box sx={{ minHeight: 32, display: "flex", alignItems: "center" }}>
                     {member.minor ? (
@@ -206,66 +182,86 @@ function TeamMemberIdentity({ member }: TeamMemberIdentityProps) {
  * Fixed-size icon slots help preserve consistent footer alignment.
  */
 function TeamMemberLinks({ member }: TeamMemberLinksProps) {
-    const links = [];
-
-    if (member.links?.linkedin) {
-        links.push(
-            <Tooltip key="linkedin" title="LinkedIn">
-                <IconButton
-                    component="a"
-                    href={member.links.linkedin}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={`${member.name} LinkedIn`}
-                    sx={iconStyles("primary")}
-                >
-                    <LinkedInIcon fontSize="small" />
-                </IconButton>
-            </Tooltip>
-        );
-    }
-
-    if (member.links?.github) {
-        links.push(
-            <Tooltip key="github" title="GitHub">
-                <IconButton
-                    component="a"
-                    href={member.links.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={`${member.name} GitHub`}
-                    sx={iconStyles("default")}
-                >
-                    <GitHubIcon fontSize="small" />
-                </IconButton>
-            </Tooltip>
-        );
-    }
-
-    if (member.links?.email) {
-        links.push(
-            <Tooltip key="email" title="Email">
-                <IconButton
-                    component="a"
-                    href={`mailto:${member.links.email}`}
-                    aria-label={`${member.name} email`}
-                    sx={iconStyles("secondary")}
-                >
-                    <EmailOutlinedIcon fontSize="small" />
-                </IconButton>
-            </Tooltip>
-        );
-    }
-
     return (
-        <Stack
-            direction="row"
-            spacing={1}
-            justifyContent="center"
-            alignItems="center"
-            sx={{ minHeight: 40 }}
-        >
-            {links}
+        <Stack direction="row" spacing={1} justifyContent="center" sx={{ minHeight: 40 }}>
+            <Box sx={{ width: 40, height: 40 }}>
+                {member.links?.linkedin && (
+                    <Tooltip title="LinkedIn">
+                        <IconButton
+                            component="a"
+                            href={member.links.linkedin}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label={`${member.name} LinkedIn`}
+                            sx={{
+                                width: 40,
+                                height: 40,
+                                bgcolor: "action.hover",
+                                border: "1px solid",
+                                borderColor: "divider",
+                                "&:hover": {
+                                    bgcolor: "primary.50",
+                                    borderColor: "primary.light",
+                                },
+                            }}
+                        >
+                            <LinkedInIcon fontSize="small" />
+                        </IconButton>
+                    </Tooltip>
+                )}
+            </Box>
+
+            <Box sx={{ width: 40, height: 40 }}>
+                {member.links?.github && (
+                    <Tooltip title="GitHub">
+                        <IconButton
+                            component="a"
+                            href={member.links.github}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label={`${member.name} GitHub`}
+                            sx={{
+                                width: 40,
+                                height: 40,
+                                bgcolor: "action.hover",
+                                border: "1px solid",
+                                borderColor: "divider",
+                                "&:hover": {
+                                    bgcolor: "action.selected",
+                                    borderColor: "text.primary",
+                                },
+                            }}
+                        >
+                            <GitHubIcon fontSize="small" />
+                        </IconButton>
+                    </Tooltip>
+                )}
+            </Box>
+
+            <Box sx={{ width: 40, height: 40 }}>
+                {member.links?.email && (
+                    <Tooltip title="Email">
+                        <IconButton
+                            component="a"
+                            href={`mailto:${member.links.email}`}
+                            aria-label={`${member.name} email`}
+                            sx={{
+                                width: 40,
+                                height: 40,
+                                bgcolor: "action.hover",
+                                border: "1px solid",
+                                borderColor: "divider",
+                                "&:hover": {
+                                    bgcolor: "secondary.50",
+                                    borderColor: "secondary.light",
+                                },
+                            }}
+                        >
+                            <EmailOutlinedIcon fontSize="small" />
+                        </IconButton>
+                    </Tooltip>
+                )}
+            </Box>
         </Stack>
     );
 }
@@ -278,7 +274,6 @@ function TeamMemberCardShell({ children }: React.PropsWithChildren) {
         <Card
             elevation={0}
             sx={{
-                width: 250,
                 height: "100%",
                 borderRadius: 4,
                 border: "1px solid",
@@ -372,10 +367,13 @@ export function TeamMemberCardGrid({ members }: TeamMemberCardGridProps) {
     return (
         <Box
             sx={{
-                display: "flex",
-                flexWrap: "wrap",
+                display: "grid",
                 gap: 3,
-                justifyContent: "center",
+                gridTemplateColumns: {
+                    xs: "1fr",
+                    sm: "repeat(2, 1fr)",
+                    md: "repeat(4, 1fr)",
+                },
             }}
         >
             {members.map((member) => (
