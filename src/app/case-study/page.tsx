@@ -3,6 +3,7 @@ import { Box, Container } from "@mui/material";
 
 import PageHeaderContent from "@/content/case-study/PageHeader.mdx";
 import StudySnapshotContent from "@/content/case-study/StudySnapshot.mdx";
+import ProjectConnectionContent from "@/content/case-study/ProjectConnection.mdx";
 import StudyQuestionsContent from "@/content/case-study/StudyQuestions.mdx";
 import SpecificationPreviewContent from "@/content/case-study/SpecificationPreview.mdx";
 
@@ -18,6 +19,7 @@ export default function CaseStudyPage() {
             <Container maxWidth="md">
                 <PageHeaderContent />
                 <StudySnapshotContent />
+                <ProjectConnectionContent />
                 <StudyQuestionsContent />
                 <SpecificationPreviewContent />
             </Container>
