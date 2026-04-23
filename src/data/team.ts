@@ -5,7 +5,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     {
         id: "morgan",
         name: "Morgan Vasiliou",
-        degree: "Bioinformatics & Computational Biology",
+        degree: "Bioinformatics & Computational Biology",
         minor: "Data Science",
         blurb: "",
         photoSrc: `${basePath}/team-images/morgan.png`,
