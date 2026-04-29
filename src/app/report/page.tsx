@@ -9,9 +9,9 @@ import ComingSoonReport from "@/components/ui/ComingSoonReport";
 const PDF_PATH = `${basePath}/report.pdf`;
 
 export default function ReportPage() {
-    if (process.env.NODE_ENV === "production") {
-        return <ComingSoonReport />;
-    }
+    // if (process.env.NODE_ENV === "production") {
+    //     return <ComingSoonReport />;
+    // }
 
     return (
         <Box sx={{ minHeight: "100vh", py: { xs: 6, sm: 10 } }}>
