@@ -8,15 +8,23 @@
         "requiresSvg": true
     },
     {
+        "id": "alt-simple",
+        "label": "Alanine (Simple)",
+        "sourceMode": "html+svg",
+        "htmlFile": "/d3-graphs/simple/ALT_further_simple.html",
+        "svgFile": "/d3-graphs/simple/ALT_further_simple.svg",
+        "requiresSvg": true
+    },
+    {
         "id": "platelet-block",
-        "label": "Platelet Block",
+        "label": "Platelet (Block)",
         "sourceMode": "html",
         "htmlFile": "/d3-graphs/block/platelet_further_block.html",
         "requiresSvg": false
     },
     {
         "id": "platelet-table",
-        "label": "Platelet Table",
+        "label": "Platelet (Table)",
         "sourceMode": "html",
         "htmlFile": "/d3-graphs/table/platelet-table.html",
         "requiresSvg": false
