@@ -50,12 +50,13 @@ function NavRail({ children }: React.PropsWithChildren) {
 
 function NavList() {
     const pathname = usePathname();
-
-    const [loadingHref, setLoadingHref] = React.useState<string | null>(null);
+    const [mounted, setMounted] = React.useState(false);
 
     React.useEffect(() => {
-        setLoadingHref(null);
-    }, [pathname]);
+        setMounted(true);
+    }, []);
+
+    if (!mounted) return null;
 
     return (
         <Stack spacing={1.5} alignItems="flex-start">
@@ -64,8 +65,8 @@ function NavList() {
                     key={item.href}
                     item={item}
                     isActive={pathname === item.href}
-                    isLoading={loadingHref === item.href}
-                    onNavigate={() => setLoadingHref(item.href)}
+                    isLoading={false}
+                    onNavigate={() => {}}
                 />
             ))}
         </Stack>
