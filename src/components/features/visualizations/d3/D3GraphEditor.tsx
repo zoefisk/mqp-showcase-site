@@ -592,7 +592,7 @@ function PreviewStage({
                                 bgcolor: "white",
                             }}
                         >
-                            <D3View html={previewHtml} filePath={previewFilePath} title={title} />
+                            <D3View html={previewHtml} filePath={previewFilePath} title={title} fitToContainer />
                         </Box>
                     </Box>
                 ) : previewMode === "html" ? (
