@@ -1,8 +1,12 @@
+"use client"
+
 import * as React from "react";
 import {
     Box,
     Chip,
+    Collapse,
     Divider,
+    IconButton,
     Link as MuiLink,
     Paper,
     Stack,
@@ -13,85 +17,91 @@ import MenuBookOutlinedIcon from "@mui/icons-material/MenuBookOutlined";
 import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
 import PublicOutlinedIcon from "@mui/icons-material/PublicOutlined";
 import BiotechOutlinedIcon from "@mui/icons-material/BiotechOutlined";
+import ScienceOutlinedIcon from "@mui/icons-material/ScienceOutlined";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 import SectionTitle from "@/components/ui/SectionTitle";
 import { CATEGORY_ORDER, CITATIONS, Citation, CitationCategory } from "@/data/citations";
 
 const categoryIcons: Record<CitationCategory, React.ReactElement> = {
-    "Foundational Research": <BiotechOutlinedIcon fontSize="small" />,
+    "Reference Range Number Lines": <BiotechOutlinedIcon fontSize="small" />,
     "Healthcare Context": <MenuBookOutlinedIcon fontSize="small" />,
-    Visualization: <DescriptionOutlinedIcon fontSize="small" />,
+    "Health Visualization": <DescriptionOutlinedIcon fontSize="small" />,
+    "Visualization Systems and Grammars": <ScienceOutlinedIcon fontSize="small" />,
+    "Study Tools and Measures": <MenuBookOutlinedIcon fontSize="small" />,
+    "General Reference": <PublicOutlinedIcon fontSize="small" />,
     Other: <PublicOutlinedIcon fontSize="small" />,
 };
+
+function sortCitationsByTitle(citations: Citation[]): Citation[] {
+    return [...citations].sort((a, b) =>
+        a.title.localeCompare(b.title, undefined, { sensitivity: "base" })
+    );
+}
 
 export function CitationCard({ citation }: { citation: Citation }) {
     return (
         <Paper
             variant="outlined"
             sx={{
-                p: { xs: 2.5, sm: 3 },
-                borderRadius: 4,
-                background:
-                    "linear-gradient(180deg, rgba(255,255,255,0.96) 0%, rgba(248,250,252,1) 100%)",
-                boxShadow: "0 6px 20px rgba(15,23,42,0.06)",
+                p: 1.5,
+                borderRadius: 2.5,
+                backgroundColor: "background.paper",
+                boxShadow: "none",
             }}
         >
-            <Stack spacing={1.5}>
+            <Stack spacing={0.75}>
                 <Stack
-                    direction={{ xs: "column", sm: "row" }}
-                    spacing={1.25}
+                    direction="row"
+                    spacing={1}
                     justifyContent="space-between"
-                    alignItems={{ xs: "flex-start", sm: "center" }}
+                    alignItems="flex-start"
                 >
-                    <Chip
-                        icon={categoryIcons[citation.category]}
-                        label={citation.category}
-                        size="small"
-                        color="primary"
-                        variant="outlined"
+                    <Typography
+                        variant="subtitle2"
                         sx={{
-                            borderRadius: "999px",
-                            fontWeight: 600,
+                            fontWeight: 700,
+                            lineHeight: 1.3,
+                            pr: 1,
+                            flex: 1,
                         }}
-                    />
+                    >
+                        {citation.title}
+                    </Typography>
 
                     <Typography
-                        variant="body2"
+                        variant="caption"
                         color="text.secondary"
-                        sx={{ fontWeight: 600 }}
+                        sx={{ fontWeight: 600, whiteSpace: "nowrap" }}
                     >
                         {citation.year}
                     </Typography>
                 </Stack>
 
-                <Typography variant="h6" sx={{ fontWeight: 700, lineHeight: 1.3 }}>
-                    {citation.title}
-                </Typography>
-
-                <Typography variant="body1" color="text.secondary">
+                <Typography variant="caption" color="text.secondary">
                     {citation.authors}
                 </Typography>
 
-                <Typography variant="body2" color="text.secondary">
+                <Typography variant="caption" color="text.secondary">
                     {citation.source}
                 </Typography>
 
                 {(citation.url || citation.doi) && (
-                    <Stack direction="row" spacing={2} flexWrap="wrap" useFlexGap>
+                    <Stack direction="row" spacing={1.25} flexWrap="wrap" useFlexGap>
                         {citation.url && (
                             <MuiLink
                                 href={citation.url}
                                 target="_blank"
                                 rel="noreferrer"
                                 underline="hover"
-                                sx={{ fontWeight: 600 }}
+                                sx={{ fontSize: "0.75rem", fontWeight: 600 }}
                             >
                                 View source
                             </MuiLink>
                         )}
 
                         {citation.doi && (
-                            <Typography variant="body2" color="text.secondary">
+                            <Typography variant="caption" color="text.secondary">
                                 DOI: {citation.doi}
                             </Typography>
                         )}
@@ -101,7 +111,7 @@ export function CitationCard({ citation }: { citation: Citation }) {
                 {citation.note && (
                     <>
                         <Divider />
-                        <Typography variant="body2" color="text.secondary">
+                        <Typography variant="caption" color="text.secondary">
                             {citation.note}
                         </Typography>
                     </>
@@ -111,40 +121,89 @@ export function CitationCard({ citation }: { citation: Citation }) {
     );
 }
 
+function CitationCategorySection({
+                                     category,
+                                     items,
+                                     defaultExpanded = false,
+                                 }: {
+    category: CitationCategory;
+    items: Citation[];
+    defaultExpanded?: boolean;
+}) {
+    const [expanded, setExpanded] = React.useState(defaultExpanded);
+
+    return (
+        <Box>
+            {/* Header row (no card) */}
+            <Stack
+                direction="row"
+                alignItems="center"
+                justifyContent="space-between"
+                spacing={1}
+                onClick={() => setExpanded((prev) => !prev)}
+                sx={{
+                    cursor: "pointer",
+                    py: 0.75,
+                }}
+            >
+                <Stack direction="row" spacing={1} alignItems="center">
+                    <Box sx={{ color: "text.secondary", display: "flex" }}>
+                        {categoryIcons[category]}
+                    </Box>
+
+                    <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
+                        {category}
+                    </Typography>
+
+                    <Typography variant="caption" color="text.secondary">
+                        ({items.length})
+                    </Typography>
+                </Stack>
+
+                <ExpandMoreIcon
+                    sx={{
+                        fontSize: 18,
+                        transform: expanded ? "rotate(180deg)" : "rotate(0deg)",
+                        transition: "transform 0.2s ease",
+                        color: "text.secondary",
+                    }}
+                />
+            </Stack>
+
+            {/* subtle divider instead of card border */}
+            <Divider sx={{ mb: 1 }} />
+
+            <Collapse in={expanded} timeout="auto" unmountOnExit>
+                <Stack spacing={1} sx={{ pl: 1 }}>
+                    {items.map((citation) => (
+                        <CitationCard key={citation.id} citation={citation} />
+                    ))}
+                </Stack>
+            </Collapse>
+        </Box>
+    );
+}
+
 export function CitationGrid() {
     return (
         <>
             <SectionTitle>Reference List</SectionTitle>
 
-            <Stack spacing={6}>
-                {CATEGORY_ORDER.map((category) => {
-                    const items = CITATIONS.filter((citation) => citation.category === category);
+            <Stack spacing={2.5}>
+                {CATEGORY_ORDER.map((category, index) => {
+                    const items = sortCitationsByTitle(
+                        CITATIONS.filter((citation) => citation.category === category)
+                    );
 
                     if (items.length === 0) return null;
 
                     return (
-                        <Box key={category}>
-                            <Stack
-                                direction="row"
-                                spacing={1.25}
-                                alignItems="center"
-                                sx={{ mb: 2.5 }}
-                            >
-                                <Box sx={{ color: "primary.main", display: "flex" }}>
-                                    {categoryIcons[category]}
-                                </Box>
-
-                                <Typography variant="h5" sx={{ fontWeight: 700 }}>
-                                    {category}
-                                </Typography>
-                            </Stack>
-
-                            <Stack spacing={2.5}>
-                                {items.map((citation) => (
-                                    <CitationCard key={citation.id} citation={citation} />
-                                ))}
-                            </Stack>
-                        </Box>
+                        <CitationCategorySection
+                            key={category}
+                            category={category}
+                            items={items}
+                            defaultExpanded={index === 0}
+                        />
                     );
                 })}
             </Stack>

@@ -67,7 +67,7 @@ export default function CaseStudySpecificationPreview({
                         <AccordionDetails sx={{ pt: 0 }}>
                             <D3GraphEditor
                                 title="D3 RRNL Preview"
-                                subtitle="Edit the HTML directly."
+                                subtitle="Take a look at real graphs that we used in our case study."
                                 graphSource="creatinine-gradient"
                                 htmlEditable={false}
                                 svgEditable={false}
