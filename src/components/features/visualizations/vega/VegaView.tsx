@@ -1,5 +1,3 @@
-"use client";
-
 import * as React from "react";
 import vegaEmbed, { type VisualizationSpec, type Result } from "vega-embed";
 import { Box } from "@mui/material";

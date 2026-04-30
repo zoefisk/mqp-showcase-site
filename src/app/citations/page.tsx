@@ -2,7 +2,6 @@ import * as React from "react";
 import { Box, Container } from "@mui/material";
 
 import PageHeader from "@/components/layout/PageHeader";
-import ComingSoonCitations from "@/components/ui/ComingSoonCitations";
 import {CitationGrid} from "@/components/ui/CitationList";
 
 export default function CitationsPage() {
