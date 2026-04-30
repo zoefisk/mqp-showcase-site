@@ -6,9 +6,9 @@ import ComingSoonCitations from "@/components/ui/ComingSoonCitations";
 import {CitationGrid} from "@/components/ui/CitationList";
 
 export default function CitationsPage() {
-    if (process.env.NODE_ENV === "production") {
-        return <ComingSoonCitations />;
-    }
+    // if (process.env.NODE_ENV === "production") {
+    //     return <ComingSoonCitations />;
+    // }
 
     return (
         <Box
