@@ -554,14 +554,14 @@ combined[f'{trial}_urgency'] = combined.mean(axis=1)`}
                             </ListItem>
                         </List>
 
-                        <PythonCodeViewer
-                            mode="compact"
-                            code={`def recode_intention(ans):
-    if ans in willingness_to_wait:
-        return "Willingness to wait"
-    elif ans in immediate_action:
-        return "Immediate action"`}
-                        />
+    {/*                    <PythonCodeViewer*/}
+    {/*                        mode="compact"*/}
+    {/*                        code={`def recode_intention(ans):*/}
+    {/*if ans in willingness_to_wait:*/}
+    {/*    return "Willingness to wait"*/}
+    {/*elif ans in immediate_action:*/}
+    {/*    return "Immediate action"`}*/}
+    {/*                    />*/}
                     </Stack>
                 )
             },
@@ -721,14 +721,14 @@ combined[f'{trial}_urgency'] = combined.mean(axis=1)`}
                             This allowed us to summarize behavioral responses alongside urgency measures.
                         </Typography>
 
-                        <PythonCodeViewer
-                            mode="compact"
-                            code={`def recode(ans):
-    if ans in wait:
-        return "Wait"
-    else:
-        return "Immediate"`}
-                        />
+    {/*                    <PythonCodeViewer*/}
+    {/*                        mode="compact"*/}
+    {/*                        code={`def recode(ans):*/}
+    {/*if ans in wait:*/}
+    {/*    return "Wait"*/}
+    {/*else:*/}
+    {/*    return "Immediate"`}*/}
+    {/*                    />*/}
                     </Stack>
                 )
             }
