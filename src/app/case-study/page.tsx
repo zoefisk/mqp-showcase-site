@@ -708,30 +708,30 @@ combined[f'{trial}_urgency'] = combined.mean(axis=1)`}
                     />
                 )
             },
-            {
-                title: "Behavioral response analysis",
-                content: (
-                    <Stack spacing={1.5}>
-                        <Typography>
-                            We analyzed participants’ reported actions by grouping responses
-                            into two categories: willingness to wait and immediate action.
-                        </Typography>
-
-                        <Typography>
-                            This allowed us to summarize behavioral responses alongside urgency measures.
-                        </Typography>
-
-    {/*                    <PythonCodeViewer*/}
-    {/*                        mode="compact"*/}
-    {/*                        code={`def recode(ans):*/}
-    {/*if ans in wait:*/}
-    {/*    return "Wait"*/}
-    {/*else:*/}
-    {/*    return "Immediate"`}*/}
-    {/*                    />*/}
-                    </Stack>
-                )
-            }
+    //         {
+    //             title: "Behavioral response analysis",
+    //             content: (
+    //                 <Stack spacing={1.5}>
+    //                     <Typography>
+    //                         We analyzed participants’ reported actions by grouping responses
+    //                         into two categories: willingness to wait and immediate action.
+    //                     </Typography>
+    //
+    //                     <Typography>
+    //                         This allowed us to summarize behavioral responses alongside urgency measures.
+    //                     </Typography>
+    //
+    // {/*                    <PythonCodeViewer*/}
+    // {/*                        mode="compact"*/}
+    // {/*                        code={`def recode(ans):*/}
+    // {/*if ans in wait:*/}
+    // {/*    return "Wait"*/}
+    // {/*else:*/}
+    // {/*    return "Immediate"`}*/}
+    // {/*                    />*/}
+    //                 </Stack>
+    //             )
+    //         }
         ]
     },
     {
@@ -744,7 +744,7 @@ combined[f'{trial}_urgency'] = combined.mean(axis=1)`}
         body: "Visualizations generated using our DSL pipeline as the original study, showing that RRNL formats help users better distinguish severity than tables.",
         highlights: ["RRNLs Outperformed Tables", "Stronger Severity Sensitivity", "DSL Replication Success"],
         detail:
-            "Our results closely matched the patterns found in the original Zikmund-Fisher study. Participants were better able to distinguish between near-normal and more severe values when using RRNL formats compared to tables, and this difference was reflected in higher urgency difference scores and fewer zero-difference responses. Because these effects were observed using visual stimuli based on our DSL-generated RRNLs, this suggests our approach can reproduce the key interpretive behaviors seen in prior research.",
+            "In general, our results aligned the patterns found in the original Zikmund-Fisher study. Participants were better able to distinguish between near-normal and more severe values when using RRNL formats compared to tables, and this difference was reflected in higher urgency difference scores and fewer zero-difference responses. Because these effects were observed using visual stimuli based on our DSL-generated RRNLs, this suggests our approach can reproduce the key interpretive behaviors seen in prior research.",
     },
 ];
 
