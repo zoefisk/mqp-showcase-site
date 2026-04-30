@@ -61,7 +61,7 @@ const STEPS: JourneyStep[] = [
         icon: <LightbulbOutlinedIcon />,
         accentColor: "#6366f1",
         body: "We looked at a few different studies to replicate, but landed on the Zikmund Fisher study, as it uses reference range number lines and focuses on the health industry.",
-        highlights: ["Zikmund-Fisher et al.", "Reference Range Number Lines", "DSL Validation"],
+        highlights: ["Zikmund-Fisher Replication", "RRNL Prior Research", "DSL Validation Target"],
         details: [
             {
                 title: "Why this paper matters",
@@ -91,7 +91,7 @@ const STEPS: JourneyStep[] = [
         icon: <ScienceOutlinedIcon />,
         accentColor: "#8b5cf6",
         body: "We recreated the RRNL conditions using our DSL and reproduced the table condition separately using D3.",
-        highlights: ["4 Visualization Conditions", "3 Lab Tests", "Between-Subjects Design"],
+        highlights: ["4 Visualization Conditions", "6 Lab Result Scenarios", "Shared Response Questions"],
         detail: (
             <Stack spacing={2}>
                 <Typography>
@@ -340,7 +340,7 @@ const STEPS: JourneyStep[] = [
         icon: <BuildOutlinedIcon />,
         accentColor: "#ec4899",
         body: "We used ReVISit.dev to host the study, embedding our replicated HTML visualizations directly into the survey flow. REVISIT handled condition assignment, response logging, and timing automatically, letting us focus on replicating the original study structure as closely as possible.",
-        highlights: ["REVISIT.dev", "Four Between-Subjects Conditions", "Automated Response Logging"],
+        highlights: ["ReVISit.dev Survey Flow", "Embedded RRNL Stimuli", "Automatic Timing & Logging"],
         detail:
             "Each participant was assigned to one of four visualization conditions — simple, gradient, block, or table — and shown six graphs total. REVISIT recorded every response and timestamp, giving us clean, structured data to work with immediately after the study closed.",
     },
@@ -352,7 +352,7 @@ const STEPS: JourneyStep[] = [
         icon: <DatasetOutlinedIcon />,
         accentColor: "#f59e0b",
         body: "We started with a small-scale pilot involving family, friends, and classmates, before moving on to a pilot on Prolific that involved 5 participants. After validating and analyzing the data, we launched the full study on Prolific, which involved 123 participants.",
-        highlights: ["~30 per Condition", "Prolific Platform", "Latin Square Assignment"],
+        highlights: ["Pilot-to-Prolific Rollout", "123 Final Participants", "Balanced Condition Assignment"],
         details: [
             {
                 title: "Small-scale study",
@@ -440,7 +440,7 @@ const STEPS: JourneyStep[] = [
         icon: <FactCheckOutlinedIcon />,
         accentColor: "#22c55e",
         body: "Before analyzing results, we filtered out participants whose data could not be considered valid. This ensured that only complete, trustworthy responses contributed to the analysis.",
-        highlights: ["Prolific ID Check", "Age Verification", "Critical Trial Coverage"],
+        highlights: ["Prolific ID Screening", "18+ Age Verification", "Complete Critical Trials"],
         detail: (
             <>
                 <Typography>
@@ -603,7 +603,7 @@ combined[f'{trial}_urgency'] = combined.mean(axis=1)`}
         subtitle: "Evaluating the impact of visualization design",
         icon: <InsightsOutlinedIcon />,
         accentColor: "#06b6d4",
-        highlights: ["Summary Statistics", "Violin Plots", "Behavioral Analysis"],
+        highlights: ["Participant Summaries", "Format Comparisons", "Urgency-Difference Distributions"],
         body: (
             <Stack spacing={2}>
                 <Typography>
@@ -742,7 +742,7 @@ combined[f'{trial}_urgency'] = combined.mean(axis=1)`}
         icon: <RocketLaunchOutlinedIcon />,
         accentColor: "#1976d2",
         body: "Visualizations generated using our DSL pipeline as the original study, showing that RRNL formats help users better distinguish severity than tables.",
-        highlights: ["Format Comparisons", "Urgency Sensitivity", "Individual Differences"],
+        highlights: ["RRNLs Outperformed Tables", "Stronger Severity Sensitivity", "DSL Replication Success"],
         detail:
             "Our results closely matched the patterns found in the original Zikmund-Fisher study. Participants were better able to distinguish between near-normal and more severe values when using RRNL formats compared to tables, and this difference was reflected in higher urgency difference scores and fewer zero-difference responses. Because these effects were observed using visual stimuli based on our DSL-generated RRNLs, this suggests our approach can reproduce the key interpretive behaviors seen in prior research..",
     },

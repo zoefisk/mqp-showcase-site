@@ -4,7 +4,7 @@ import * as React from "react";
 
 type SectionBlockProps = {
     title: string;
-    mainText: string;
+    mainText: React.ReactNode;
 };
 
 export default function SectionBlock({ title, mainText }: SectionBlockProps) {
