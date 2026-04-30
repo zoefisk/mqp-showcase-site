@@ -30,6 +30,11 @@ const NAV_ITEMS: NavItem[] = [
 const COLLAPSED_SIZE = 56;
 const EXPANDED_WIDTH = 220;
 
+function normalizePath(path: string | null) {
+    if (!path || path === "/") return "/";
+    return path.endsWith("/") ? path.slice(0, -1) : path;
+}
+
 function NavRail({ children }: React.PropsWithChildren) {
     return (
         <Box
@@ -51,6 +56,7 @@ function NavRail({ children }: React.PropsWithChildren) {
 function NavList() {
     const pathname = usePathname();
     const [mounted, setMounted] = React.useState(false);
+    const normalizedPathname = normalizePath(pathname);
 
     React.useEffect(() => {
         setMounted(true);
@@ -64,7 +70,7 @@ function NavList() {
                 <NavListItem
                     key={item.href}
                     item={item}
-                    isActive={pathname === item.href}
+                    isActive={normalizedPathname === normalizePath(item.href)}
                     isLoading={false}
                     onNavigate={() => {}}
                 />
