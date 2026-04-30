@@ -1,5 +1,5 @@
 import SectionTitle from "@/components/ui/SectionTitle";
-import { Paper, Stack } from "@mui/material";
+import { Paper, Typography } from "@mui/material";
 import * as React from "react";
 
 type SectionBlockProps = {
@@ -20,7 +20,7 @@ export default function SectionBlock({ title, mainText }: SectionBlockProps) {
                         "linear-gradient(180deg, rgba(255,255,255,0.96) 0%, rgba(248,250,252,1) 100%)",
                 }}
             >
-                <Stack spacing={2.5}>{mainText}</Stack>
+                <Typography sx={{ lineHeight: 1.85 }}>{mainText}</Typography>
             </Paper>
         </>
     );
