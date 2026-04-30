@@ -90,7 +90,7 @@ const STEPS: JourneyStep[] = [
         subtitle: "Building a rigorous experiment",
         icon: <ScienceOutlinedIcon />,
         accentColor: "#8b5cf6",
-        body: "We recreated all four visualization conditions from the Zikmund-Fisher study using our DSL so we could test whether our generated RRNLs preserved the same structure, variation, and intent as the original stimuli.",
+        body: "We recreated the RRNL conditions using our DSL and reproduced the table condition separately using D3.",
         highlights: ["4 Visualization Conditions", "3 Lab Tests", "Between-Subjects Design"],
         detail: (
             <Stack spacing={2}>
@@ -339,7 +339,7 @@ const STEPS: JourneyStep[] = [
         subtitle: "Creating the testing environment",
         icon: <BuildOutlinedIcon />,
         accentColor: "#ec4899",
-        body: "We used REVISIT.dev to host the study, embedding our DSL-generated D3 visualizations directly into the survey flow. REVISIT handled condition assignment, response logging, and timing automatically, letting us focus on replicating the original study structure as faithfully as possible.",
+        body: "We used ReVISit.dev to host the study, embedding our replicated HTML visualizations directly into the survey flow. REVISIT handled condition assignment, response logging, and timing automatically, letting us focus on replicating the original study structure as closely as possible.",
         highlights: ["REVISIT.dev", "Four Between-Subjects Conditions", "Automated Response Logging"],
         detail:
             "Each participant was assigned to one of four visualization conditions — simple, gradient, block, or table — and shown six graphs total. REVISIT recorded every response and timestamp, giving us clean, structured data to work with immediately after the study closed.",
@@ -351,7 +351,7 @@ const STEPS: JourneyStep[] = [
         subtitle: "Running the study",
         icon: <DatasetOutlinedIcon />,
         accentColor: "#f59e0b",
-        body: "We started with a small-scale pilot involving family, friends, and classmates, before moving on to a pilot on Prolific that involved 5 participants. After validating and analyzing the data, we launched the full study on Prolific, which involved 120 participants.",
+        body: "We started with a small-scale pilot involving family, friends, and classmates, before moving on to a pilot on Prolific that involved 5 participants. After validating and analyzing the data, we launched the full study on Prolific, which involved 123 participants.",
         highlights: ["~30 per Condition", "Prolific Platform", "Latin Square Assignment"],
         details: [
             {
@@ -409,7 +409,7 @@ const STEPS: JourneyStep[] = [
                                 <ListItemIcon sx={{ minWidth: 24, fontSize: 30 }}>
                                     •
                                 </ListItemIcon>
-                                <ListItemText primary={"The violin plots we made for analysis did not look realistic."} />
+                                <ListItemText primary={"Pilot study used to validate setup before full deployment"} />
                             </ListItem>
                         </List>
                     </Stack>
@@ -421,7 +421,7 @@ const STEPS: JourneyStep[] = [
                     <Stack>
                         <Stack spacing={1.5}>
                             <Typography>
-                                After we felt comfortable with our small-scale results and analysis, we launched the full study, consisting of 120 participants, on Prolific. This number allowed us to have approximately thirty participants per condition (block, simple, gradient, and table).
+                                After we felt comfortable with our small-scale results and analysis, we launched the full study, consisting of 123 participants, on Prolific. This number allowed us to have approximately thirty participants per condition (block, simple, gradient, and table).
                             </Typography>
                             <Typography>
                                 When we started the study, we were using simple randomization for assigning each participant with a condition. However, we realized that this may cause a problem where one condition has way more participants than another group. To solve that, we researched and found the LatinSquare option with Revisit, which checks against existing participants to determine which bucket to assign a new participant to.
@@ -589,7 +589,7 @@ combined[f'{trial}_urgency'] = combined.mean(axis=1)`}
                         </List>
 
                         <Typography>
-                            These variables were later used as controls in statistical modeling.
+                            These variables were summarized to describe the study population and provide context for interpreting the results.
                         </Typography>
                     </Stack>
                 )
@@ -603,18 +603,17 @@ combined[f'{trial}_urgency'] = combined.mean(axis=1)`}
         subtitle: "Evaluating the impact of visualization design",
         icon: <InsightsOutlinedIcon />,
         accentColor: "#06b6d4",
-        highlights: ["Summary Tables", "Violin Plots", "Linear Regression"],
+        highlights: ["Summary Statistics", "Violin Plots", "Behavioral Analysis"],
         body: (
             <Stack spacing={2}>
                 <Typography>
-                    After preparing the data, we used a combination of summary tables,
-                    distribution plots, and regression models to evaluate how visualization
-                    format influenced participant interpretation.
+                    After preparing the data, we used summary statistics and distribution
+                    visualizations to evaluate how visualization format influenced participant interpretation.
                 </Typography>
 
                 <Typography>
-                    This phase focused on comparing conditions across the variables created
-                    in the previous step, especially perceived urgency and urgency difference scores.
+                    This phase focused on comparing perceived urgency and urgency difference scores
+                    across display formats to determine how effectively each format conveyed severity.
                 </Typography>
             </Stack>
         ),
@@ -624,14 +623,14 @@ combined[f'{trial}_urgency'] = combined.mean(axis=1)`}
                 content: (
                     <Stack spacing={1.5}>
                         <Typography>
-                            We first summarized participant demographics and individual-difference
+                            We summarized participant demographics and individual-difference
                             measures, including age, education, health literacy, subjective numeracy,
                             graphical literacy, and familiarity with medical tests.
                         </Typography>
 
                         <Typography>
-                            This provided context for the study population and established the
-                            participant-level variables later used as controls in regression.
+                            These measures provide context for the study population but were not used
+                            directly in statistical modeling.
                         </Typography>
                     </Stack>
                 ),
@@ -639,7 +638,7 @@ combined[f'{trial}_urgency'] = combined.mean(axis=1)`}
                     <ImageModal
                         src="/statistical-analysis/TABLE1.png"
                         alt="Table 1..."
-                        label="Table 1: Showing Demographic and Literacy Numbers"
+                        label="Table 1: Demographic and Literacy Summary"
                     />
                 )
             },
@@ -648,35 +647,32 @@ combined[f'{trial}_urgency'] = combined.mean(axis=1)`}
                 content: (
                     <Stack spacing={1.5}>
                         <Typography>
-                            We then summarized the main study outcomes by display format for each
-                            medical test. This included the mean perceived urgency for near-normal
-                            values, extreme values, the within-subject urgency difference score, and
-                            the percentage of participants whose difference score was zero.
+                            We computed means and standard deviations for perceived urgency
+                            and urgency difference scores across each visualization format and test type.
                         </Typography>
 
                         <Typography>
-                            These summaries made it possible to compare how strongly each visualization
-                            format distinguished between milder and more severe abnormal results.
+                            These summaries allowed us to compare how strongly each format
+                            distinguished between near-normal and extreme values.
                         </Typography>
 
-                        <PythonCodeViewer
-                            mode="compact"
-                            code={`summary = (
-    df.groupby(['test_type', 'display_format'])
-      .agg(
-          near_mean=('near_urgency', 'mean'),
-          extreme_mean=('extreme_urgency', 'mean'),
-          diff_mean=('urgency_diff', 'mean')
-      )
-)`}
-                        />
+{/*                        <PythonCodeViewer*/}
+{/*                            mode="compact"*/}
+{/*                            code={`summary = (*/}
+{/*    df.groupby(['test_type', 'display_format'])*/}
+{/*      .agg(*/}
+{/*          urgency_mean=('urgency', 'mean'),*/}
+{/*          diff_mean=('urgency_diff', 'mean')*/}
+{/*      )*/}
+{/*)`}*/}
+{/*                        />*/}
                     </Stack>
                 ),
                 afterCard: (
                     <ImageModal
                         src="/statistical-analysis/TABLE2.png"
                         alt="Table 2..."
-                        label="Table 2: Urgency Scores"
+                        label="Table 2: Urgency Scores by Format"
                     />
                 )
             },
@@ -685,24 +681,23 @@ combined[f'{trial}_urgency'] = combined.mean(axis=1)`}
                 content: (
                     <Stack spacing={1.5}>
                         <Typography>
-                            Summary statistics alone do not show how responses were distributed across
-                            participants, so we also visualized urgency difference scores with violin plots.
+                            To examine how responses varied across participants, we visualized
+                            urgency difference scores using violin plots.
                         </Typography>
 
                         <Typography>
-                            These plots show the spread of responses within each format, making it easier
-                            to compare consistency, skew, and overall sensitivity across conditions for
-                            platelet count, ALT, and serum creatinine.
+                            These plots show the spread and concentration of responses,
+                            highlighting how consistently each format conveyed changes in severity.
                         </Typography>
 
-                        <PythonCodeViewer
-                            mode="compact"
-                            code={`sns.violinplot(
-    data=df,
-    x='display_format',
-    y='urgency_diff'
-)`}
-                        />
+{/*                        <PythonCodeViewer*/}
+{/*                            mode="compact"*/}
+{/*                            code={`sns.violinplot(*/}
+{/*    data=df,*/}
+{/*    x='display_format',*/}
+{/*    y='urgency_diff'*/}
+{/*)`}*/}
+{/*                        />*/}
                     </Stack>
                 ),
                 afterCard: (
@@ -714,27 +709,25 @@ combined[f'{trial}_urgency'] = combined.mean(axis=1)`}
                 )
             },
             {
-                title: "Regression modeling",
+                title: "Behavioral response analysis",
                 content: (
                     <Stack spacing={1.5}>
                         <Typography>
-                            Finally, we modeled urgency difference scores using linear regression to
-                            test whether display format predicted sensitivity to abnormal values while
-                            controlling for participant background.
+                            We analyzed participants’ reported actions by grouping responses
+                            into two categories: willingness to wait and immediate action.
                         </Typography>
 
                         <Typography>
-                            The predictors included display format, graph literacy, health literacy,
-                            subjective numeracy, and familiarity with medical tests.
+                            This allowed us to summarize behavioral responses alongside urgency measures.
                         </Typography>
 
                         <PythonCodeViewer
                             mode="compact"
-                            code={`X = data[['format', 'graph_lit', 'health_lit', 'numeracy', 'familiarity']]
-y = data['urgency_diff']
-
-model = sm.OLS(y, X).fit()
-print(model.summary())`}
+                            code={`def recode(ans):
+    if ans in wait:
+        return "Wait"
+    else:
+        return "Immediate"`}
                         />
                     </Stack>
                 )
@@ -748,10 +741,10 @@ print(model.summary())`}
         subtitle: "What we learned",
         icon: <RocketLaunchOutlinedIcon />,
         accentColor: "#1976d2",
-        body: "Our analysis examined whether visualization format — simple, gradient, block, or table — influenced how urgently participants perceived abnormal lab results, and whether individual differences like numeracy or health literacy moderated that effect.",
+        body: "Visualizations generated using our DSL pipeline as the original study, showing that RRNL formats help users better distinguish severity than tables.",
         highlights: ["Format Comparisons", "Urgency Sensitivity", "Individual Differences"],
         detail:
-            "Results showed variation across conditions in how strongly participants distinguished between slightly and further abnormal values. These findings speak to the practical value of RRNL design choices in clinical communication, and validate that our DSL-generated visualizations successfully replicated the study's intended stimulus properties.",
+            "Our results closely matched the patterns found in the original Zikmund-Fisher study. Participants were better able to distinguish between near-normal and more severe values when using RRNL formats compared to tables, and this difference was reflected in higher urgency difference scores and fewer zero-difference responses. Because these effects were observed using visual stimuli based on our DSL-generated RRNLs, this suggests our approach can reproduce the key interpretive behaviors seen in prior research..",
     },
 ];
 
